@@ -1,0 +1,72 @@
+{
+  "tester.text": "Exemple de texte pour {{amount}} choses",
+
+  "common.noData": "Aucune Donnée",
+  "common.emailStatus.sent": "Courriel envoyé",
+  "common.emailStatus.notSent": "Courriel non envoyé",
+  "common.cancel": "Annuler",
+  "common.confirm": "Confirmer",
+
+  "login.login": "Connexion",
+  "login.account": "Compte",
+  "login.password": "Mot de passe",
+
+  "home.title": "Bienvenue au CyberReport Hub",
+
+  "reportheader.breadcrumbs.report": "Rapports",
+  "reportheader.breadcrumbs.daily": "Rapports quotidiens",
+  "reportheader.header": "Rapport - {{date}}",
+  "reportheader.generated": "Généré: ",
+  "reportheader.lastModified": "Dernière modification: ",
+  "reportheader.emailStatus": "Email: ",
+  "reportheader.emailSent": "Envoyé",
+  "reportheader.emailNotSent": "Non envoyé",
+
+  "navBar.link.home": "Accueil",
+  "navBar.link.reportSearch": "Recherche de rapports",
+  "navBar.link.reportStats": "Statistiques du rapport",
+  "navBar.langChange": "EN",
+  "navBar.langChangeAria": "English",
+
+  "datePicker.iconAria": "Choisir la date",
+
+  "paginator.perPage": "Résultats par page",
+  "paginator.range": "{{start}} - {{end}} de {{total}}",
+  "paginator.firstPage.aria": "Première page",
+  "paginator.lastPage.aria": "Dernière page",
+  "paginator.nextPage.aria": "Page suivante",
+  "paginator.prevPage.aria": "Page précédente",
+
+  "reportSearch.header": "Recherche de rapports",
+  "reportSearch.latest": "Voir le dernier rapport",
+  "reportSearch.searchLabel": "Recherche par date",
+  "reportSearch.search.fromLabel": "De",
+  "reportSearch.search.toLabel": "Jusqu'à",
+  "reportSearch.search.noResults.title": "Aucun résultat trouvé",
+  "reportSearch.search.noResults.subtitle": "Essayez d'affiner vos critères de recherche",
+  "reportSearch.result.title": "Rapport {{id}} - {{date}}",
+
+  "report.layout.edit": "Editer l'article",
+  "report.layout.view": "Voir l'article",
+
+  "report.view.tableOfContents": "Sommaire",
+
+  "report.edit.unused": "Éléments inutilisés",
+  "report.edit.statistics": "Statistiques",
+  "report.edit.articles": "Articles",
+  "report.edit.addArticle": "Ajouter un article",
+  "report.edit.addArticle.placeholder": "http://example.com",
+
+  "dialog.editArticle.header": "Modifier l'article",
+  "dialog.editArticle.field.link": "Lien",
+  "dialog.editArticle.field.link.placeholder": "http://example.com",
+  "dialog.editArticle.field.title": "Titre",
+  "dialog.editArticle.field.publishDate": "Date de publication",
+  "dialog.editArticle.field.description": "Description",
+
+  "dialog.editStat.header": "Modifier les statistiques",
+  "dialog.editStat.field.statistic": "Statistiques",
+  "dialog.editStat.field.statistic.numericHint": "Le champ doit être un nombre",
+  "dialog.editStat.field.title": "Titre",
+  "dialog.editStat.field.subtitle": "Sous-titre"
+}

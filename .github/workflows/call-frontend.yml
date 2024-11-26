@@ -1,0 +1,9 @@
+name: Call Frontend workflow
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  call-build-and-test:
+    uses: SEG4910CapstoneProject/workflows/.github/workflows/verify-frontend.yml@main

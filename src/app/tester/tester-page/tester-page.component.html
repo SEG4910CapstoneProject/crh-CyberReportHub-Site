@@ -1,0 +1,332 @@
+<h1>Test page</h1>
+
+<div class="comp-container">
+  <span>Translation Test</span> <br />
+  <span>
+    <button (click)="changeLang('en')">EN</button>
+    <button (click)="changeLang('fr')">FR</button>
+  </span>
+  <br />
+  <span>{{ 'tester.text' | translate: { amount: 10 } }}</span>
+</div>
+
+<div class="comp-container">
+  <span>Report Header</span>
+  <span>Regular</span>
+  <crh-report-header
+    [reportInfo]="reportHeaderInfo"
+    [breadcrumbs]="reportHeaderBreadcrumbs"></crh-report-header>
+  <span>Other</span>
+  <crh-report-header
+    [reportInfo]="reportHeaderInfo1"
+    [breadcrumbs]="reportHeaderBreadcrumbsNotClickable"></crh-report-header>
+  <span>No Data</span>
+  <crh-report-header [reportInfo]="undefined"></crh-report-header>
+</div>
+
+<div class="comp-container">
+  <span>Text input</span>
+  <span>Basic</span>
+  <crh-text-input
+    label="Basic Input"
+    placeholder="placeholder"
+    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+  <span>Affixes Icons</span>
+  <crh-text-input
+    label="Basic Input"
+    [config]="textInputConfigAffixIcons"
+    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+  <span>Affixes Buttons</span>
+  <crh-text-input
+    label="Basic Input"
+    [config]="textInputConfigAffixIconsClickable"
+    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+  <span>Affixes text</span>
+  <crh-text-input
+    label="Basic Input"
+    [config]="textInputConfigAffixText"
+    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+  <span>Hint</span>
+  <crh-text-input
+    label="Basic Input"
+    hint="Some Hint"
+    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+  <span>Error Hint</span>
+  <crh-text-input
+    label="Basic Input"
+    [errorHints]="textInputConfigErrorHint"
+    [formControl]="textInputFormControl"
+    (onValueChanged)="onTextInputChange($event)"
+    required="true"></crh-text-input>
+  <span>Disabled</span>
+  <crh-text-input
+    label="Basic Input"
+    value="Testing"
+    [disabled]="true"
+    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+  <span>Text Area</span>
+  <crh-text-input
+    label="Basic Input"
+    [config]="textInputConfigTextArea"
+    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+</div>
+
+<div class="comp-container">
+  <span>Select</span>
+  <span>Basic</span>
+  <crh-select
+    label="Select"
+    (onSelectChange)="onSelectChoose($event)"
+    [config]="selectConfigBasic"></crh-select>
+  <span>Multiple</span>
+  <crh-select
+    label="Select"
+    (onSelectChange)="onSelectChoose($event)"
+    [config]="selectConfigMultiple"></crh-select>
+  <span>Hint</span>
+  <crh-select
+    label="Select"
+    (onSelectChange)="onSelectChoose($event)"
+    hint="Test hint"
+    [config]="selectConfigHint"></crh-select>
+  <span>Error Hint</span>
+  <crh-select
+    label="Select"
+    (onSelectChange)="onSelectChoose($event)"
+    [config]="selectConfigErrHintConfig"
+    [errorHints]="selectConfigErrHint"
+    [formControl]="selectFormControl"></crh-select>
+  <span>Disabled</span>
+  <crh-select
+    label="Select"
+    (onSelectChange)="onSelectChoose($event)"
+    [config]="selectConfigDisabled"
+    [disabled]="true"
+    value="test1"></crh-select>
+</div>
+
+<div class="comp-container">
+  <span>Date Picker</span>
+  <span>Basic</span>
+  <crh-date-picker
+    label="Picker"
+    placeholder="Placeholder"
+    (onDateChange)="onDateChoose($event)"></crh-date-picker>
+  <span>Required</span>
+  <crh-date-picker
+    label="Picker"
+    placeholder="Placeholder"
+    [formControl]="dateFormControl"
+    (onDateChange)="onDateChoose($event)"></crh-date-picker>
+  <span>Disabled</span>
+  <crh-date-picker
+    label="Picker"
+    placeholder="Placeholder"
+    [value]="datePickerDisabledDate"
+    [disabled]="true"
+    (onDateChange)="onDateChoose($event)"></crh-date-picker>
+</div>
+
+<!-- Button Component  -->
+<div class="comp-container">
+  <crh-button type="raised">Primary Button</crh-button>
+  <crh-button type="contained">Secondary Button</crh-button>
+  <crh-button [disabled]="true">Disabled Button</crh-button>
+</div>
+
+<!-- Icon Button Component  -->
+<div class="comp-container">
+  <crh-icon-button>star</crh-icon-button>
+  <crh-icon-button [disabled]="true">star</crh-icon-button>
+</div>
+
+<div class="comp-container">
+  <span>Accordion</span>
+  <crh-accordion header="Title 1">Content 1</crh-accordion>
+  <br />
+  <span>Accordion Multiple</span>
+  <crh-accordion header="Title 1">Content 1</crh-accordion>
+  <crh-accordion header="Title 2">Content 2</crh-accordion>
+  <crh-accordion header="Title 3">Content 3</crh-accordion>
+  <span>Default open</span>
+  <crh-accordion header="Title 1" [defaultOpenState]="true">
+    Content 1
+  </crh-accordion>
+</div>
+
+<div class="comp-container">
+  <span>Heading 0</span>
+  <p class="heading-0-test">This is heading 0</p>
+</div>
+
+<div class="comp-container">
+  <span>Table (Extension of cdk-table)</span>
+  <span>Basic</span>
+  <table class="crh-table-component" crh-table [dataSource]="tableBasicData">
+    <ng-container crhColumnDef="basic">
+      <th crhHeaderCell *crhHeaderCellDef>Basic col</th>
+      <td crhCell *crhCellDef="let element">{{ element.basic }}</td>
+    </ng-container>
+
+    <ng-container crhColumnDef="text">
+      <th crhHeaderCell *crhHeaderCellDef>Text col</th>
+      <td crhCell *crhCellDef="let element">{{ element.text }}</td>
+    </ng-container>
+
+    <ng-container crhColumnDef="other">
+      <th crhHeaderCell *crhHeaderCellDef>Other col</th>
+      <td crhCell *crhCellDef="let element">{{ element.other }}</td>
+    </ng-container>
+
+    <tr crh-header-row *crhHeaderRowDef="tableDataCols"></tr>
+    <tr crh-row *crhRowDef="let row; columns: tableDataCols"></tr>
+  </table>
+  <span>Text Cols</span>
+  <table class="crh-table-component" crh-table [dataSource]="tableBasicData">
+    <crh-text-column
+      name="basic"
+      headerText="Basic Col"
+      justify="start"></crh-text-column>
+    <crh-text-column
+      name="text"
+      headerText="Text Col"
+      justify="center"></crh-text-column>
+    <crh-text-column
+      name="other"
+      headerText="Other Col"
+      justify="end"></crh-text-column>
+
+    <tr crh-header-row *crhHeaderRowDef="tableDataCols"></tr>
+    <tr crh-row *crhRowDef="let row; columns: tableDataCols"></tr>
+  </table>
+  <span>Sorting</span>
+  <table
+    class="crh-table-component"
+    crh-table
+    [dataSource]="tableBasicData"
+    crhSort
+    (onSortChange)="onSortTableChange($event)">
+    <ng-container crhColumnDef="basic">
+      <th crhHeaderCell *crhHeaderCellDef crh-sort-header>Basic col</th>
+      <td crhCell *crhCellDef="let element">{{ element.basic }}</td>
+    </ng-container>
+
+    <ng-container crhColumnDef="text">
+      <th crhHeaderCell *crhHeaderCellDef crh-sort-header>Text col</th>
+      <td crhCell *crhCellDef="let element">{{ element.text }}</td>
+    </ng-container>
+
+    <ng-container crhColumnDef="other">
+      <th crhHeaderCell *crhHeaderCellDef crh-sort-header>Other col</th>
+      <td crhCell *crhCellDef="let element">{{ element.other }}</td>
+    </ng-container>
+
+    <tr crh-header-row *crhHeaderRowDef="tableDataCols"></tr>
+    <tr crh-row *crhRowDef="let row; columns: tableDataCols"></tr>
+  </table>
+</div>
+
+<div class="comp-container">
+  <span>Paginator</span>
+  <span>Full</span>
+  <crh-paginator
+    (pageStatus)="onPaginatorChoose($event)"
+    [totalResults]="125"></crh-paginator>
+  <span>Short</span>
+  <crh-paginator
+    variant="short"
+    (pageStatus)="onPaginatorChoose($event)"
+    [totalResults]="125"></crh-paginator>
+</div>
+
+<div class="comp-container">
+  <span>Stats Card</span>
+  <crh-stats-card title="Total IOCs">10,000</crh-stats-card>
+  <crh-stats-card title="Total IOCs" subtitle="In the last week">
+    10,000
+  </crh-stats-card>
+  <crh-stats-card contentMode="icon"> add </crh-stats-card>
+  <crh-stats-card
+    title="Total IOCs"
+    subtitle="In the last week"
+    interactMode="removeMode"
+    (onDeleteClick)="onStatClick('delete')"
+    (onEditClick)="onStatClick('edit')">
+    10,000
+  </crh-stats-card>
+  <crh-stats-card
+    title="Total IOCs"
+    subtitle="In the last week"
+    interactMode="addMode"
+    (onDeleteClick)="onStatClick('delete')"
+    (onEditClick)="onStatClick('edit')"
+    (onAddClick)="onStatClick('add')">
+    10,000
+  </crh-stats-card>
+  <crh-stats-card
+    contentMode="icon"
+    interactMode="removeMode"
+    (onDeleteClick)="onStatClick('delete')"
+    (onEditClick)="onStatClick('edit')">
+    add
+  </crh-stats-card>
+  <crh-stats-card
+    contentMode="icon"
+    interactMode="addMode"
+    (onDeleteClick)="onStatClick('delete')"
+    (onEditClick)="onStatClick('edit')"
+    (onAddClick)="onStatClick('add')">
+    add
+  </crh-stats-card>
+  <crh-stats-card
+    title="Total IOCs"
+    interactMode="clickable"
+    (click)="onStatClick('body click')">
+    10,000
+  </crh-stats-card>
+  <crh-stats-card
+    title="Total IOCs"
+    subtitle="In the last week"
+    interactMode="clickable"
+    (click)="onStatClick('body click')">
+    10,000
+  </crh-stats-card>
+  <crh-stats-card
+    contentMode="icon"
+    interactMode="clickable"
+    (click)="onStatClick('body click')">
+    add
+  </crh-stats-card>
+</div>
+
+<div class="comp-container">
+  <span>Stats Card Diagram</span>
+  <crh-stats-card-diagram title="IOC Table">
+    <table>
+      <tr>
+        <th>IOC</th>
+        <th>Number</th>
+        <th>Latest</th>
+        <th>IOC ID</th>
+      </tr>
+      <tr>
+        <td>URL</td>
+        <td>208</td>
+        <td>2024-03-23</td>
+        <td>01</td>
+      </tr>
+      <tr>
+        <td>Domain Name</td>
+        <td>134</td>
+        <td>2024-04-11</td>
+        <td>02</td>
+      </tr>
+      <tr>
+        <td>Email Address</td>
+        <td>84</td>
+        <td>2024-02-05</td>
+        <td>10</td>
+      </tr>
+    </table>
+  </crh-stats-card-diagram>
+</div>

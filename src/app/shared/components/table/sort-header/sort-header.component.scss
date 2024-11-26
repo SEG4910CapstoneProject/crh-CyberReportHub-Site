@@ -1,0 +1,25 @@
+.crh-sort-header-container {
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+
+  -webkit-user-select: none; /* Safari */
+  user-select: none;
+}
+
+.crh-sort-header-arrow {
+  font-size: 1.5rem;
+  color: var(--crh-base-text-color);
+}
+
+.crh-sort-arrow-hover {
+  color: var(--crh-sort-header-hover-color);
+}
+
+.crh-sort-header-hover {
+  cursor: pointer;
+}
+
+.crh-sort-arrow-hidden {
+  visibility: hidden;
+}

@@ -1,0 +1,10 @@
+@use 'style-utils' as *;
+
+:host {
+  display: flex;
+  gap: size(16);
+}
+
+:host(.confirm-buttons-right) {
+  justify-content: flex-end;
+}

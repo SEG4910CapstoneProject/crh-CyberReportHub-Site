@@ -1,0 +1,29 @@
+<crh-dialog>
+  <crh-dialog-heading>
+    <h1 class="edit-stat-dialog-heading">
+      {{ 'dialog.editStat.header' | translate }}
+    </h1>
+  </crh-dialog-heading>
+  <crh-dialog-content
+    class="edit-stat-dialog-content"
+    [formGroup]="formControl">
+    <crh-text-input
+      formControlName="statistic"
+      [label]="'dialog.editStat.field.statistic' | translate"
+      [errorHints]="statisticFieldConfig()"
+      [dynamicHintSection]="true"></crh-text-input>
+    <crh-text-input
+      formControlName="title"
+      [label]="'dialog.editStat.field.title' | translate"
+      [dynamicHintSection]="true"></crh-text-input>
+    <crh-text-input
+      formControlName="subtitle"
+      [label]="'dialog.editStat.field.subtitle' | translate"
+      [dynamicHintSection]="true"></crh-text-input>
+  </crh-dialog-content>
+  <crh-confirm-cancel-buttons
+    crh-dialog-footer
+    class="edit-stat-dialog-footer"
+    (onConfirmPressed)="onConfirm()"
+    (onCancelPressed)="onCancel()"></crh-confirm-cancel-buttons>
+</crh-dialog>

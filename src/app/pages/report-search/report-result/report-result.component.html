@@ -1,0 +1,17 @@
+<h3 (click)="onLinkClick()">
+  {{
+    'reportSearch.result.title'
+      | translate: { id: result()?.reportId, date: reportGeneratedDate() }
+  }}
+</h3>
+<crh-chip-container [chipTexts]="availableIocs()"></crh-chip-container>
+<div class="report-result-email-status">
+  <div class="report-status-text">
+    {{ emailSentTranslationKey() | translate }}
+  </div>
+  <span
+    [ngClass]="emailSentClass()"
+    class="material-symbols-outlined report-result-icon">
+    {{ emailSentIcon() }}
+  </span>
+</div>

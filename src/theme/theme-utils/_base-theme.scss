@@ -1,0 +1,61 @@
+@function define-theme($base-size, $color-config, $typography-config) {
+  @return (
+    base-size: $base-size,
+    colors: $color-config,
+    typography: $typography-config
+  );
+}
+
+@function define-color-config(
+  $primary-color-palette,
+  $background-color-palette,
+  $accent-links-color-paletete,
+  $primary-highlight-color-palette,
+  $light-background-color-palette,
+  $divider-color-palette,
+  $base-text-color-palette,
+  $success-color-palette,
+  $warning-color-palette,
+  $error-color-palette
+) {
+  @return (
+    primary: $primary-color-palette,
+    background: $background-color-palette,
+    accent-links: $accent-links-color-paletete,
+    primary-highlight: $primary-highlight-color-palette,
+    base-text: $base-text-color-palette,
+    light-background: $light-background-color-palette,
+    divider: $divider-color-palette,
+    success: $success-color-palette,
+    warning: $warning-color-palette,
+    error: $error-color-palette
+  );
+}
+
+@function define-typography-config(
+  $heading-0,
+  $heading-1,
+  $heading-2,
+  $heading-3,
+  $paragraph,
+  $paragraph-emphasized,
+  $chip
+) {
+  @return (
+    heading-0: $heading-0,
+    heading-1: $heading-1,
+    heading-2: $heading-2,
+    heading-3: $heading-3,
+    paragraph: $paragraph,
+    paragraph-emphasized: $paragraph-emphasized,
+    chip: $chip
+  );
+}
+
+@function define-typography-level($family, $weight, $size) {
+  @return (family: $family, 'weight': $weight, size: $size);
+}
+
+@function define-color-palette($color, $contrast-color) {
+  @return (base: $color, contrast: $contrast-color);
+}

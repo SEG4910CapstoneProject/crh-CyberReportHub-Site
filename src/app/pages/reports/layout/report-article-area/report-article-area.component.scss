@@ -1,0 +1,30 @@
+@use 'style-utils' as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: size(32);
+}
+
+.report-article-category-container {
+  display: flex;
+  flex-direction: column;
+  gap: size(16);
+}
+
+.report-article-category-header-container {
+  display: flex;
+  flex-direction: column;
+  gap: size(8);
+
+  .report-article-category-header {
+    @include text('heading-1');
+    margin: 0;
+    color: var(--crh-base-text-color);
+  }
+
+  .report-article-divider-line {
+    width: 100%;
+    color: var(--crh-base-text-color);
+  }
+}

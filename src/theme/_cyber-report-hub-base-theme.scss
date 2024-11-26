@@ -1,0 +1,74 @@
+// Modify this to point to the utils/base-theme.scss location
+@use './theme-utils/base-theme' as *;
+// Include required scss imports here such as fonts or other stylesheets
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500..700;1,700&display=swap');
+
+// Define colors
+$primary-palette: define-color-palette(#050c9c, #ffffff);
+
+$background-palette: define-color-palette(#ffffff, #000000);
+
+$accent-links-palette: define-color-palette(#365486, #ffffff);
+
+$primary-highlight-palette: define-color-palette(#3572ef, #ffffff);
+
+$light-background-palette: define-color-palette(#eeeeee, #000000);
+
+$divider-palette: define-color-palette(#b5c0d0, #000000);
+
+$base-text-palette: define-color-palette(#2d2d2c, #ffffff);
+
+$success-palette: define-color-palette(#06d001, #2d2d2c);
+
+$warning-palette: define-color-palette(#ffdb00, #2d2d2c);
+
+$error-palette: define-color-palette(#e72929, #2d2d2c);
+
+// Define typography
+$heading-0-level: define-typography-level('Work Sans', 400, 36px);
+
+$heading-1-level: define-typography-level('Heebo', 700, 27px);
+
+$heading-2-level: define-typography-level('Heebo', 700, 23px);
+
+$heading-3-level: define-typography-level('Heebo', 500, 18px);
+
+$paragraph-level: define-typography-level('Heebo', 400, 16px);
+
+$paragraph-emphasized-level: define-typography-level('Heebo', 700, 16px);
+
+$chip-level: define-typography-level('Heebo', 400, 12px);
+
+// Define base font size (should be in px)
+$base-font-size: 16;
+
+// boilerplate
+$theme-color-config: define-color-config(
+  $primary-palette,
+  $background-palette,
+  $accent-links-palette,
+  $primary-highlight-palette,
+  $light-background-palette,
+  $divider-palette,
+  $base-text-palette,
+  $success-palette,
+  $warning-palette,
+  $error-palette
+);
+
+$theme-typography-config: define-typography-config(
+  $heading-0-level,
+  $heading-1-level,
+  $heading-2-level,
+  $heading-3-level,
+  $paragraph-level,
+  $paragraph-emphasized-level,
+  $chip-level
+);
+
+$theme: define-theme(
+  $base-font-size,
+  $theme-color-config,
+  $theme-typography-config
+);

@@ -1,0 +1,54 @@
+@use 'style-utils' as *;
+
+.report-edit-sidebar-area {
+  display: flex;
+  flex-direction: column;
+  gap: size(16);
+
+  border: size(1) solid var(--crh-background-contrast-color);
+  border-radius: size(4);
+  padding: size(16);
+
+  .report-edit-sidebar-header {
+    @include text('heading-0');
+    color: var(--crh-base-text-color);
+
+    margin: 0;
+  }
+}
+
+.report-edit-sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: size(16);
+
+  .report-edit-sidebar-section-header {
+    h3 {
+      @include text('heading-1');
+      color: var(--crh-base-text-color);
+
+      margin: 0;
+    }
+
+    hr {
+      border-color: var(--crh-base-text-color);
+    }
+  }
+
+  .report-edit-suggestion-container {
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+  }
+}
+
+.report-edit-sidebar-stats-content {
+  display: grid;
+  grid-auto-rows: 140px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 16px;
+
+  crh-stats-card {
+    width: 100%;
+  }
+}

@@ -1,0 +1,12 @@
+@use 'style-utils' as *;
+
+:host {
+  @include text('chip');
+  display: flex;
+  padding: size(2) size(4);
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background: var(--crh-primary-highlight-color);
+  color: var(--crh-primary-highlight-contrast-color);
+}

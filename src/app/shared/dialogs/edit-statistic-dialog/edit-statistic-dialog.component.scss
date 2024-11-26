@@ -1,0 +1,21 @@
+@use 'style-utils' as *;
+
+.edit-stat-dialog-heading {
+  @include text('heading-1');
+  color: var(--crh-base-text-color);
+  margin: 0;
+}
+
+.edit-stat-dialog-footer {
+  width: 100%;
+}
+
+.edit-stat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: size(20);
+
+  & > * {
+    width: size(300);
+  }
+}

@@ -1,0 +1,36 @@
+<crh-dialog>
+  <crh-dialog-heading>
+    <h1 class="edit-article-dialog-heading">
+      {{ 'dialog.editArticle.header' | translate }}
+    </h1>
+  </crh-dialog-heading>
+  <crh-dialog-content
+    class="edit-article-dialog-content"
+    [formGroup]="formControl">
+    <crh-text-input
+      formControlName="link"
+      [label]="'dialog.editArticle.field.link' | translate"
+      [placeholderText]="
+        'dialog.editArticle.field.link.placeholder' | translate
+      "
+      [dynamicHintSection]="true"></crh-text-input>
+    <crh-text-input
+      formControlName="title"
+      [label]="'dialog.editArticle.field.title' | translate"
+      [dynamicHintSection]="true"></crh-text-input>
+    <crh-date-picker
+      formControlName="publishDate"
+      [label]="'dialog.editArticle.field.publishDate' | translate">
+    </crh-date-picker>
+    <crh-text-input
+      formControlName="description"
+      [label]="'dialog.editArticle.field.description' | translate"
+      [config]="descriptionTextInputConfig"
+      [dynamicHintSection]="true"></crh-text-input>
+  </crh-dialog-content>
+  <crh-confirm-cancel-buttons
+    crh-dialog-footer
+    class="edit-article-dialog-footer"
+    (onConfirmPressed)="onConfirm()"
+    (onCancelPressed)="onCancel()"></crh-confirm-cancel-buttons>
+</crh-dialog>

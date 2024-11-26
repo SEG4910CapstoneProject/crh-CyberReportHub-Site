@@ -1,0 +1,28 @@
+<div class="report-article-content-header">
+  <div class="report-article-content-buttons">
+    <crh-icon-button
+      cssColorVariable="--crh-success-color"
+      cssHoverColorVariable="--crh-success-color"
+      [size]="20"
+      (click)="onAddClicked.emit()">
+      add_circle
+    </crh-icon-button>
+    <crh-icon-button
+      cssColorVariable="--crh-primary-highlight-color"
+      cssHoverColorVariable="--crh-primary-highlight-color"
+      [size]="20"
+      (click)="onEditClicked.emit()">
+      edit
+    </crh-icon-button>
+    <crh-icon-button
+      cssColorVariable="--crh-error-color"
+      cssHoverColorVariable="--crh-error-color"
+      [size]="20"
+      (click)="onDeleteClicked.emit()">
+      delete
+    </crh-icon-button>
+  </div>
+  <h3 class="report-article-header-text">
+    {{ articleDetails()?.title }}
+  </h3>
+</div>

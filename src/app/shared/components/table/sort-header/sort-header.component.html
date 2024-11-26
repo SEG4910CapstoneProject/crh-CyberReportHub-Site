@@ -1,0 +1,15 @@
+<div
+  [style]="customCssStyleVars"
+  class="crh-sort-header-container"
+  [class.crh-sort-header-hover]="isHoveringSignal()">
+  <div id="crh-sort-header-content" class="crh-sort-header-content">
+    <ng-content></ng-content>
+  </div>
+
+  <div
+    [class.crh-sort-arrow-hidden]="!shouldShowAsCurrentSort()"
+    [class.crh-sort-arrow-hover]="shouldUseHoverColor()"
+    class="material-symbols-outlined crh-sort-header-arrow">
+    {{ currentSortIcon() }}
+  </div>
+</div>

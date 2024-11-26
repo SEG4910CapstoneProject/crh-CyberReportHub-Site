@@ -1,0 +1,12 @@
+<crh-button
+  type="contained"
+  [ariaLabel]="cancelButtonText() ?? ('common.cancel' | translate)"
+  (click)="onCancelPressed.emit()">
+  {{ cancelButtonText() ?? ('common.cancel' | translate) }}
+</crh-button>
+<crh-button
+  type="raised"
+  [ariaLabel]="confirmButtonText() ?? ('common.confirm' | translate)"
+  (click)="onConfirmPressed.emit()">
+  {{ confirmButtonText() ?? ('common.confirm' | translate) }}
+</crh-button>

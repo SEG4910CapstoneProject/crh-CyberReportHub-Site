@@ -1,0 +1,29 @@
+@use 'style-utils' as *;
+
+button {
+  @include text('paragraph');
+  padding: size(6) size(16);
+  border: size(1) solid currentColor;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: size(5);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  width: 100%;
+}
+
+button.raised {
+  @include use-background-color('primary');
+}
+
+button.contained {
+  color: var(--crh-primary-color);
+  background-color: transparent;
+  border: size(1) solid var(--crh-primary-color);
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}

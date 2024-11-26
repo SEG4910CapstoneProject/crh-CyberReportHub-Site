@@ -1,0 +1,44 @@
+<div class="report-header-container">
+  <div
+    *ngIf="isBreadcrumbsAvailableSignal()"
+    class="report-header-breadcrumbs-container">
+    <span *ngFor="let breadcrumb of breadcrumbs()">
+      <a
+        [ngClass]="{ clickable: breadcrumb.onClick!! }"
+        (click)="onBreadcrumbClick(breadcrumb.onClick)"
+        >{{ breadcrumb.translationKey | translate }}</a
+      >
+    </span>
+  </div>
+  <h1 class="report-title">
+    {{
+      'reportheader.header' | translate: { date: formattedReportDateSignal() }
+    }}
+  </h1>
+  <div class="report-header-row">
+    <span>{{ 'reportheader.generated' | translate }}</span>
+    <span class="emphasized">{{ formattedGeneratedDateSignal() }}</span>
+  </div>
+  <div class="report-header-row">
+    <span>{{ 'reportheader.lastModified' | translate }}</span>
+    <span class="emphasized">{{ formattedModifiedDateSignal() }}</span>
+  </div>
+  <div class="report-header-mail-status">
+    <div>
+      <span>{{ 'reportheader.emailStatus' | translate }}</span>
+      <span class="emphasized">{{
+        emailStatusStringSignal() | translate
+      }}</span>
+    </div>
+    <span
+      *ngIf="isEmailSentSignal() === true"
+      class="material-symbols-outlined email-status-icon sent-icon"
+      >check</span
+    >
+    <span
+      *ngIf="isEmailSentSignal() === false"
+      class="material-symbols-outlined email-status-icon not-sent-icon"
+      >close</span
+    >
+  </div>
+</div>

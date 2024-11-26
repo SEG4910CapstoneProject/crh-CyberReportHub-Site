@@ -1,0 +1,29 @@
+<mat-form-field
+  class="date-picker-form-field"
+  appearance="outline"
+  [subscriptSizing]="
+    materialInputDirective.dynamicHintSection() ? 'dynamic' : 'fixed'
+  ">
+  <mat-label *ngIf="materialInputDirective.label() !== undefined">{{
+    materialInputDirective.label()
+  }}</mat-label>
+  <input
+    matInput
+    (blur)="materialInputDirective.onTouched()"
+    [formControl]="materialInputDirective.childControl"
+    [placeholder]="materialInputDirective.placeholderText()"
+    (ngModelChange)="materialInputDirective.onValueWrite($event)"
+    [errorStateMatcher]="materialInputDirective.getErrorMatcher()"
+    [matDatepicker]="picker" />
+
+  <mat-datepicker-toggle
+    matIconSuffix
+    [for]="picker"
+    [aria-label]="
+      (dateIconAriaTranslation$ | async) ?? ''
+    "></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+
+  <mat-hint>{{ DATE_FORMAT_HINT }}</mat-hint>
+  <mat-error *ngIf="activeError() !== undefined">{{ activeError() }}</mat-error>
+</mat-form-field>

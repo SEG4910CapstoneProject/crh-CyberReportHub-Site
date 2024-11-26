@@ -1,0 +1,15 @@
+@use 'style-utils' as *;
+
+:host {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crh-report-stats-area-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  flex-wrap: wrap;
+  gap: 16px;
+}

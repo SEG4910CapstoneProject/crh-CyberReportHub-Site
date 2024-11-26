@@ -1,0 +1,32 @@
+@use 'style-utils' as *;
+
+.crh-table-host {
+  padding: size(8) size(12);
+  border-collapse: collapse;
+
+  .crh-table-header-row {
+    border-bottom: size(1) solid var(--crh-table-header-divider-color);
+  }
+
+  .crh-table-header-cell {
+    @include text('paragraph-emphasized');
+    text-align: start;
+    padding: size(8) size(4);
+  }
+
+  .crh-table-footer-cell {
+    @include text('paragraph-emphasized');
+    text-align: start;
+    padding: size(8) size(4);
+  }
+
+  .crh-table-row:not(:last-of-type) {
+    border-bottom: size(1) solid var(--crh-table-divider-color);
+    padding-bottom: size(8);
+  }
+
+  .crh-table-cell {
+    @include text('paragraph');
+    padding: size(8) size(4);
+  }
+}

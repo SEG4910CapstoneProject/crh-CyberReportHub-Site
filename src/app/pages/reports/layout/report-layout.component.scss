@@ -1,0 +1,42 @@
+@use 'style-utils' as *;
+
+.crh-layout-container {
+  display: flex;
+  flex-direction: row;
+  gap: size(16);
+
+  padding: size(32);
+
+  .crh-layout-main-content {
+    flex: 1 0 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: size(32);
+  }
+
+  .crh-layout-side-content {
+    flex: 0 0 0;
+    min-width: size(370);
+    height: fit-content;
+
+    align-items: end;
+  }
+
+  .crh-wide-side-content {
+    min-width: size(500);
+  }
+}
+
+.crh-layout-button {
+  display: block;
+  width: fit-content;
+}
+
+.crh-layout-sidebar-container {
+  display: flex;
+  flex-direction: column;
+  gap: size(16);
+
+  justify-items: end;
+}

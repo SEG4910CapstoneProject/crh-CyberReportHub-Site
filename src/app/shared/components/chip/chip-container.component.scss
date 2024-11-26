@@ -1,0 +1,9 @@
+@use 'style-utils' as *;
+
+:host {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: size(8);
+  row-gap: size(4);
+}

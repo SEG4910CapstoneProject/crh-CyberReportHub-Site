@@ -1,0 +1,28 @@
+<mat-form-field
+  class="select-form-field"
+  appearance="outline"
+  [subscriptSizing]="
+    materialInputDirective.dynamicHintSection() ? 'dynamic' : 'fixed'
+  ">
+  <mat-label *ngIf="materialInputDirective.label() !== undefined">{{
+    materialInputDirective.label()
+  }}</mat-label>
+  <mat-select
+    (selectionChange)="onSelectChangeEvent($event)"
+    [formControl]="materialInputDirective.childControl"
+    [multiple]="config()?.multiple ?? false"
+    [errorStateMatcher]="materialInputDirective.getErrorMatcher()">
+    <mat-option
+      *ngFor="let opt of config()?.options"
+      [id]="opt.id"
+      [value]="opt.id"
+      >{{ opt.label }}</mat-option
+    >
+  </mat-select>
+  <mat-hint *ngIf="materialInputDirective.hint() !== undefined">{{
+    materialInputDirective.hint()
+  }}</mat-hint>
+  <mat-error *ngIf="materialInputDirective.activeError() !== undefined">{{
+    materialInputDirective.activeError()
+  }}</mat-error>
+</mat-form-field>

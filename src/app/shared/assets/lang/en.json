@@ -1,0 +1,72 @@
+{
+  "tester.text": "Sample text for {{amount}} things!",
+
+  "common.noData": "No Data",
+  "common.emailStatus.sent": "Email sent",
+  "common.emailStatus.notSent": "Email not sent",
+  "common.cancel": "Cancel",
+  "common.confirm": "Confirm",
+
+  "login.login": "Login",
+  "login.account": "Account",
+  "login.password": "Password",
+
+  "home.title": "Welcome to CyberReport Hub",
+
+  "reportheader.breadcrumbs.report": "Reports",
+  "reportheader.breadcrumbs.daily": "Daily Reports",
+  "reportheader.header": "Report - {{date}}",
+  "reportheader.generated": "Generated: ",
+  "reportheader.lastModified": "Last Modified: ",
+  "reportheader.emailStatus": "Email: ",
+  "reportheader.emailSent": "Sent",
+  "reportheader.emailNotSent": "Not Sent",
+
+  "navBar.link.home": "Home",
+  "navBar.link.reportSearch": "Report search",
+  "navBar.link.reportStats": "Report statistics",
+  "navBar.langChange": "FR",
+  "navBar.langChangeAria": "Français",
+
+  "datePicker.iconAria": "Choose date",
+
+  "paginator.perPage": "Results per page",
+  "paginator.range": "{{start}} - {{end}} of {{total}}",
+  "paginator.firstPage.aria": "First page",
+  "paginator.lastPage.aria": "Last page",
+  "paginator.nextPage.aria": "Next page",
+  "paginator.prevPage.aria": "Previous page",
+
+  "reportSearch.header": "Report Search",
+  "reportSearch.latest": "See latest report",
+  "reportSearch.searchLabel": "Date Search",
+  "reportSearch.search.fromLabel": "From",
+  "reportSearch.search.toLabel": "To",
+  "reportSearch.search.noResults.title": "No Results Found",
+  "reportSearch.search.noResults.subtitle": "Try refining your search criteria",
+  "reportSearch.result.title": "Report {{id}} - {{date}}",
+
+  "report.layout.edit": "Edit Article",
+  "report.layout.view": "View Article",
+
+  "report.view.tableOfContents": "Table of Contents",
+
+  "report.edit.unused": "Unused Items",
+  "report.edit.statistics": "Statistics",
+  "report.edit.articles": "Articles",
+  "report.edit.addArticle": "Add Article",
+  "report.edit.addArticle.placeholder": "http://example.com",
+
+  "dialog.editArticle.header": "Edit Article",
+  "dialog.editArticle.field.link": "Link",
+  "dialog.editArticle.field.link.placeholder": "http://example.com",
+  "dialog.editArticle.field.title": "Title",
+  "dialog.editArticle.field.publishDate": "Publish Date",
+  "dialog.editArticle.field.description": "Description",
+
+  "dialog.editStat.header": "Edit Statistic",
+  "dialog.editStat.field.statistic": "Statistic",
+  "dialog.editStat.field.statistic.numericHint": "Field must be a number",
+  "dialog.editStat.field.title": "Title",
+  "dialog.editStat.field.subtitle": "Subtitle"
+}

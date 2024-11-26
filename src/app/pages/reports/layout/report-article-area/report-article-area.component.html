@@ -1,0 +1,18 @@
+<div
+  *ngFor="let categoryGroup of articleCategoryGroups()"
+  class="report-article-category-container">
+  <div class="report-article-category-header-container">
+    <h2 class="report-article-category-header">{{ categoryGroup.name }}</h2>
+    <hr class="report-article-divider-line" />
+  </div>
+  <crh-article-content
+    #reportCategories
+    *ngFor="let article of categoryGroup.articles"
+    class="report-article"
+    [articleDetails]="article"
+    [editable]="editable()"
+    (onEditClicked)="onArticleEdit.emit(article)"
+    (onDeleteClicked)="
+      onArticleRemove.emit(article.articleId)
+    "></crh-article-content>
+</div>

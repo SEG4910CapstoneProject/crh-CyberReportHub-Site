@@ -1,0 +1,64 @@
+<div
+  class="card"
+  [ngClass]="{ 'card-clickable': interactMode() === 'clickable' }">
+  <div class="card-body">
+    <ng-container *ngIf="contentMode() === 'text'; else iconTemplate">
+      <h2 class="card-num">
+        <ng-container [ngTemplateOutlet]="contentArea"></ng-container>
+      </h2>
+      <h2 class="card-title">{{ title() }}</h2>
+      <h3 *ngIf="subtitle()" class="card-subtitle">{{ subtitle() }}</h3>
+    </ng-container>
+  </div>
+  <div
+    *ngIf="interactMode() === 'removeMode' || interactMode() === 'addMode'"
+    class="card-icons">
+    <ng-container *ngIf="interactMode() === 'removeMode'">
+      <crh-icon-button
+        cssColorVariable="--crh-error-color"
+        cssHoverColorVariable="--crh-error-color"
+        [size]="20"
+        (click)="onDeleteClick.emit()">
+        cancel
+      </crh-icon-button>
+      <crh-icon-button
+        cssColorVariable="--crh-primary-highlight-color"
+        cssHoverColorVariable="--crh-primary-highlight-color"
+        [size]="20"
+        (click)="onEditClick.emit()">
+        edit
+      </crh-icon-button>
+    </ng-container>
+    <ng-container *ngIf="interactMode() === 'addMode'">
+      <crh-icon-button
+        cssColorVariable="--crh-success-color"
+        cssHoverColorVariable="--crh-success-color"
+        [size]="20"
+        (click)="onAddClick.emit()">
+        add_circle
+      </crh-icon-button>
+      <crh-icon-button
+        cssColorVariable="--crh-primary-highlight-color"
+        cssHoverColorVariable="--crh-primary-highlight-color"
+        [size]="20"
+        (click)="onEditClick.emit()">
+        edit
+      </crh-icon-button>
+      <crh-icon-button
+        cssColorVariable="--crh-error-color"
+        cssHoverColorVariable="--crh-error-color"
+        [size]="20"
+        (click)="onDeleteClick.emit()">
+        delete
+      </crh-icon-button>
+    </ng-container>
+  </div>
+</div>
+<ng-template #iconTemplate>
+  <span class="material-symbols-outlined card-content-icon">
+    <ng-container [ngTemplateOutlet]="contentArea"></ng-container>
+  </span>
+</ng-template>
+<ng-template #contentArea>
+  <ng-content></ng-content>
+</ng-template>

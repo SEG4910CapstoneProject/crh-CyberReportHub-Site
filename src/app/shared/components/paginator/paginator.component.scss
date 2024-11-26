@@ -1,0 +1,30 @@
+@use 'style-utils' as *;
+
+:host {
+  display: flex;
+  flex-direction: row;
+  gap: size(32);
+  align-items: baseline;
+  flex-wrap: wrap;
+  row-gap: size(8);
+}
+
+.crh-paginator-per-page-container {
+  display: flex;
+  flex-direction: row;
+  gap: size(16);
+  align-items: baseline;
+
+  .crh-paginator-per-page-selector {
+    width: size(84);
+  }
+}
+
+.crh-paginator-range-text,
+.crh-paginator-per-page-text {
+  @include text('paragraph');
+}
+
+.crh-paginator-buttons {
+  align-self: center;
+}

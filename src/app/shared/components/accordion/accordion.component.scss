@@ -1,0 +1,36 @@
+@use 'style-utils' as *;
+
+.crh-accordion {
+  display: block;
+  width: 100%;
+}
+
+.crh-accordion-item {
+  border: size(2) solid var(--crh-primary-color);
+  display: flex;
+  flex-direction: column;
+  gap: size(16);
+  padding: size(16);
+}
+
+.crh-accordion-item-header {
+  display: flex;
+  align-content: center;
+  line-height: size(1);
+  justify-content: space-between;
+  color: var(--crh-base-text-color);
+}
+
+.crh-accordion-item-title {
+  @include text('heading-3');
+  line-height: normal;
+}
+
+.crh-accordion-item-header:hover {
+  cursor: pointer;
+  color: var(--crh-accent-links-color);
+}
+
+.crh-accordion-item {
+  border-radius: size(4);
+}

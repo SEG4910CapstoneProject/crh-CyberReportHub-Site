@@ -1,0 +1,79 @@
+// Modify this to point to the utils/base-theme.scss location
+@use './base-theme.scss' as *;
+// Include required scss imports here such as fonts or other stylesheets
+
+// Define colors
+$primary-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+$background-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+$accent-links-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+$primary-highlight-palette: define-color-palette(
+  <BASE COLOR>,
+  <CONTRAST COLOR>
+);
+
+$light-background-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+$divider-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+$base-text-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+$success-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+$warning-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+$error-palette: define-color-palette(<BASE COLOR>, <CONTRAST COLOR>);
+
+// Define typography
+$heading-0-level: define-typography-level(<FAMILY>, <WEIGHT>, <SIZE>);
+
+$heading-1-level: define-typography-level(<FAMILY>, <WEIGHT>, <SIZE>);
+
+$heading-2-level: define-typography-level(<FAMILY>, <WEIGHT>, <SIZE>);
+
+$heading-3-level: define-typography-level(<FAMILY>, <WEIGHT>, <SIZE>);
+
+$paragraph-level: define-typography-level(<FAMILY>, <WEIGHT>, <SIZE>);
+
+$paragraph-emphasized-level: define-typography-level(
+  <FAMILY>,
+  <WEIGHT>,
+  <SIZE>
+);
+
+$chip-level: define-typography-level(<FAMILY>, <WEIGHT>, <SIZE>);
+
+// Define base font size
+$base-font-size: <BASE FONT SIZE>;
+
+// boilerplate
+$theme-color-config: define-color-config(
+  $primary-palette,
+  $background-palette,
+  $accent-links-paletete,
+  $primary-highlight-palette,
+  $base-text-palette,
+  $light-background-palette,
+  $divider-palette,
+  $success-palette,
+  $warning-palette,
+  $error-palette
+);
+
+$theme-typography-config: define-typography-config(
+  $heading-0-level,
+  $heading-1-level,
+  $heading-2-level,
+  $heading-3-level,
+  $paragraph-level,
+  $paragraph-emphasized-level,
+  $chip-level
+);
+
+$theme: define-theme(
+  $base-font-size,
+  $theme-color-config,
+  $theme-typography-config
+);

@@ -1,0 +1,44 @@
+@use 'sass:map';
+
+@mixin setup-theme($theme-definition) {
+  @include create-css-vars-from-theme($theme-definition);
+
+  // Setup defaults
+  font-family: var(--crh-paragraph-family);
+  font-weight: var(--crh-paragraph-weight);
+  font-size: var(--crh-base-font-size);
+}
+
+@mixin create-css-vars-from-theme($theme-definition) {
+  --crh-base-size: #{map.get($theme-definition, 'base-size')};
+  --crh-base-font-size: #{map.get($theme-definition, 'base-size')}px;
+  @include create-css-vars-from-color-config(
+    map.get($theme-definition, 'colors')
+  );
+  @include create-css-vars-from-typography-config(
+    map.get($theme-definition, 'typography')
+  );
+}
+
+@mixin create-css-vars-from-color-config($color-config) {
+  @each $prefix, $map in $color-config {
+    @include color-palette-to-css-vars($map, $prefix);
+  }
+}
+
+@mixin create-css-vars-from-typography-config($typography-config) {
+  @each $prefix, $map in $typography-config {
+    @include typography-level-to-css-vars($map, $prefix);
+  }
+}
+
+@mixin color-palette-to-css-vars($color-palette, $prefix) {
+  --crh-#{$prefix}-color: #{map.get($color-palette, 'base')};
+  --crh-#{$prefix}-contrast-color: #{map.get($color-palette, 'contrast')};
+}
+
+@mixin typography-level-to-css-vars($typography-level, $prefix) {
+  --crh-#{$prefix}-family: #{map.get($typography-level, 'family')};
+  --crh-#{$prefix}-weight: #{map.get($typography-level, 'weight')};
+  --crh-#{$prefix}-size: #{map.get($typography-level, 'size')};
+}

@@ -1,0 +1,33 @@
+@use 'style-utils' as util;
+
+:host {
+  max-width: 100%;
+  max-height: 100%;
+
+  // WARNING MATERIAL OVERRIDES
+  --mdc-outlined-text-field-focus-outline-color: var(--crh-primary-color);
+  --mdc-outlined-text-field-focus-label-text-color: var(--crh-primary-color);
+  --mdc-outlined-text-field-label-text-font: var(--crh-paragraph-family);
+  --mdc-outlined-text-field-label-text-size: var(--crh-paragraph-size);
+  --mdc-outlined-text-field-label-text-weight: var(--crh-paragraph-weight);
+  --mat-form-field-subscript-text-font: var(--crh-paragraph-family);
+}
+
+.text-input-form-field {
+  width: 100%;
+  overflow: visible;
+
+  input {
+    width: 100%;
+  }
+}
+
+.affix-text {
+  font-family: var(--crh-paragraph-emphasized-family);
+  font-weight: var(--crh-paragraph-emphasized-weight);
+  padding: util.size(12);
+}
+
+.affix-icon {
+  padding: util.size(12);
+}

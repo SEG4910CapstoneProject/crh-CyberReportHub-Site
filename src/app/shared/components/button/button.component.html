@@ -1,0 +1,7 @@
+<button
+  [ngClass]="type()"
+  [disabled]="disabled()"
+  role="button"
+  [attr.aria-label]="ariaLabel()">
+  <ng-content></ng-content>
+</button>

@@ -1,0 +1,11 @@
+<div class="crh-report-stats-area-container">
+  <crh-stats-card
+    *ngFor="let stat of stats()"
+    [title]="stat.title"
+    [subtitle]="stat.subtitle ?? ''"
+    [interactMode]="statCardEditMode()"
+    (onEditClick)="onEditStat.emit(stat)"
+    (onDeleteClick)="onRemoveStat.emit(stat.statisticId)">
+    {{ stat.statisticNumber }}
+  </crh-stats-card>
+</div>

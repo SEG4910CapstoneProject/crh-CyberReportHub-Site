@@ -1,0 +1,90 @@
+@use 'style-utils' as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: size(16);
+  padding: size(32);
+}
+
+.report-search-top {
+  display: flex;
+  flex-direction: column;
+  gap: size(16);
+}
+
+.report-search-header {
+  display: flex;
+  flex-direction: row;
+
+  .report-search-header-text {
+    @include text('heading-1');
+    margin: 0;
+    flex: 1 0 auto;
+  }
+
+  .report-search-header-latest {
+    display: block;
+    width: fit-content;
+  }
+}
+
+.report-search-control {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: size(16);
+  gap: size(8);
+
+  .report-search-control-dates {
+    flex: 1 0 auto;
+
+    display: flex;
+    flex-direction: row;
+    gap: size(16);
+    align-items: baseline;
+
+    crh-date-picker {
+      flex: 1 1 auto;
+      max-width: size(160);
+    }
+  }
+}
+
+.report-search-divider {
+  color: var(--crh-divider-color);
+}
+
+.report-search-content {
+  display: flex;
+  flex-direction: column;
+  gap: size(16);
+  align-items: center;
+
+  .report-search-result {
+    width: 100%;
+  }
+
+  .report-search-no-results {
+    width: fit-content;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: size(8);
+    color: var(--crh-base-text-color);
+
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h3 {
+      @include text('heading-2');
+    }
+
+    p {
+      @include text('heading-3');
+    }
+  }
+}

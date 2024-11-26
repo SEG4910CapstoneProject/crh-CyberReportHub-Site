@@ -1,0 +1,37 @@
+@use 'style-utils' as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0.5rem;
+}
+
+.comp-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid black;
+
+  & > * {
+    align-self: start;
+  }
+
+  crh-text-input {
+    width: 200px;
+  }
+}
+
+crh-accordion {
+  width: 100%;
+}
+
+.heading-0-test {
+  @include text('heading-0');
+  line-height: normal;
+}
+
+.crh-table-component {
+  width: 100%;
+}

@@ -1,0 +1,56 @@
+<div class="crh-paginator-per-page-container">
+  <div class="crh-paginator-per-page-text">
+    <span>{{ 'paginator.perPage' | translate }}</span>
+  </div>
+  <crh-select
+    class="crh-paginator-per-page-selector"
+    [config]="selectConfig()"
+    value="0"
+    [dynamicHintSection]="true"
+    (onSelectChange)="onSelectChange($event)"></crh-select>
+</div>
+
+<span class="crh-paginator-range-text">
+  {{
+    'paginator.range'
+      | translate
+        : {
+            start: startNum(),
+            end: endNum(),
+            total: totalResults(),
+          }
+  }}
+</span>
+
+<div class="crh-paginator-buttons">
+  <crh-icon-button
+    *ngIf="variant() === 'full'"
+    [size]="32"
+    [disabled]="disableFirstPage()"
+    (click)="toBeginning()"
+    [ariaLabel]="'paginator.firstPage.aria' | translate">
+    first_page
+  </crh-icon-button>
+  <crh-icon-button
+    [size]="32"
+    [disabled]="disableFirstPage()"
+    (click)="decrementPage()"
+    [ariaLabel]="'paginator.prevPage.aria' | translate">
+    chevron_left
+  </crh-icon-button>
+  <crh-icon-button
+    [size]="32"
+    [disabled]="disableLastPage()"
+    (click)="incrementPage()"
+    [ariaLabel]="'paginator.nextPage.aria' | translate">
+    chevron_right
+  </crh-icon-button>
+  <crh-icon-button
+    *ngIf="variant() === 'full'"
+    [size]="32"
+    [disabled]="disableLastPage()"
+    (click)="toEnd()"
+    [ariaLabel]="'paginator.lastPage.aria' | translate">
+    last_page
+  </crh-icon-button>
+</div>

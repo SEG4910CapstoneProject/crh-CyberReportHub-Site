@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'cyber-report-hub-base-theme' as base-theme;
+@use 'theme-utils/theme-generator' as theme-generator;
+@use '@angular/material' as mat;
+@use 'style-utils' as util;
+
+@import '@angular/cdk/overlay-prebuilt.css';
+
+// Adds theme over html element
+body {
+  // Place desired custom theme here
+  @include theme-generator.setup-theme(base-theme.$theme);
+  @include mat.core();
+  @include mat.all-component-themes(util.$default-mat-theme);
+  margin: 0;
+}
+
+// ==== Below are material overrides ===
+.cdk-overlay-container {
+  // Mat Options
+  mat-option {
+    --mat-option-label-text-font: var(--crh-paragraph-family);
+    --mat-option-label-text-weight: var(--crh-paragraph-weight);
+  }
+
+  // Mat Datepicker
+  mat-datepicker-content {
+    --mat-datepicker-calendar-date-selected-state-background-color: var(
+      --crh-primary-color
+    );
+
+    --mat-datepicker-calendar-date-today-outline-color: var(
+      --crh-primary-color
+    );
+
+    --mat-datepicker-calendar-date-preview-state-outline-color: var(
+      --crh-primary-color
+    );
+
+    .mat-calendar-body-cell:focus .mat-focus-indicator::before {
+      content: unset;
+    }
+
+    .cdk-visually-hidden {
+      display: none;
+    }
+  }
+}

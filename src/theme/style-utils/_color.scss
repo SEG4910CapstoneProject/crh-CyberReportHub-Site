@@ -1,0 +1,5 @@
+// Sets background and contrast color for given color name
+@mixin use-background-color($background-color-name) {
+  background-color: var(--crh-#{$background-color-name}-color);
+  color: var(--crh-#{$background-color-name}-contrast-color);
+}

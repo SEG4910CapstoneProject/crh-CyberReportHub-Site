@@ -1,0 +1,65 @@
+@use 'style-utils' as *;
+
+.report-header-container {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.report-header-breadcrumbs-container {
+  @include text('heading-3');
+  line-height: normal;
+
+  span:not(:first-child)::before {
+    content: ' / ';
+    color: var(--crh-base-text-color);
+    text-decoration: none;
+  }
+
+  span {
+    color: var(--crh-accent-links-color);
+
+    a.clickable:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}
+
+.report-title {
+  @include text('heading-0');
+  line-height: normal;
+  margin: 0;
+  color: var(--crh-primary-color);
+}
+
+.report-header-row {
+  @include text('paragraph');
+  line-height: normal;
+  color: var(--crh-base-text-color);
+}
+
+.report-header-mail-status {
+  display: flex;
+  flex-direction: row;
+  gap: size(8);
+  color: var(--crh-base-text-color);
+}
+
+.emphasized {
+  @include text('paragraph-emphasized');
+}
+
+.email-status-icon {
+  font-size: size-root(24);
+  vertical-align: bottom;
+  user-select: none;
+}
+
+.sent-icon {
+  color: var(--crh-success-color);
+}
+
+.not-sent-icon {
+  color: var(--crh-error-color);
+}

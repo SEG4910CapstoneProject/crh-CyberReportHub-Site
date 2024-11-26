@@ -1,0 +1,30 @@
+<cdk-accordion class="crh-accordion">
+  <cdk-accordion-item
+    #accordionItem="cdkAccordionItem"
+    class="crh-accordion-item"
+    role="button"
+    tabindex="0"
+    [attr.id]="'accordion-header'"
+    [attr.aria-expanded]="accordionItem.expanded"
+    [attr.aria-controls]="'accordion-body'">
+    <div class="crh-accordion-item-header" (click)="accordionItem.toggle()">
+      <span class="crh-accordion-item-title">{{ header() }}</span>
+      <span class="crh-accordion-item-arrow-icon">
+        <div *ngIf="!accordionItem.expanded">
+          <span class="material-symbols-outlined">keyboard_arrow_down</span>
+        </div>
+        <div *ngIf="accordionItem.expanded">
+          <span class="material-symbols-outlined">keyboard_arrow_up</span>
+        </div>
+      </span>
+    </div>
+    <div
+      class="crh-accordion-item-body"
+      role="region"
+      *ngIf="accordionItem.expanded"
+      [attr.id]="'accordion-body'"
+      [attr.aria-labelledby]="'accordion-header'">
+      <ng-content></ng-content>
+    </div>
+  </cdk-accordion-item>
+</cdk-accordion>

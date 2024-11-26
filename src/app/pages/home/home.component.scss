@@ -1,0 +1,10 @@
+@use 'style-utils' as *;
+
+:host {
+  display: block;
+  padding: size(32);
+}
+
+.crh-home-title {
+  text-align: center;
+}

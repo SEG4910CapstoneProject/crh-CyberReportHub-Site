@@ -1,0 +1,34 @@
+<div class="report-article-content-header">
+  <a [href]="articleDetails()?.link" target="_blank">
+    <h3 class="report-article-header-text">
+      {{ articleDetails()?.title }}
+    </h3>
+  </a>
+  <ng-container *ngIf="editable()">
+    <div class="report-article-content-buttons">
+      <crh-icon-button
+        cssColorVariable="--crh-error-color"
+        cssHoverColorVariable="--crh-error-color"
+        [size]="20"
+        (click)="onDeleteClicked.emit()">
+        cancel
+      </crh-icon-button>
+      <crh-icon-button
+        cssColorVariable="--crh-primary-highlight-color"
+        cssHoverColorVariable="--crh-primary-highlight-color"
+        [size]="20"
+        (click)="onEditClicked.emit()">
+        edit
+      </crh-icon-button>
+    </div>
+  </ng-container>
+</div>
+<crh-chip-container [chipTexts]="availableIocs()"></crh-chip-container>
+<div class="report-article-content-description">
+  {{ articleDetails()?.description }}
+</div>
+<div class="report-article-content-link">
+  <a [href]="articleDetails()?.link" target="_blank">
+    {{ articleDetails()?.link }}
+  </a>
+</div>

@@ -1,0 +1,22 @@
+<crh-report-layout
+  [reportHeaderInfo]="reportHeaderInfo()"
+  [pageMode]="'view'"
+  [reportId]="reportData()?.reportId ?? 0">
+  <crh-report-stats-area [stats]="reportStats()"></crh-report-stats-area>
+  <crh-report-article-area
+    [articleCategoryGroups]="articleCategories()"></crh-report-article-area>
+  <crh-report-sidebar-area>
+    <crh-accordion
+      [header]="'report.view.tableOfContents' | translate"
+      [defaultOpenState]="true">
+      <div class="report-view-toc">
+        <a
+          *ngFor="let category of categories()"
+          class="report-view-contents-category"
+          (click)="onTableContentsSelect(category)">
+          {{ category }}
+        </a>
+      </div>
+    </crh-accordion>
+  </crh-report-sidebar-area>
+</crh-report-layout>

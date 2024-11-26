@@ -1,0 +1,74 @@
+<mat-form-field
+  class="text-input-form-field"
+  appearance="outline"
+  [subscriptSizing]="
+    materialInputDirective.dynamicHintSection() ? 'dynamic' : 'fixed'
+  ">
+  <!-- Basic setup -->
+  <mat-label *ngIf="materialInputDirective.label() !== undefined">{{
+    materialInputDirective.label()
+  }}</mat-label>
+  <ng-container *ngIf="variantSignal() === 'input'; else textAreaTemplate">
+    <input
+      matInput
+      (blur)="materialInputDirective.onTouched()"
+      [formControl]="materialInputDirective.childControl"
+      [placeholder]="materialInputDirective.placeholderText()"
+      (ngModelChange)="materialInputDirective.onValueWrite($event)"
+      [errorStateMatcher]="materialInputDirective.getErrorMatcher()" />
+  </ng-container>
+  <ng-template #textAreaTemplate>
+    <textarea
+      matInput
+      (blur)="materialInputDirective.onTouched()"
+      [formControl]="materialInputDirective.childControl"
+      [placeholder]="materialInputDirective.placeholderText()"
+      (ngModelChange)="materialInputDirective.onValueWrite($event)"
+      [errorStateMatcher]="materialInputDirective.getErrorMatcher()"></textarea>
+  </ng-template>
+
+  <!-- Affixes -->
+  <span *ngIf="prefixConfig() !== undefined" matPrefix>
+    <ng-container
+      *ngTemplateOutlet="
+        affixTemplate;
+        context: { config: prefixConfig() }
+      "></ng-container>
+  </span>
+  <span *ngIf="suffixConfig() !== undefined" matSuffix>
+    <ng-container
+      *ngTemplateOutlet="
+        affixTemplate;
+        context: { config: suffixConfig() }
+      "></ng-container>
+  </span>
+
+  <!-- Hints -->
+  <mat-hint *ngIf="materialInputDirective.hint() !== undefined">{{
+    materialInputDirective.hint()
+  }}</mat-hint>
+  <mat-error *ngIf="materialInputDirective.activeError() !== undefined">{{
+    materialInputDirective.activeError()
+  }}</mat-error>
+</mat-form-field>
+
+<ng-template #affixTemplate let-affixConfig="config">
+  <ng-container [ngSwitch]="affixConfig.affixType">
+    <ng-container *ngSwitchCase="'icon'">
+      <span class="affix-icon"
+        ><mat-icon>{{ affixConfig.value }}</mat-icon></span
+      >
+    </ng-container>
+    <ng-container *ngSwitchCase="'text'">
+      <span class="affix-text">{{ affixConfig.value }}</span>
+    </ng-container>
+    <ng-container *ngSwitchCase="'clickable-icon'">
+      <button
+        mat-icon-button
+        (click)="affixConfig.onClick()"
+        [attr.aria-label]="affixConfig.ariaLabel">
+        <mat-icon>{{ affixConfig.value }}</mat-icon>
+      </button>
+    </ng-container>
+  </ng-container>
+</ng-template>

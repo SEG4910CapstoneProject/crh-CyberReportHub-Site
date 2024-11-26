@@ -1,0 +1,33 @@
+<div
+  class="crh-layout-container"
+  crhResponsive
+  [breakpoints]="responsiveBreakpointsConfig"
+  (onBreakpointChange)="onBreakpointReached($event)">
+  <div class="crh-layout-main-content">
+    <crh-report-header [reportInfo]="reportHeaderInfo()"></crh-report-header>
+
+    <div
+      class="crh-layout-sidebar-container"
+      *ngIf="breakpointModeKey() === MOBILE_BREAKPOINT_KEY">
+      <ng-container [ngTemplateOutlet]="sideBar"></ng-container>
+    </div>
+
+    <ng-content select="crh-report-stats-area"></ng-content>
+    <ng-content select="crh-report-article-area"></ng-content>
+  </div>
+  <div
+    *ngIf="breakpointModeKey() === DESKTOP_BREAKPOINT_KEY"
+    [ngClass]="{ 'crh-wide-side-content': pageMode() === 'edit' }"
+    class="crh-layout-side-content crh-layout-sidebar-container">
+    <ng-container [ngTemplateOutlet]="sideBar"></ng-container>
+  </div>
+</div>
+<ng-template #sideBar>
+  <crh-button
+    class="crh-layout-button"
+    [ariaLabel]="viewEditTranslationKey() | translate"
+    (click)="onEditViewClick()">
+    {{ viewEditTranslationKey() | translate }}
+  </crh-button>
+  <ng-content select="crh-report-sidebar-area"></ng-content>
+</ng-template>

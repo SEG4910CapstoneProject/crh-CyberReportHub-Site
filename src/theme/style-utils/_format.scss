@@ -1,0 +1,13 @@
+// Calculates measurement from px to scaled px based on parent's font size
+@function size($size-in-px) {
+  $requested-size: #{$size-in-px};
+  $base-size: var(--crh-base-size);
+  @return calc($requested-size * 1em / $base-size);
+}
+
+// Calculates measurement from px to scaled px based on root font size
+@function size-root($size-in-px) {
+  $requested-size: #{$size-in-px};
+  $base-size: var(--crh-base-size);
+  @return calc($requested-size * 1rem / $base-size);
+}

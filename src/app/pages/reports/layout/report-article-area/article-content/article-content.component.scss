@@ -1,0 +1,58 @@
+@use 'style-utils' as *;
+
+:host {
+  max-width: size(720);
+
+  display: flex;
+  flex-direction: column;
+  gap: size(4);
+}
+
+.report-article-content-header {
+  @include text('heading-2');
+
+  display: flex;
+  flex-direction: row;
+  gap: size(4);
+
+  a {
+    text-decoration: none;
+
+    .report-article-header-text:hover {
+      color: var(--crh-primary-highlight-color);
+      cursor: pointer;
+    }
+  }
+
+  .report-article-content-buttons {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.report-article-header-text {
+  color: var(--crh-accent-links-color);
+  margin: 0;
+  width: fit-content;
+}
+
+.report-article-content-description {
+  @include text('paragraph');
+  color: var(--crh-base-text-color);
+
+  // Line clamping is only supported using webkit box
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  // Not yet supported but for future implementations
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.report-article-content-link {
+  @include text('paragraph');
+  color: var(--crh-accent-links-color);
+  text-decoration: underline;
+  word-break: break-all;
+}

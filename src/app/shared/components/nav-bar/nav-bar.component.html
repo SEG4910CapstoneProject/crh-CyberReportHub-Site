@@ -1,0 +1,81 @@
+<nav
+  class="crh-nav-bar-container"
+  [style]="customCssStyleVars"
+  crhResponsive
+  [breakpoints]="responiveBreakpointsConfig"
+  (onBreakpointChange)="onBreakpointReached($event)">
+  <div class="crh-nav-bar-main-content">
+    <div class="crh-nav-bar-item crh-nav-bar-left">
+      <a
+        class="crh-nav-bar-logo"
+        ariaLabel="Cyber Report Hub"
+        (click)="onLogoClick()">
+        CyberReport Hub
+      </a>
+      <ng-container *ngIf="responsiveModeSignal() === 'desktop'">
+        <ng-container *ngFor="let link of navLinksSignal()">
+          <span
+            class="crh-nav-bar-link"
+            [ngClass]="{
+              'crh-nav-link-selected': selectedLinkSignal() === link.id,
+            }">
+            <a
+              [ariaLabel]="link.label"
+              [routerLink]="link.path"
+              queryParamsHandling="merge">
+              {{ link.label }}
+            </a>
+          </span>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="crh-nav-bar-item crh-nav-bar-right">
+      <div>
+        <a
+          class="crh-nav-bar-lang"
+          [ariaLabel]="langSelectAriaTranslationSignal()"
+          (click)="onLangChange()">
+          {{ langSelectTranslationSignal() }}
+        </a>
+      </div>
+      <div>
+        <ng-container
+          *ngIf="responsiveModeSignal() === 'desktop'; else mobileContainer">
+          <crh-button
+            type="contained"
+            [ariaLabel]="loginTranslationSignal() ?? ''"
+            (click)="onLoginClick()">
+            {{ loginTranslationSignal() }}
+          </crh-button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="menuOpened()"
+    crhClickOutside
+    (onClickOutside)="onClickOutsideExtended()"
+    class="crh-nav-bar-extended">
+    <div
+      *ngFor="let link of navLinksSignal()"
+      [ngClass]="{
+        'crh-nav-link-selected': selectedLinkSignal() === link.id,
+      }">
+      <a
+        [ariaLabel]="link.label"
+        [routerLink]="link.path"
+        queryParamsHandling="merge">
+        {{ link.label }}
+      </a>
+    </div>
+    <div>
+      <a [ariaLabel]="'login.login' | translate" (click)="onLoginClick()">
+        {{ 'login.login' | translate }}
+      </a>
+    </div>
+  </div>
+</nav>
+
+<ng-template #mobileContainer>
+  <crh-icon-button (click)="onMenuButtonClicked()">menu</crh-icon-button>
+</ng-template>

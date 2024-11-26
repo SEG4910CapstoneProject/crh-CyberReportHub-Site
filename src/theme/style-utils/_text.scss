@@ -1,0 +1,6 @@
+// Adds text styling when included
+@mixin text($text-family) {
+  font-family: var(--crh-#{$text-family}-family);
+  font-weight: var(--crh-#{$text-family}-weight);
+  font-size: var(--crh-#{$text-family}-size);
+}
