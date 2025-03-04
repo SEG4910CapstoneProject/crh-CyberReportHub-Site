@@ -11,4 +11,6 @@ export type NavBarSelectedLinkOptions =
   | 'home'
   | 'reportSearch'
   | 'reportStats'
+  | 'articles'
+  | 'chatbot'
   | 'none';

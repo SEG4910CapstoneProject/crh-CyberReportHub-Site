@@ -8,3 +8,92 @@
 .crh-home-title {
   text-align: center;
 }
+
+.home-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+
+  .box {
+    position: relative;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  /* Styles for lists inside boxes */
+  .box ul {
+    list-style-type: disc; /* Adds bullet points */
+    padding-left: 20px; /* Indent bullets */
+  }
+
+  .box ul li {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .box ul li a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .box ul li a:hover {
+    text-decoration: underline;
+  }
+
+  /* Styles for the reports table */
+  .box table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  .box th,
+  .box td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  .box th {
+    background-color: #007bff;
+    color: white;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* "See More" button styles */
+  .see-more-button {
+    background-color: #d32f2f; /* red */
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+  }
+
+  .see-more-button:hover {
+    background-color: #b71c1c;
+  }
+}

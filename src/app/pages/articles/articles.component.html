@@ -1,0 +1,27 @@
+<div class="articles-page-container">
+  <div class="header">
+    <h1>Articles</h1>
+    <!-- "Add Article" button in the top right -->
+    <button class="add-article-btn" routerLink="/articles/add">
+      Add Article
+    </button>
+  </div>
+
+  <!-- Loop through the categories -->
+  <!-- Logic will be in articles.component.ts for modularity -->
+  <div class="sections">
+    <div *ngFor="let category of categories" class="category-section">
+      <h2>{{ category }}</h2>
+      <div *ngIf="articlesByCategory[category]?.length; else emptySection">
+        <ul>
+          <li *ngFor="let article of articlesByCategory[category]">
+            <a [href]="article.link" target="_blank">{{ article.link }}</a>
+          </li>
+        </ul>
+      </div>
+      <ng-template #emptySection>
+        <p>No articles yet.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

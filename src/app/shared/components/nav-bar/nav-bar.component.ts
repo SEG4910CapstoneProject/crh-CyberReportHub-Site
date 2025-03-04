@@ -97,13 +97,26 @@ export class NavBarComponent {
       },
       {
         id: 'reportSearch',
-        label: this.linkReportSearchTranslationSignal(),
+        // label: this.linkReportSearchTranslationSignal(),
+        // Add translations later
+        label: 'Reports',
         path: '/reports',
       },
       {
         id: 'reportStats',
         label: this.linkReportStatsTranslationSignal(),
         path: '/reports/statistics',
+      },
+      // Added nav bar-options. We can add translations later
+      {
+        id: 'articles',
+        label: 'Articles',
+        path: '/articles',
+      },
+      {
+        id: 'chatbot',
+        label: 'Chatbot',
+        path: '/chatbot',
       },
     ];
   });

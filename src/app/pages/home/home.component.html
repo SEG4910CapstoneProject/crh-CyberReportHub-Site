@@ -1,1 +1,66 @@
 <h1 class="crh-home-title">{{ 'home.title' | translate }}</h1>
+
+<div class="home-container">
+  <!-- Articles of Note -->
+  <div class="box articles">
+    <div class="box-header">
+      <h2>Articles of Note</h2>
+    </div>
+    <ul>
+      <li *ngFor="let article of articlesOfNote">
+        <a [href]="article.link" target="_blank">{{ article.title }}</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Current Items of Interest -->
+  <div class="box interest">
+    <div class="box-header">
+      <h2>Current Items of Interest</h2>
+      <a routerLink="/reports" class="see-more-button">See More</a>
+    </div>
+    <ul>
+      <li *ngFor="let item of currentItemsOfInterest">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Previous Published Reports -->
+  <div class="box reports">
+    <div class="box-header">
+      <h2>Previous Published Reports</h2>
+      <a routerLink="/reports" class="see-more-button">See More</a>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Report #</th>
+          <th>Type</th>
+          <th>Template</th>
+          <th>Generated Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of previousPublishedReports">
+          <td>{{ report.reportNumber }}</td>
+          <td>{{ report.type }}</td>
+          <td>{{ report.template }}</td>
+          <td>{{ report.generatedDate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Most Viewed Articles -->
+  <div class="box most-viewed">
+    <div class="box-header">
+      <h2>Most Viewed Articles</h2>
+    </div>
+    <ul>
+      <li *ngFor="let article of mostViewedArticles">
+        <a [href]="article.link" target="_blank">{{ article.title }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

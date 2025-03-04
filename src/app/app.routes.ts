@@ -8,10 +8,33 @@ import { ReportResolverService } from './shared/resolvers/report-resolver.servic
 import { HomeComponent } from './pages/home/home.component';
 import { ReportSuggestionsResolverService } from './shared/resolvers/report-suggestions-resolver.service';
 
+import { NewArticleComponent } from './pages/new-article/new-article.component';
+import { ChatbotComponent } from './pages/chatbot/chatbot.component';
+import { ArticlesComponent } from './pages/articles/articles.component';
+
 export const routes: Routes = [
   /**
    * FIXME: Temporary setup, should be replaced as pages get added.
    */
+
+  //Added Headers
+  {
+    path: 'articles',
+    component: ArticlesComponent,
+    data: { selectedNav: 'articles' satisfies NavBarSelectedLinkOptions },
+  },
+  {
+    path: 'articles/add',
+    component: NewArticleComponent,
+    data: { selectedNav: 'articles' satisfies NavBarSelectedLinkOptions },
+  },
+  {
+    path: 'chatbot',
+    component: ChatbotComponent,
+    data: { selectedNav: 'chatbot' satisfies NavBarSelectedLinkOptions },
+  },
+  //End of Added Code
+
   {
     path: 'test',
     component: TesterPageComponent,

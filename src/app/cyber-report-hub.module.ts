@@ -56,6 +56,9 @@ import { EditArticleDialogComponent } from './shared/dialogs/edit-article-dialog
 import { EditStatisticDialogComponent } from './shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 import { ConfirmCancelButtonsComponent } from './shared/components/confirm-cancel-buttons/confirm-cancel-buttons.component';
 import { ArticleSuggestionComponent } from './pages/reports/edit/article-suggestion/article-suggestion.component';
+import { NewArticleComponent } from './pages/new-article/new-article.component';
+import { ChatbotComponent } from './pages/chatbot/chatbot.component';
+import { ArticlesComponent } from './pages/articles/articles.component';
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
@@ -100,6 +103,9 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     EditStatisticDialogComponent,
     ConfirmCancelButtonsComponent,
     ArticleSuggestionComponent,
+    NewArticleComponent,
+    ChatbotComponent,
+    ArticlesComponent,
   ],
   imports: [
     RouterModule,
