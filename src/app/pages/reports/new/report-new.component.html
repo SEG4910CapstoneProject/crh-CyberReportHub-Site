@@ -1,0 +1,104 @@
+<div class="report-new" [class.dark]="isDarkMode()">
+  <h1>Create New Report</h1>
+
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-section">
+      <label>Report Type:</label>
+      <select formControlName="reportType">
+        <option value="DAILY">Daily</option>
+        <option value="WEEKLY">Weekly</option>
+      </select>
+    </div>
+
+    <div class="form-section">
+      <label>Template Type:</label>
+      <select formControlName="templateType">
+        <option value="byType">By Type</option>
+        <option value="chatbotSummaries">Chatbot Summaries (Future)</option>
+      </select>
+    </div>
+
+    <div class="form-section">
+      <label>Primary Color:</label>
+      <input type="color" formControlName="primaryColor" />
+    </div>
+
+    <div class="form-section">
+      <label>Accent Color:</label>
+      <input type="color" formControlName="accentColor" />
+    </div>
+
+    <div class="form-section">
+      <label>Logo:</label>
+      <input type="file" (change)="handleLogoUpload($event)" />
+    </div>
+
+    <div class="form-section">
+      <label>Articles:</label>
+      <div class="article-list">
+        <div
+          class="article"
+          *ngFor="let article of articles.controls; let i = index"
+          [formGroup]="article">
+          <input placeholder="Title" formControlName="title" />
+          <select formControlName="type">
+            <option value="">-- Select Type --</option>
+            <option value="Informational">Informational</option>
+            <option value="Critical">Phishing</option>
+            <option value="Threat">Malware</option>
+          </select>
+          <select formControlName="category">
+            <option value="">-- Select Category --</option>
+            <option value="activeThreats">Active Threats</option>
+            <option value="emergingInternationalThreats">
+              Emerging and International Threats
+            </option>
+            <option value="globalNews">Global Information & News Watch</option>
+            <option value="customerThreats">Customer Threats</option>
+          </select>
+          <input
+            placeholder="Link"
+            formControlName="link"
+            (dragover)="handleDragOver($event)"
+            (drop)="handleDrop($event, i)" />
+          <button type="button" (click)="removeArticle(i)">Remove</button>
+        </div>
+      </div>
+      <button type="button" (click)="addArticle()">+ Add Article</button>
+    </div>
+
+    <div class="form-section">
+      <label>Sections to Include:</label>
+      <div formGroupName="sections">
+        <label
+          ><input type="checkbox" formControlName="activeThreats" /> Active
+          Threats</label
+        >
+        <label
+          ><input type="checkbox" formControlName="internationalThreats" />
+          Emerging & International Threats</label
+        >
+        <label
+          ><input type="checkbox" formControlName="globalNews" /> Global
+          Information & News Watch</label
+        >
+        <label
+          ><input type="checkbox" formControlName="customerThreats" /> Customer
+          Threats</label
+        >
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label>Mode:</label>
+      <button type="button" (click)="toggleDarkMode()">
+        Switch to {{ isDarkMode() ? 'Light' : 'Dark' }} Mode
+      </button>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="cancel()">Cancel</button>
+      <button type="submit">Create Report</button>
+    </div>
+  </form>
+</div>

@@ -18,6 +18,7 @@ describe('ReportSearchComponent', () => {
   const REPORT_RESPONSE: SearchReportResponse = {
     total: 2,
     reports: [
+      // @ts-ignore
       {
         reportId: 1,
         reportType: 'daily',
