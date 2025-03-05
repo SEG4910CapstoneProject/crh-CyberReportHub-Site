@@ -170,7 +170,7 @@ export class ReportEditComponent {
     suffix: {
       affixType: 'clickable-icon',
       value: 'add',
-      ariaLabel: this.addArticleTranslation(),
+      ariaLabel: this.addArticleTranslation() ?? 'default label',
       onClick: (): void => this.addNewArticle(),
     },
   }));

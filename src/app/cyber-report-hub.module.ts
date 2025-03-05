@@ -60,6 +60,8 @@ import { NewArticleComponent } from './pages/new-article/new-article.component';
 import { ChatbotComponent } from './pages/chatbot/chatbot.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 
+import { ReportNewComponent } from './pages/reports/new/report-new.component';
+
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
 
@@ -106,9 +108,11 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     NewArticleComponent,
     ChatbotComponent,
     ArticlesComponent,
+    ReportNewComponent,
   ],
   imports: [
     RouterModule,
+    RouterModule.forRoot([]),
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,

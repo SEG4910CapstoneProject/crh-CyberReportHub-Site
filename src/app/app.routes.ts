@@ -12,6 +12,8 @@ import { NewArticleComponent } from './pages/new-article/new-article.component';
 import { ChatbotComponent } from './pages/chatbot/chatbot.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 
+import { ReportNewComponent } from './pages/reports/new/report-new.component';
+
 export const routes: Routes = [
   /**
    * FIXME: Temporary setup, should be replaced as pages get added.
@@ -62,10 +64,16 @@ export const routes: Routes = [
         data: {
           selectedNav: 'none' satisfies NavBarSelectedLinkOptions,
         },
+        //Added
         resolve: {
           reportData: ReportResolverService,
           suggestionData: ReportSuggestionsResolverService,
         },
+      },
+      {
+        path: 'create',
+        component: ReportNewComponent,
+        data: { selectedNav: 'none' satisfies NavBarSelectedLinkOptions },
       },
       {
         path: 'statistics',

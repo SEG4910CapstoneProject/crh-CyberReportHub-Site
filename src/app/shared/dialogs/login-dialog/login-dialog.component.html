@@ -5,10 +5,12 @@
   <crh-dialog-content class="login-dialog-content">
     <crh-text-input
       [dynamicHintSection]="true"
+      formControlName="username"
       [label]="'login.account' | translate"
       [ariaLabel]="'login.account' | translate"></crh-text-input>
     <crh-text-input
       [dynamicHintSection]="true"
+      formControlName="password"
       [label]="'login.password' | translate"
       [ariaLabel]="'login.password' | translate"></crh-text-input>
   </crh-dialog-content>
