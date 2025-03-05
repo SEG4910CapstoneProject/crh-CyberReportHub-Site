@@ -2,7 +2,6 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { CrhRecycleRowsDirective, CrhTableComponent } from './table.component';
 import { CrhTextColumnComponent } from './text-column';
-import { CommonModule } from '@angular/common';
 import {
   CrhCellDirective,
   CrhCellDefDirective,
@@ -56,7 +55,7 @@ const DECLARATIONS = [
 ];
 
 @NgModule({
-  imports: [CdkTableModule, CommonModule, ...DECLARATIONS],
+  imports: [CdkTableModule, ...DECLARATIONS],
   exports: DECLARATIONS,
 })
 export class CrhTableModule {}

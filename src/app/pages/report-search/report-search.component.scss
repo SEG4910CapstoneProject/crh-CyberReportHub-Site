@@ -7,284 +7,59 @@
   padding: size(32);
 }
 
-/* Header */
 .report-search-top {
   display: flex;
   flex-direction: column;
   gap: size(16);
-  margin-bottom: 32px;
 }
 
 .report-search-header {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 
   .report-search-header-text {
     @include text('heading-1');
     margin: 0;
+    flex: 1 0 auto;
   }
 
   .report-search-header-latest {
+    display: block;
     width: fit-content;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 154px;
-  }
-
-  .report-search-header-latest:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
 }
 
-/* Form Controls */
 .report-search-control {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: size(16);
-  margin-bottom: size(16);
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: size(16);
+  gap: size(8);
 
-  .report-search-control-filters {
-    /* Center the entire row horizontally */
-    margin: 0 40px; /* Equal margin on left and right */
+  .report-search-control-dates {
+    flex: 1 0 auto;
+
     display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    width: auto; /* Let content determine width */
+    flex-direction: row;
+    gap: size(16);
+    align-items: baseline;
 
-    /* Each filter (including date pickers) is in a filter-wrapper */
-    .filter-wrapper {
-      display: inline-block;
-      width: 160px;
-      /* Add horizontal spacing between wrappers */
-      margin-right: 24px;
-      margin-left: 24px;
-      /* Ensure consistent vertical alignment */
-      vertical-align: middle;
-
-      /* If you need more or less space from the left edge,
-         you can also add margin-left: 24px here, or adjust the .report-search-control-filters margin. */
-    }
-
-    /* Remove right margin for the last filter (Search button) */
-    .filter-wrapper:last-child {
-      margin-right: 0;
-      /* Let the search button auto-size */
-      width: auto;
-      /* Optionally push the search button to the far right:
-         margin-left: auto;
-         If you prefer the button to stay next to the last date picker, remove this line.
-      */
+    crh-date-picker {
+      flex: 1 1 auto;
+      max-width: size(160);
     }
   }
-
-  .report-search-control-pages {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 16px;
-  }
 }
 
-/* Floating Label for Text Inputs */
-.floating-label {
-  position: relative;
-  width: 100%;
-
-  input.search-box {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid rgb(116, 106, 106);
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: #fff;
-    text-align: center;
-    transition:
-      border-color 0.2s,
-      border-width 0.1s;
-    height: 32px; /* match the date picker’s height */
-    margin-bottom: 20px;
-  }
-
-  input.search-box:focus {
-    outline: none;
-    border-color: #002d72;
-    border-width: 2.5px;
-  }
-
-  label {
-    position: absolute;
-    top: 35%;
-    left: 12px;
-    transform: translateY(-50%);
-    background: #fff;
-    padding: 0 4px;
-    color: #656161;
-    pointer-events: none;
-    transition: all 0.2s ease;
-  }
-
-  input.search-box:focus + label,
-  input.search-box:not(:placeholder-shown) + label {
-    top: -8px;
-    left: 8px;
-    font-size: 12px;
-    color: #002d72;
-  }
-}
-
-/* Angular Material date picker override
-   (For .mat-form-field with class .date-picker-form-field, appearance="outline") */
-.date-picker-form-field.mat-form-field-appearance-outline {
-  width: 200px; /* match text input width */
-  margin: 0 !important; /* override material defaults if needed */
-  .mat-form-field-outline {
-    border-color: black !important;
-    border-radius: 8px !important;
-    border-width: 2px !important;
-  }
-  .mat-form-field-flex {
-    min-height: 44px !important; /* match text input height */
-    background-color: #fff !important;
-    border-radius: 8px !important;
-    align-items: center;
-  }
-  .mat-form-field-infix {
-    font-size: 16px !important;
-    color: #333 !important;
-    text-align: center;
-  }
-  .mat-form-field-outline-thick {
-    border-color: black !important;
-  }
-  /* Focus state */
-  &.mat-focused .mat-form-field-outline-thick {
-    border-color: #002d72 !important;
-    border-width: 2.5px !important;
-  }
-}
-
-/* Search Button */
-button.search-button {
-  display: inline-block;
-  background-color: #002d72;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  height: 38px; /* match input & date picker */
-  margin-left: 20px;
-  margin-bottom: 20px;
-  width: 124px;
-}
-
-button.search-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* Divider */
 .report-search-divider {
-  height: 1px;
-  background-color: var(--crh-divider-color);
-  border: none;
-  margin: size(8) 0;
+  color: var(--crh-divider-color);
 }
 
-.report-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 12px; /* Adjust space above the table */
-  background-color: #002d72;
-  color: #e0e0e0;
-}
-
-.report-table th {
-  text-align: left;
-  font-size: 18px; /* Increased font size */
-  padding: 16px 32px; /* Added more spacing between columns */
-  border-bottom: 2px solid black;
-  color: white; /* White text for headers */
-  background-color: #001f54;
-}
-
-.report-table td {
-  font-size: 18px; /* Increased font size */
-  padding: 14px 32px; /* Increased spacing between columns */
-  border-bottom: 1px solid #ddd;
-  color: #e0e0e0;
-}
-
-.report-table tr:nth-child(even) {
-  background-color: #002d72; /* Slightly lighter blue */
-}
-
-.no-data {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 20px;
-  color: white;
-}
-
-/* Actions Column */
-.actions-column {
-  text-align: center;
-  white-space: nowrap;
-  padding: 10px;
-}
-
-/* View Button */
-.view-button {
-  background-color: #4f80b4;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-right: 16px;
-  transition: 0.3s;
-}
-
-.view-button:hover {
-  background-color: #0056b3;
-}
-
-/* Delete Button */
-.delete-button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: 0.3s;
-  margin-left: 15px;
-}
-
-.delete-button:hover {
-  background-color: #a71d2a;
-}
-
-/* Results Content */
 .report-search-content {
   display: flex;
   flex-direction: column;
   gap: size(16);
   align-items: center;
-  width: 100%;
 
   .report-search-result {
     width: 100%;
@@ -292,11 +67,12 @@ button.search-button:hover {
 
   .report-search-no-results {
     width: fit-content;
+    justify-content: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: size(8);
-    color: #002d72;
+    color: var(--crh-base-text-color);
 
     h3,
     p {

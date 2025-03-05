@@ -18,8 +18,6 @@ export interface SearchReportDetailsResponse {
   generatedDate: string;
   lastModified: string;
   emailStatus: boolean;
-  template: string;
-  type: string;
   /**
    * List of article titles in the report
    */

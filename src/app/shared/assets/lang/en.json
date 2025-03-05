@@ -38,7 +38,7 @@
   "paginator.prevPage.aria": "Previous page",
 
   "reportSearch.header": "Report Search",
-  "reportSearch.latest": "New Report",
+  "reportSearch.latest": "See latest report",
   "reportSearch.searchLabel": "Date Search",
   "reportSearch.search.fromLabel": "From",
   "reportSearch.search.toLabel": "To",
