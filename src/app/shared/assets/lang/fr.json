@@ -8,6 +8,7 @@
   "common.confirm": "Confirmer",
 
   "login.login": "Connexion",
+  "login.logout": "Déconnexion",
   "login.account": "Compte",
   "login.password": "Mot de passe",
 

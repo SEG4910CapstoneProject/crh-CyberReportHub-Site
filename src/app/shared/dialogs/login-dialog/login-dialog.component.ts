@@ -12,22 +12,14 @@ export class LoginDialogComponent {
   private authService = inject(AuthService);
   private dialogRef = inject(DialogRef<unknown, boolean>);
 
-  protected form: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
+  protected username = '';
+  protected password = '';
 
   protected login(): void {
-    const { username, password } = this.form.value;
-    if (this.authService.login(username, password)) {
+    if (this.authService.login(this.username, this.password)) {
       this.dialogRef.close(true);
     } else {
       alert('Invalid credentials');
-      this.form.reset();
     }
   }
 

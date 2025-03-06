@@ -2,6 +2,7 @@ import { Component, computed, ElementRef, inject, signal } from '@angular/core';
 import { NavBarLink, NavBarSelectedLinkOptions } from './nav-bar.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CrhTranslationService } from '../../services/crh-translation.service';
+import { AuthService } from '../../services/auth.service';
 import { ColorsService } from '../../services/colors.service';
 import {
   Router,
@@ -38,6 +39,7 @@ export class NavBarComponent {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(Dialog);
+  private authService = inject(AuthService);
 
   protected responiveBreakpointsConfig: ResponiveBreakpoint[] = [
     {
@@ -48,9 +50,27 @@ export class NavBarComponent {
       breakpoint: 960,
     },
   ];
+  protected isLoggedIn = signal<boolean>(false);
 
   protected responsiveModeSignal = signal<string>(this.DESKTOP_MODE_KEY);
   private menuTriggeredOpen = signal<boolean>(false);
+
+  ngOnInit(): void {
+    this.authService.isLoggedIn$.subscribe(loggedIn => {
+      this.isLoggedIn.set(loggedIn);
+    });
+  }
+  protected onAuthButtonClick(): void {
+    this.onClickOutsideExtended();
+
+    if (this.isLoggedIn()) {
+      // User is logged in, so this should trigger logout.
+      this.authService.logout();
+    } else {
+      // User is NOT logged in, open the login dialog.
+      this.dialog.open(LoginDialogComponent);
+    }
+  }
 
   protected selectedLinkSignal = toSignal(
     this.router.events.pipe(
@@ -86,6 +106,9 @@ export class NavBarComponent {
   );
   protected loginTranslationSignal = toSignal(
     this.translateService.getTranslationFromKeyAsStream('login.login')
+  );
+  protected logoutTranslationSignal = toSignal(
+    this.translateService.getTranslationFromKeyAsStream('login.logout')
   );
 
   protected navLinksSignal = computed<NavBarLink[]>(() => {
@@ -153,11 +176,6 @@ export class NavBarComponent {
     if (this.menuOpened()) {
       this.menuTriggeredOpen.set(false);
     }
-  }
-
-  protected onLoginClick(): void {
-    this.onClickOutsideExtended();
-    this.dialog.open(LoginDialogComponent);
   }
 
   private getFinalChildAsStream(
