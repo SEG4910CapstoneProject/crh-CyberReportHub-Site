@@ -4,7 +4,7 @@
       {{ 'reportSearch.header' | translate }}
     </h1>
     <crh-button
-      *ngIf="isLoggedIn"
+      *ngIf="isLoggedIn()"
       class="report-search-header-latest"
       (click)="onLatestClick()">
       {{ 'reportSearch.latest' | translate }}
@@ -132,7 +132,7 @@
             View
           </button>
           <button
-            *ngIf="isLoggedIn"
+            *ngIf="isLoggedIn()"
             class="delete-button"
             (click)="onDeleteReport(report)">
             Delete

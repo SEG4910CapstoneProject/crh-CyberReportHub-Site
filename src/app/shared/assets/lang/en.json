@@ -8,6 +8,7 @@
   "common.confirm": "Confirm",
 
   "login.login": "Login",
+  "login.logout": "Logout",
   "login.account": "Account",
   "login.password": "Password",
 

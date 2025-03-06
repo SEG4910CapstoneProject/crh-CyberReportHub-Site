@@ -11,7 +11,7 @@ export class AuthService {
 
   login(username: string, password: string): boolean {
     // This is mock - replace with real API call
-    if (username === 'user' && password === 'password') {
+    if (username === 'admin' && password === 'password') {
       this.isLoggedInSubject.next(true);
       return true;
     }
