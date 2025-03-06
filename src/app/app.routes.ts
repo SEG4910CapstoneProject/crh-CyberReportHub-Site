@@ -11,6 +11,7 @@ import { ReportSuggestionsResolverService } from './shared/resolvers/report-sugg
 import { NewArticleComponent } from './pages/new-article/new-article.component';
 import { ChatbotComponent } from './pages/chatbot/chatbot.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
 
@@ -20,6 +21,11 @@ export const routes: Routes = [
    */
 
   //Added Headers
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    data: { selectedNav: 'settings' },
+  },
   {
     path: 'articles',
     component: ArticlesComponent,

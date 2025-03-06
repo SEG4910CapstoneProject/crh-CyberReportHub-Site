@@ -13,15 +13,14 @@
     </ul>
   </div>
 
-  <!-- Current Items of Interest -->
-  <div class="box interest">
+  <!-- Most Viewed Articles -->
+  <div class="box most-viewed">
     <div class="box-header">
-      <h2>Current Items of Interest</h2>
-      <a routerLink="/reports" class="see-more-button">See More</a>
+      <h2>Most Viewed Articles</h2>
     </div>
     <ul>
-      <li *ngFor="let item of currentItemsOfInterest">
-        {{ item }}
+      <li *ngFor="let article of mostViewedArticles">
+        <a [href]="article.link" target="_blank">{{ article.title }}</a>
       </li>
     </ul>
   </div>
@@ -52,14 +51,15 @@
     </table>
   </div>
 
-  <!-- Most Viewed Articles -->
-  <div class="box most-viewed">
+  <!-- Current Items of Interest -->
+  <div class="box interest">
     <div class="box-header">
-      <h2>Most Viewed Articles</h2>
+      <h2>Current Items of Interest</h2>
+      <a routerLink="/reports" class="see-more-button">See More</a>
     </div>
     <ul>
-      <li *ngFor="let article of mostViewedArticles">
-        <a [href]="article.link" target="_blank">{{ article.title }}</a>
+      <li *ngFor="let item of currentItemsOfInterest">
+        {{ item }}
       </li>
     </ul>
   </div>

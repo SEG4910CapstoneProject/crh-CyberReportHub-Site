@@ -7,12 +7,21 @@
 @import '@angular/cdk/overlay-prebuilt.css';
 
 // Adds theme over html element
+// Default Light Theme
 body {
   // Place desired custom theme here
   @include theme-generator.setup-theme(base-theme.$theme);
   @include mat.core();
   @include mat.all-component-themes(util.$default-mat-theme);
   margin: 0;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+// Apply dark mode theme
+.dark-mode {
+  @include theme-generator.setup-theme(base-theme.$dark-theme);
 }
 
 // ==== Below are material overrides ===
