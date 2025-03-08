@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { ArticleService } from '../../shared/services/article.service';
+import { ArticleService, Article } from '../../shared/services/article.service';
 
 @Component({
   selector: 'crh-new-article',
@@ -8,21 +7,48 @@ import { ArticleService } from '../../shared/services/article.service';
   styleUrls: ['./new-article.component.scss'],
 })
 export class NewArticleComponent {
-  // Object to hold the form data
-  article = {
+  article: Partial<Article> = {
+    articleId: '',
+    title: '',
+    description: '',
+    category: '',
     link: '',
+    publishDate: '',
     type: '',
   };
 
-  constructor(
-    private articleService: ArticleService,
-    private router: Router
-  ) {}
+  constructor(private articleService: ArticleService) {}
 
   onSubmit(): void {
-    // Add the article to the shared service
-    this.articleService.addArticle(this.article);
-    // Navigate back to the Articles page
-    this.router.navigate(['/articles']);
+    if (!this.article.title || !this.article.link || !this.article.type) {
+      console.error('All fields are required');
+      return;
+    }
+
+    const newArticle: Article = {
+      articleId: this.article.articleId || this.generateUUID(),
+      title: this.article.title,
+      description: this.article.description || 'No description available.',
+      category: this.article.category || 'General',
+      link: this.article.link,
+      publishDate:
+        this.article.publishDate || new Date().toISOString().split('T')[0],
+      type: this.article.type,
+    };
+
+    this.articleService.addArticle(newArticle).subscribe(response => {
+      console.log('Article added:', response);
+    });
+  }
+
+  private generateUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0,
+          v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
   }
 }

@@ -1,51 +1,32 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { catchError, EMPTY, map, Observable, of, switchMap, tap } from 'rxjs';
-import { ArticlesService } from '../sdk/rest-api/api/articles.service';
-import { JsonArticleReportResponse } from '../sdk/rest-api/model/jsonArticleReportResponse';
+import { Observable, EMPTY, of } from 'rxjs';
+import { catchError, tap, map } from 'rxjs/operators';
+import { ArticleService, Article } from '../services/article.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticlesResolverService
-  implements Resolve<{ [key: string]: JsonArticleReportResponse[] }>
+  implements Resolve<{ [key: string]: Article[] }>
 {
-  private articlesService = inject(ArticlesService);
-  private router = inject(Router);
+  constructor(
+    private articleService: ArticleService,
+    private router: Router
+  ) {}
 
   resolve(
     route: ActivatedRouteSnapshot
-  ): Observable<{ [key: string]: JsonArticleReportResponse[] }> {
-    const days = 30; // Default time range
+  ): Observable<{ [key: string]: Article[] }> {
+    const days = 30; // Fetch articles from the last 30 days
 
-    return this.articlesService.getArticle(days.toString()).pipe(
-      tap(response => console.log('Articles API Response:', response)), // Debugging Log
-      map(response => {
-        if (!response || !Array.isArray(response)) {
-          throw new Error(
-            'Invalid API response format: Expected an array of articles.'
-          );
-        }
-
-        // Organize articles into categories
-        const categorizedArticles: {
-          [key: string]: JsonArticleReportResponse[];
-        } = {};
-
-        response.forEach(article => {
-          const category = article.category || 'Uncategorized';
-          if (!categorizedArticles[category]) {
-            categorizedArticles[category] = [];
-          }
-          categorizedArticles[category].push(article);
-        });
-
-        return categorizedArticles;
-      }),
-      catchError(err => {
-        console.error('Error fetching articles:', err);
-        this.router.navigate(['/']);
-        return EMPTY;
+    return this.articleService.getAllArticleTypesWithArticles(days).pipe(
+      tap(response => console.log('Resolved articles:', response)),
+      map(response => response || {}), // Ensure it returns an object
+      catchError(error => {
+        console.error('Error fetching articles:', error);
+        this.router.navigate(['/']); // Redirect to home page if an error occurs
+        return EMPTY; // Prevents the route from breaking
       })
     );
   }

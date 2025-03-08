@@ -8,28 +8,18 @@ import { Article } from '../../shared/services/article.service';
   styleUrls: ['./articles.component.scss'],
 })
 export class ArticlesComponent implements OnInit {
-  categories: string[] = [
-    'Phishing',
-    'Malware',
-    'Vulnerability',
-    'Data Leak',
-    'Cyber Attack',
-    'Cloud, AI & 5G',
-    'Canada',
-    'World',
-  ];
-
+  categories: string[] = [];
   articlesByCategory: { [key: string]: Article[] } = {};
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      console.log('Resolved articles:', data['articlesData']);
-
-      this.categories.forEach(cat => {
-        this.articlesByCategory[cat] = data['articlesData'][cat] || [];
-      });
+      console.log('Resolved data:', data);
+      if (data['articlesData']) {
+        this.articlesByCategory = data['articlesData'];
+        this.categories = Object.keys(data['articlesData']);
+      }
     });
   }
 }
