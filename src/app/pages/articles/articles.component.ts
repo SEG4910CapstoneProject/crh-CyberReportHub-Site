@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ArticleService, Article } from '../../shared/services/article.service';
+import { ActivatedRoute } from '@angular/router';
+import { Article } from '../../shared/services/article.service';
 
 @Component({
   selector: 'crh-articles',
@@ -7,7 +8,6 @@ import { ArticleService, Article } from '../../shared/services/article.service';
   styleUrls: ['./articles.component.scss'],
 })
 export class ArticlesComponent implements OnInit {
-  // Define categories (article types)
   categories: string[] = [
     'Phishing',
     'Malware',
@@ -19,18 +19,16 @@ export class ArticlesComponent implements OnInit {
     'World',
   ];
 
-  // Object to hold articles grouped by category
   articlesByCategory: { [key: string]: Article[] } = {};
 
-  constructor(private articleService: ArticleService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.articleService.articles$.subscribe((articles: Article[]) => {
-      this.articlesByCategory = {};
-      this.categories.forEach((cat: string) => {
-        this.articlesByCategory[cat] = articles.filter(
-          (article: Article) => article.type === cat
-        );
+    this.route.data.subscribe(data => {
+      console.log('Resolved articles:', data['articlesData']);
+
+      this.categories.forEach(cat => {
+        this.articlesByCategory[cat] = data['articlesData'][cat] || [];
       });
     });
   }
