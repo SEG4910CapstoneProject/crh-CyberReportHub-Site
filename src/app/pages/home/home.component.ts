@@ -1,11 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'crh-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  private authService = inject(AuthService);
+  protected isLoggedIn = signal<boolean>(false);
+
+  ngOnInit() {
+    this.authService.isLoggedIn$.subscribe(status => {
+      this.isLoggedIn.set(status);
+    });
+  }
+
   // Hardcoded Articles of Note
   articlesOfNote = [
     { title: 'Cyber Threats in 2024', link: 'https://example.com/article1' },
@@ -35,19 +45,12 @@ export class HomeComponent {
     { title: 'AI in Cybersecurity', link: 'https://example.com/article6' },
   ];
 
-  // Hardcoded Previous Published Reports
-  previousPublishedReports = [
-    {
-      reportNumber: 100234,
-      type: 'Phishing',
-      template: 'Daily',
-      generatedDate: 'Feb 20th',
-    },
-    {
-      reportNumber: 100235,
-      type: 'Malware',
-      template: 'Weekly',
-      generatedDate: 'Feb 19th',
-    },
-  ];
+  // Hardcoded Latest Published Report (Only One Entry)
+  latestPublishedReport = {
+    reportNumber: 100234,
+    reportType: 'Daily',
+    generatedDate: 'Feb 20th',
+    lastModified: 'Feb 22nd',
+    emailStatus: true,
+  };
 }
