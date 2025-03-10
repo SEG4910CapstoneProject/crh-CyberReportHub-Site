@@ -27,18 +27,17 @@
 
       <!-- DROPDOWN FOR TYPE SELECTION -->
       <div class="filter-wrapper">
-        <div class="floating-label">
-          <mat-form-field class="dropdown-form-field" appearance="outline">
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="type">
-              <mat-option [value]="'daily'">Daily</mat-option>
-              <mat-option [value]="'weekly'">Weekly</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        <mat-form-field class="dropdown-form-field" appearance="outline">
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="type">
+            <mat-option value="ALL">All</mat-option>
+            <mat-option value="DAILY">Daily</mat-option>
+            <mat-option value="WEEKLY">Weekly</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
-      <!-- ANGULAR MATERIAL DATE PICKER: FROM DATE -->
+      <!-- DATE PICKER: START DATE -->
       <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
           <mat-label>{{
@@ -48,7 +47,7 @@
             matInput
             [formControlName]="'startDate'"
             [matDatepicker]="pickerFrom"
-            placeholder=" " />
+            placeholder="Select Start Date" />
           <mat-datepicker-toggle
             matSuffix
             [for]="pickerFrom"></mat-datepicker-toggle>
@@ -56,7 +55,7 @@
         </mat-form-field>
       </div>
 
-      <!-- ANGULAR MATERIAL DATE PICKER: TO DATE -->
+      <!-- DATE PICKER: END DATE -->
       <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
           <mat-label>{{ 'reportSearch.search.toLabel' | translate }}</mat-label>
@@ -64,7 +63,7 @@
             matInput
             [formControlName]="'endDate'"
             [matDatepicker]="pickerTo"
-            placeholder=" " />
+            placeholder="Select End Date" />
           <mat-datepicker-toggle
             matSuffix
             [for]="pickerTo"></mat-datepicker-toggle>
@@ -77,22 +76,9 @@
         <button class="search-button" (click)="onSearch()">Search</button>
       </div>
     </div>
-
-    <div class="report-search-control-pages">
-      <crh-paginator
-        [options]="[10, 20, 50]"
-        [totalResults]="reportSearchTotalSignal()"
-        (pageStatus)="paginatorStatusSignal.set($event)">
-      </crh-paginator>
-    </div>
   </form>
 </div>
 
-<div>
-  <hr class="report-search-divider" />
-</div>
-
-<!-- REPORT TABLE -->
 <div class="report-search-content">
   <table class="report-table">
     <thead>
@@ -106,20 +92,23 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Show "No Data" message when no reports exist -->
       <tr *ngIf="filteredReportsSignal()?.length === 0">
-        <td colspan="5" class="no-data">No reports available</td>
+        <td colspan="6" class="no-data">No reports available</td>
       </tr>
-
-      <!-- Loop through filtered reports -->
       <tr *ngFor="let report of filteredReportsSignal()">
-        <td>{{ report.reportId }}</td>
+        <td>{{ report?.reportId }}</td>
         <td>
-          {{ report.type === 'daily' ? 'Daily' : 'Weekly' }}
+          {{
+            report?.type === 'DAILY'
+              ? 'Daily'
+              : report?.type === 'WEEKLY'
+                ? 'Weekly'
+                : 'Unknown'
+          }}
         </td>
-        <td>{{ report.generatedDate | date: 'medium' }}</td>
-        <td>{{ report.lastModified | date: 'medium' }}</td>
-        <td *ngIf="isLoggedIn()">{{ report.emailStatus ? '✔' : '✘' }}</td>
+        <td>{{ report?.generatedDate | date: 'medium' }}</td>
+        <td>{{ report?.lastModified | date: 'medium' }}</td>
+        <td *ngIf="isLoggedIn()">{{ report?.emailStatus ? '✔' : '✘' }}</td>
         <td class="actions-column">
           <button class="view-button" (click)="onViewReport(report)">
             View

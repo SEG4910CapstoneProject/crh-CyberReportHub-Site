@@ -17,8 +17,8 @@ import {
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
+import { ReportsService } from '../../shared/services/reports.service';
 import { Router } from '@angular/router';
-import { ReportsService } from '../../shared/sdk/rest-api/api/reports.service';
 
 @Component({
   selector: 'crh-report-search',
@@ -26,8 +26,6 @@ import { ReportsService } from '../../shared/sdk/rest-api/api/reports.service';
   styleUrl: './report-search.component.scss',
 })
 export class ReportSearchComponent implements OnInit {
-  private readonly REPORT_TYPE = 'DAILY';
-
   private reportsService = inject(ReportsService);
   private router = inject(Router);
   private authService = inject(AuthService);
@@ -36,7 +34,7 @@ export class ReportSearchComponent implements OnInit {
 
   protected searchFormGroup = new FormGroup({
     reportNo: new FormControl(''),
-    type: new FormControl(''),
+    type: new FormControl<'ALL' | 'DAILY' | 'WEEKLY'>('ALL'), // Default to ALL
     startDate: new FormControl<DateTime | undefined>(undefined),
     endDate: new FormControl<DateTime | undefined>(undefined),
   });
@@ -45,6 +43,7 @@ export class ReportSearchComponent implements OnInit {
     itemsPerPage: 10,
     page: 0,
   });
+
   protected isLoadingSignal = signal<boolean>(true);
 
   private paginatorStatus$ = toObservable(this.paginatorStatusSignal);
@@ -60,9 +59,12 @@ export class ReportSearchComponent implements OnInit {
   ]).pipe(
     map(([searchValues, paginatorStatus]) => ({
       reportNo: searchValues?.reportNo,
-      type: searchValues?.type,
-      startDate: searchValues?.startDate?.toISODate(),
-      endDate: searchValues?.endDate?.toISODate(),
+      type:
+        searchValues?.type === 'ALL'
+          ? undefined
+          : searchValues?.type?.toUpperCase(), // Handle "ALL" case
+      startDate: searchValues?.startDate?.toISODate() || undefined,
+      endDate: searchValues?.endDate?.toISODate() || undefined,
       page: paginatorStatus.page,
       limit: paginatorStatus.itemsPerPage,
     })),
@@ -70,18 +72,18 @@ export class ReportSearchComponent implements OnInit {
       (prev, cur) => JSON.stringify(prev) === JSON.stringify(cur)
     ),
     tap(() => this.isLoadingSignal.set(true)),
-    switchMap(({ startDate, endDate, page, limit }) =>
+    switchMap(({ type, startDate, endDate, page, limit }) =>
       this.reportsService
         .searchReports(
-          this.REPORT_TYPE,
-          startDate || undefined,
-          endDate || undefined,
+          type ? (type as 'DAILY' | 'WEEKLY') : undefined,
+          startDate,
+          endDate,
           page,
           limit
         )
         .pipe(
           catchError(err => {
-            console.error(err);
+            console.error('Error fetching reports:', err);
             return of({ total: 0, reports: [] } as SearchReportResponse);
           })
         )
@@ -90,79 +92,49 @@ export class ReportSearchComponent implements OnInit {
     shareReplay()
   );
 
-  private reports$ = this.reportSearchResults$.pipe(
-    map(result => result.reports)
-  );
-
-  private reportTotalSignal = toSignal(
-    this.reportSearchResults$.pipe(map(result => result.total))
-  );
-
-  protected reportSearchResultsSignal = toSignal(this.reports$);
+  protected reportSearchResultsSignal = toSignal(this.reportSearchResults$);
   protected filteredReportsSignal = signal<SearchReportDetailsResponse[]>([]);
-
-  protected reportSearchTotalSignal = computed(
-    () => this.reportTotalSignal() || 0
-  );
 
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn.set(status);
     });
 
-    // Hardcoded data to ensure the table appears for testing
-    this.filteredReportsSignal.set([
-      {
-        reportId: 100234,
-        reportType: 'Daily',
-        type: 'daily',
-        template: '',
-        generatedDate: new Date().toISOString(),
-        lastModified: new Date().toISOString(),
-        emailStatus: true,
-        articleTitles: ['Threat Analysis', 'Breach Overview'],
-        iocs: [],
-        stats: [],
-      },
-      {
-        reportId: 100235,
-        reportType: 'Weekly',
-        type: 'weekly',
-        template: '',
-        generatedDate: new Date().toISOString(),
-        lastModified: new Date().toISOString(),
-        emailStatus: false,
-        articleTitles: ['APT Group Activity', 'Vulnerability Review'],
-        iocs: [],
-        stats: [],
-      },
-    ]);
+    // Fetch initial data
+    this.reportSearchResults$.subscribe(results => {
+      this.filteredReportsSignal.set(results.reports ?? []);
+    });
+
+    // Auto-trigger search when search form changes
+    this.searchFormGroup.valueChanges.subscribe(() => {
+      this.onSearch();
+    });
   }
 
   protected onSearch(): void {
     const { reportNo, type } = this.searchFormGroup.value;
 
+    if (!this.reportSearchResultsSignal()?.reports) return;
+
     this.filteredReportsSignal.set(
-      this.reportSearchResultsSignal()?.filter(
+      this.reportSearchResultsSignal()?.reports?.filter(
         report =>
           (!reportNo || report.reportId.toString().includes(reportNo)) &&
-          (!type || report.type?.toLowerCase() === type.toLowerCase()) // 🔹 Ensure type matches dropdown
+          (type === 'ALL' || report.type?.toUpperCase() === type?.toUpperCase())
       ) ?? []
     );
   }
 
-  protected onLatestClick(): void {
-    this.router.navigate(['/reports/create']);
-  }
-
   protected onViewReport(report: SearchReportDetailsResponse): void {
-    console.log('Viewing report:', report.reportId);
-    this.router.navigate([`/reports/read/${report.reportId}`]);
+    this.router.navigate([`/reports/read/${report?.reportId}`]);
   }
 
   protected onDeleteReport(report: SearchReportDetailsResponse): void {
-    console.log('Deleting report:', report.reportId);
-    // Add delete API
+    console.log('Deleting report:', report?.reportId);
+  }
+
+  protected onLatestClick(): void {
+    this.router.navigate(['/reports/create']);
   }
 
   protected onLogout(): void {
