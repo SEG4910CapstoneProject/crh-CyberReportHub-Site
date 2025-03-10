@@ -13,7 +13,7 @@
 
   <form class="report-search-control" [formGroup]="searchFormGroup">
     <div class="report-search-control-filters">
-      <!-- TEXT INPUTS -->
+      <!-- TEXT INPUT: REPORT NUMBER -->
       <div class="filter-wrapper">
         <div class="floating-label">
           <input
@@ -24,24 +24,17 @@
           <label>Report No</label>
         </div>
       </div>
+
+      <!-- DROPDOWN FOR TYPE SELECTION -->
       <div class="filter-wrapper">
         <div class="floating-label">
-          <input
-            type="text"
-            formControlName="template"
-            placeholder=" "
-            class="search-box" />
-          <label>Template</label>
-        </div>
-      </div>
-      <div class="filter-wrapper">
-        <div class="floating-label">
-          <input
-            type="text"
-            formControlName="type"
-            placeholder=" "
-            class="search-box" />
-          <label>Type</label>
+          <mat-form-field class="dropdown-form-field" appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option [value]="'daily'">Daily</mat-option>
+              <mat-option [value]="'weekly'">Weekly</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
 
@@ -106,27 +99,27 @@
       <tr>
         <th>No</th>
         <th>Type</th>
-        <th>Template</th>
         <th>Generated Date</th>
         <th>Last Modified</th>
-        <th>Email Sent</th>
+        <th *ngIf="isLoggedIn()">Email Sent</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <!-- Show "No Data" message when no reports exist -->
       <tr *ngIf="filteredReportsSignal()?.length === 0">
-        <td colspan="6" class="no-data">No reports available</td>
+        <td colspan="5" class="no-data">No reports available</td>
       </tr>
 
       <!-- Loop through filtered reports -->
       <tr *ngFor="let report of filteredReportsSignal()">
         <td>{{ report.reportId }}</td>
-        <td>{{ report.type }}</td>
-        <td>{{ report.template }}</td>
+        <td>
+          {{ report.type === 'daily' ? 'Daily' : 'Weekly' }}
+        </td>
         <td>{{ report.generatedDate | date: 'medium' }}</td>
         <td>{{ report.lastModified | date: 'medium' }}</td>
-        <td>{{ report.emailStatus ? '✔' : '✘' }}</td>
+        <td *ngIf="isLoggedIn()">{{ report.emailStatus ? '✔' : '✘' }}</td>
         <td class="actions-column">
           <button class="view-button" (click)="onViewReport(report)">
             View

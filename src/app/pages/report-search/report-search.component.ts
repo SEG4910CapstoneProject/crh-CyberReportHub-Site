@@ -30,13 +30,12 @@ export class ReportSearchComponent implements OnInit {
 
   private reportsService = inject(ReportsService);
   private router = inject(Router);
-
   private authService = inject(AuthService);
+
   protected isLoggedIn = signal<boolean>(false);
 
   protected searchFormGroup = new FormGroup({
     reportNo: new FormControl(''),
-    template: new FormControl(''),
     type: new FormControl(''),
     startDate: new FormControl<DateTime | undefined>(undefined),
     endDate: new FormControl<DateTime | undefined>(undefined),
@@ -61,7 +60,6 @@ export class ReportSearchComponent implements OnInit {
   ]).pipe(
     map(([searchValues, paginatorStatus]) => ({
       reportNo: searchValues?.reportNo,
-      template: searchValues?.template,
       type: searchValues?.type,
       startDate: searchValues?.startDate?.toISODate(),
       endDate: searchValues?.endDate?.toISODate(),
@@ -117,8 +115,8 @@ export class ReportSearchComponent implements OnInit {
       {
         reportId: 100234,
         reportType: 'Daily',
-        type: 'Phishing',
-        template: 'Daily Report',
+        type: 'daily',
+        template: '',
         generatedDate: new Date().toISOString(),
         lastModified: new Date().toISOString(),
         emailStatus: true,
@@ -129,8 +127,8 @@ export class ReportSearchComponent implements OnInit {
       {
         reportId: 100235,
         reportType: 'Weekly',
-        type: 'Malware',
-        template: 'Weekly Report',
+        type: 'weekly',
+        template: '',
         generatedDate: new Date().toISOString(),
         lastModified: new Date().toISOString(),
         emailStatus: false,
@@ -142,15 +140,13 @@ export class ReportSearchComponent implements OnInit {
   }
 
   protected onSearch(): void {
-    const { reportNo, template, type } = this.searchFormGroup.value;
+    const { reportNo, type } = this.searchFormGroup.value;
 
     this.filteredReportsSignal.set(
       this.reportSearchResultsSignal()?.filter(
         report =>
           (!reportNo || report.reportId.toString().includes(reportNo)) &&
-          (!template ||
-            report.template?.toLowerCase().includes(template.toLowerCase())) &&
-          (!type || report.type?.toLowerCase().includes(type.toLowerCase()))
+          (!type || report.type?.toLowerCase() === type.toLowerCase()) // 🔹 Ensure type matches dropdown
       ) ?? []
     );
   }

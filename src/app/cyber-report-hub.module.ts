@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { routes } from './app.routes';
 import { provideRouter, RouterModule } from '@angular/router';
+import { MatSelectModule } from '@angular/material/select';
 import { CyberReportHubComponent } from './cyber-report-hub.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -115,6 +116,7 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
   imports: [
     RouterModule,
     RouterModule.forRoot([]),
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
