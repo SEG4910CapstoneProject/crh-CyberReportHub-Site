@@ -34,9 +34,9 @@ export class ReportSearchComponent implements OnInit {
 
   protected searchFormGroup = new FormGroup({
     reportNo: new FormControl(''),
-    type: new FormControl<'ALL' | 'DAILY' | 'WEEKLY'>('ALL'), // Default to ALL
-    startDate: new FormControl<DateTime | undefined>(undefined),
-    endDate: new FormControl<DateTime | undefined>(undefined),
+    type: new FormControl<'DAILY' | 'WEEKLY'>('DAILY'),
+    startDate: new FormControl<DateTime | null>(null),
+    endDate: new FormControl<DateTime | null>(null),
   });
 
   protected paginatorStatusSignal = signal<PaginatorStatus>({
@@ -48,23 +48,26 @@ export class ReportSearchComponent implements OnInit {
 
   private paginatorStatus$ = toObservable(this.paginatorStatusSignal);
 
+  protected DateTime = DateTime;
+
   private searchFormValue$ = this.searchFormGroup.valueChanges.pipe(
     map(value => (this.searchFormGroup.valid ? value : undefined)),
     startWith(undefined)
   );
 
-  private reportSearchResults$ = combineLatest([
+  protected reportSearchResults$ = combineLatest([
     this.searchFormValue$,
     this.paginatorStatus$,
   ]).pipe(
     map(([searchValues, paginatorStatus]) => ({
       reportNo: searchValues?.reportNo,
-      type:
-        searchValues?.type === 'ALL'
-          ? undefined
-          : searchValues?.type?.toUpperCase(), // Handle "ALL" case
-      startDate: searchValues?.startDate?.toISODate() || undefined,
-      endDate: searchValues?.endDate?.toISODate() || undefined,
+      type: searchValues?.type as 'DAILY' | 'WEEKLY',
+      startDate: searchValues?.startDate
+        ? searchValues.startDate.toISODate() ?? undefined
+        : undefined,
+      endDate: searchValues?.endDate
+        ? searchValues.endDate.toISODate() ?? undefined
+        : undefined,
       page: paginatorStatus.page,
       limit: paginatorStatus.itemsPerPage,
     })),
@@ -74,13 +77,7 @@ export class ReportSearchComponent implements OnInit {
     tap(() => this.isLoadingSignal.set(true)),
     switchMap(({ type, startDate, endDate, page, limit }) =>
       this.reportsService
-        .searchReports(
-          type ? (type as 'DAILY' | 'WEEKLY') : undefined,
-          startDate,
-          endDate,
-          page,
-          limit
-        )
+        .searchReports(type, startDate, endDate, page, limit)
         .pipe(
           catchError(err => {
             console.error('Error fetching reports:', err);
@@ -112,15 +109,17 @@ export class ReportSearchComponent implements OnInit {
   }
 
   protected onSearch(): void {
-    const { reportNo, type } = this.searchFormGroup.value;
-
-    if (!this.reportSearchResultsSignal()?.reports) return;
+    const { reportNo, type, startDate, endDate } = this.searchFormGroup.value;
 
     this.filteredReportsSignal.set(
       this.reportSearchResultsSignal()?.reports?.filter(
         report =>
           (!reportNo || report.reportId.toString().includes(reportNo)) &&
-          (type === 'ALL' || report.type?.toUpperCase() === type?.toUpperCase())
+          (!type || report.type?.toUpperCase() === type.toUpperCase()) &&
+          (!startDate ||
+            DateTime.fromISO(report.generatedDate).hasSame(startDate, 'day')) &&
+          (!endDate ||
+            DateTime.fromISO(report.lastModified).hasSame(endDate, 'day'))
       ) ?? []
     );
   }

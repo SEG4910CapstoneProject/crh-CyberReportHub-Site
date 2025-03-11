@@ -30,14 +30,13 @@
         <mat-form-field class="dropdown-form-field" appearance="outline">
           <mat-label>Type</mat-label>
           <mat-select formControlName="type">
-            <mat-option value="ALL">All</mat-option>
             <mat-option value="DAILY">Daily</mat-option>
             <mat-option value="WEEKLY">Weekly</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
-      <!-- DATE PICKER: START DATE -->
+      <!-- FROM DATE PICKER -->
       <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
           <mat-label>{{
@@ -45,9 +44,20 @@
           }}</mat-label>
           <input
             matInput
-            [formControlName]="'startDate'"
+            [formControl]="searchFormGroup.controls.startDate"
             [matDatepicker]="pickerFrom"
-            placeholder="Select Start Date" />
+            placeholder=" "
+            [value]="
+              searchFormGroup.controls.startDate.value
+                ? (searchFormGroup.controls.startDate.value.toISODate()
+                  | date: 'yyyy-MM-dd')
+                : ''
+            "
+            (dateChange)="
+              searchFormGroup.controls.startDate.setValue(
+                $event.value ? DateTime.fromJSDate($event.value) : null
+              )
+            " />
           <mat-datepicker-toggle
             matSuffix
             [for]="pickerFrom"></mat-datepicker-toggle>
@@ -55,15 +65,26 @@
         </mat-form-field>
       </div>
 
-      <!-- DATE PICKER: END DATE -->
+      <!-- TO DATE PICKER -->
       <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
           <mat-label>{{ 'reportSearch.search.toLabel' | translate }}</mat-label>
           <input
             matInput
-            [formControlName]="'endDate'"
+            [formControl]="searchFormGroup.controls.endDate"
             [matDatepicker]="pickerTo"
-            placeholder="Select End Date" />
+            placeholder=" "
+            [value]="
+              searchFormGroup.controls.endDate.value
+                ? (searchFormGroup.controls.endDate.value.toISODate()
+                  | date: 'yyyy-MM-dd')
+                : ''
+            "
+            (dateChange)="
+              searchFormGroup.controls.endDate.setValue(
+                $event.value ? DateTime.fromJSDate($event.value) : null
+              )
+            " />
           <mat-datepicker-toggle
             matSuffix
             [for]="pickerTo"></mat-datepicker-toggle>
@@ -92,20 +113,15 @@
       </tr>
     </thead>
     <tbody>
+      <!-- Show "No Data" message when no reports exist -->
       <tr *ngIf="filteredReportsSignal()?.length === 0">
-        <td colspan="6" class="no-data">No reports available</td>
+        <td colspan="5" class="no-data">No reports available</td>
       </tr>
+
+      <!-- Loop through filtered reports -->
       <tr *ngFor="let report of filteredReportsSignal()">
         <td>{{ report?.reportId }}</td>
-        <td>
-          {{
-            report?.type === 'DAILY'
-              ? 'Daily'
-              : report?.type === 'WEEKLY'
-                ? 'Weekly'
-                : 'Unknown'
-          }}
-        </td>
+        <td>{{ report?.type === 'DAILY' ? 'Daily' : 'Weekly' }}</td>
         <td>{{ report?.generatedDate | date: 'medium' }}</td>
         <td>{{ report?.lastModified | date: 'medium' }}</td>
         <td *ngIf="isLoggedIn()">{{ report?.emailStatus ? '✔' : '✘' }}</td>
