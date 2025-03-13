@@ -1,5 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+import { ReportsService } from '../../shared/services/reports.service';
+import { JsonReportResponse } from '../../shared/sdk/rest-api/model/jsonReportResponse';
 
 @Component({
   selector: 'crh-home',
@@ -8,12 +10,28 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class HomeComponent implements OnInit {
   private authService = inject(AuthService);
+  private reportsService = inject(ReportsService);
   protected isLoggedIn = signal<boolean>(false);
+
+  // This property will hold the latest published report data
+  latestPublishedReport: JsonReportResponse | null = null;
 
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe(status => {
+      console.log('Is Logged In:', status); // Debugging login status
       this.isLoggedIn.set(status);
     });
+
+    // Fetch the latest published report
+    this.reportsService.getLatestReport().subscribe(
+      (data: JsonReportResponse) => {
+        console.log('Latest Published Report Data:', data); // Log the fetched data
+        this.latestPublishedReport = data;
+      },
+      error => {
+        console.error('Error fetching latest report:', error); // Debugging error
+      }
+    );
   }
 
   // Hardcoded Articles of Note
@@ -44,13 +62,4 @@ export class HomeComponent implements OnInit {
     },
     { title: 'AI in Cybersecurity', link: 'https://example.com/article6' },
   ];
-
-  // Hardcoded Latest Published Report (Only One Entry)
-  latestPublishedReport = {
-    reportNumber: 100234,
-    reportType: 'Daily',
-    generatedDate: 'Feb 20th',
-    lastModified: 'Feb 22nd',
-    emailStatus: true,
-  };
 }

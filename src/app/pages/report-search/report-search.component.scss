@@ -49,37 +49,25 @@
   margin-bottom: size(16);
 
   .report-search-control-filters {
-    /* Center the entire row horizontally */
-    margin: 0 40px; /* Equal margin on left and right */
     display: flex;
     align-items: center;
-    flex-wrap: nowrap;
-    width: auto; /* Let content determine width */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 20px; /* Increased spacing */
+    justify-content: center; /* Center align filters */
+    margin: 0 auto; /* Keep centered */
+  }
 
-    /* Each filter (including date pickers) is in a filter-wrapper */
-    .filter-wrapper {
-      display: inline-block;
-      width: 160px;
-      /* Add horizontal spacing between wrappers */
-      margin-right: 24px;
-      margin-left: 24px;
-      /* Ensure consistent vertical alignment */
-      vertical-align: middle;
+  /* Filter Wrapper */
+  .filter-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 220px; /* Ensure consistent spacing */
+  }
 
-      /* If you need more or less space from the left edge,
-         you can also add margin-left: 24px here, or adjust the .report-search-control-filters margin. */
-    }
-
-    /* Remove right margin for the last filter (Search button) */
-    .filter-wrapper:last-child {
-      margin-right: 0;
-      /* Let the search button auto-size */
-      width: auto;
-      /* Optionally push the search button to the far right:
-         margin-left: auto;
-         If you prefer the button to stay next to the last date picker, remove this line.
-      */
-    }
+  /* Ensure search button stays inline */
+  .filter-wrapper:last-child {
+    margin-right: 0;
+    width: auto;
   }
 
   .report-search-control-pages {
@@ -137,31 +125,30 @@
   }
 }
 
-/* Angular Material date picker override
-   (For .mat-form-field with class .date-picker-form-field, appearance="outline") */
+/* Angular Material date picker override */
 .date-picker-form-field.mat-form-field-appearance-outline {
-  width: 200px; /* match text input width */
-  margin: 0 !important; /* override material defaults if needed */
+  width: 220px; /* Increased width */
+  margin: 0 !important;
+
   .mat-form-field-outline {
     border-color: black !important;
     border-radius: 8px !important;
     border-width: 2px !important;
   }
+
   .mat-form-field-flex {
-    min-height: 44px !important; /* match text input height */
+    min-height: 44px !important;
     background-color: #fff !important;
     border-radius: 8px !important;
     align-items: center;
   }
+
   .mat-form-field-infix {
     font-size: 16px !important;
     color: #333 !important;
     text-align: center;
   }
-  .mat-form-field-outline-thick {
-    border-color: black !important;
-  }
-  /* Focus state */
+
   &.mat-focused .mat-form-field-outline-thick {
     border-color: #002d72 !important;
     border-width: 2.5px !important;
@@ -182,7 +169,7 @@ button.search-button {
   transition:
     transform 0.2s,
     box-shadow 0.2s;
-  height: 38px; /* match input & date picker */
+  height: 38px;
   margin-left: 20px;
   margin-bottom: 20px;
   width: 124px;
@@ -201,32 +188,33 @@ button.search-button:hover {
   margin: size(8) 0;
 }
 
+/* Results Table */
 .report-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 12px; /* Adjust space above the table */
+  margin-top: 12px;
   background-color: #002d72;
   color: #e0e0e0;
 }
 
 .report-table th {
   text-align: left;
-  font-size: 18px; /* Increased font size */
-  padding: 16px 32px; /* Added more spacing between columns */
+  font-size: 18px;
+  padding: 16px 32px;
   border-bottom: 2px solid black;
-  color: white; /* White text for headers */
+  color: white;
   background-color: #001f54;
 }
 
 .report-table td {
-  font-size: 18px; /* Increased font size */
-  padding: 14px 32px; /* Increased spacing between columns */
+  font-size: 18px;
+  padding: 14px 32px;
   border-bottom: 1px solid #ddd;
   color: #e0e0e0;
 }
 
 .report-table tr:nth-child(even) {
-  background-color: #002d72; /* Slightly lighter blue */
+  background-color: #002d72;
 }
 
 .no-data {

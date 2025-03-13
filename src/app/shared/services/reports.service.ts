@@ -21,12 +21,18 @@ export class ReportsService {
     limit: number = 10
   ): Observable<SearchReportResponse> {
     const params: any = {
-      'date-start': startDate || undefined,
-      'date-end': endDate || undefined,
       type,
       page,
       limit,
     };
+
+    // Only add date parameters if they are defined
+    if (startDate) {
+      params['date-start'] = startDate;
+    }
+    if (endDate) {
+      params['date-end'] = endDate;
+    }
 
     return this.http.get<SearchReportResponse>(`${this.apiUrl}/search`, {
       params,
@@ -45,5 +51,10 @@ export class ReportsService {
     return this.http.get<JsonReportResponse>(
       `${this.apiUrl}/latest?format=json`
     );
+  }
+
+  // Delete a report by its ID
+  deleteReport(reportId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${reportId}`);
   }
 }

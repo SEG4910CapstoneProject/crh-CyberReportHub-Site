@@ -1,143 +1,131 @@
-import { Component, computed, inject, signal, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DateTime } from 'luxon';
+import { ReportsService } from '../../shared/services/reports.service';
 import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
-import {
-  catchError,
-  combineLatest,
-  distinctUntilChanged,
-  map,
-  of,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
-import { ReportsService } from '../../shared/services/reports.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'crh-report-search',
   templateUrl: './report-search.component.html',
-  styleUrl: './report-search.component.scss',
+  styleUrls: ['./report-search.component.scss'],
 })
 export class ReportSearchComponent implements OnInit {
   private reportsService = inject(ReportsService);
   private router = inject(Router);
   private authService = inject(AuthService);
 
-  protected isLoggedIn = signal<boolean>(false);
+  protected isLoggedIn = false;
 
-  protected searchFormGroup = new FormGroup({
-    reportNo: new FormControl(''),
-    type: new FormControl<'ALL' | 'DAILY' | 'WEEKLY'>('ALL'), // Default to ALL
-    startDate: new FormControl<DateTime | undefined>(undefined),
-    endDate: new FormControl<DateTime | undefined>(undefined),
-  });
+  // Declare form controls and form group
+  reportNo: string = '';
+  type: 'DAILY' | 'WEEKLY' = 'DAILY'; // Default to 'DAILY'
+  startDate: FormControl = new FormControl(null); // Default to null
+  endDate: FormControl = new FormControl(null); // Default to null
 
-  protected paginatorStatusSignal = signal<PaginatorStatus>({
+  searchFormGroup!: FormGroup;
+
+  protected paginatorStatus: PaginatorStatus = {
     itemsPerPage: 10,
     page: 0,
-  });
+  };
 
-  protected isLoadingSignal = signal<boolean>(true);
+  protected isLoading = false;
 
-  private paginatorStatus$ = toObservable(this.paginatorStatusSignal);
-
-  private searchFormValue$ = this.searchFormGroup.valueChanges.pipe(
-    map(value => (this.searchFormGroup.valid ? value : undefined)),
-    startWith(undefined)
-  );
-
-  private reportSearchResults$ = combineLatest([
-    this.searchFormValue$,
-    this.paginatorStatus$,
-  ]).pipe(
-    map(([searchValues, paginatorStatus]) => ({
-      reportNo: searchValues?.reportNo,
-      type:
-        searchValues?.type === 'ALL'
-          ? undefined
-          : searchValues?.type?.toUpperCase(), // Handle "ALL" case
-      startDate: searchValues?.startDate?.toISODate() || undefined,
-      endDate: searchValues?.endDate?.toISODate() || undefined,
-      page: paginatorStatus.page,
-      limit: paginatorStatus.itemsPerPage,
-    })),
-    distinctUntilChanged(
-      (prev, cur) => JSON.stringify(prev) === JSON.stringify(cur)
-    ),
-    tap(() => this.isLoadingSignal.set(true)),
-    switchMap(({ type, startDate, endDate, page, limit }) =>
-      this.reportsService
-        .searchReports(
-          type ? (type as 'DAILY' | 'WEEKLY') : undefined,
-          startDate,
-          endDate,
-          page,
-          limit
-        )
-        .pipe(
-          catchError(err => {
-            console.error('Error fetching reports:', err);
-            return of({ total: 0, reports: [] } as SearchReportResponse);
-          })
-        )
-    ),
-    tap(() => this.isLoadingSignal.set(false)),
-    shareReplay()
-  );
-
-  protected reportSearchResultsSignal = toSignal(this.reportSearchResults$);
-  protected filteredReportsSignal = signal<SearchReportDetailsResponse[]>([]);
+  // This will hold the fetched reports
+  filteredReports: SearchReportDetailsResponse[] = [];
 
   ngOnInit() {
+    // Log when ngOnInit is called
+    console.log('ReportSearchComponent ngOnInit called.');
+
+    // Subscribe to login status
     this.authService.isLoggedIn$.subscribe(status => {
-      this.isLoggedIn.set(status);
+      console.log('Is Logged In:', status); // Debugging login status
+      this.isLoggedIn = status;
     });
 
-    // Fetch initial data
-    this.reportSearchResults$.subscribe(results => {
-      this.filteredReportsSignal.set(results.reports ?? []);
+    // Initialize form group with controls
+    this.searchFormGroup = new FormGroup({
+      reportNo: new FormControl(''),
+      type: new FormControl(this.type),
+      startDate: this.startDate,
+      endDate: this.endDate,
     });
 
-    // Auto-trigger search when search form changes
-    this.searchFormGroup.valueChanges.subscribe(() => {
-      this.onSearch();
-    });
+    // Fetch reports initially (no filters applied)
+    this.onSearch();
   }
 
-  protected onSearch(): void {
-    const { reportNo, type } = this.searchFormGroup.value;
+  // Handle search logic
+  onSearch(): void {
+    const { reportNo, type, startDate, endDate } = this.searchFormGroup.value;
 
-    if (!this.reportSearchResultsSignal()?.reports) return;
+    this.isLoading = true;
 
-    this.filteredReportsSignal.set(
-      this.reportSearchResultsSignal()?.reports?.filter(
-        report =>
-          (!reportNo || report.reportId.toString().includes(reportNo)) &&
-          (type === 'ALL' || report.type?.toUpperCase() === type?.toUpperCase())
-      ) ?? []
-    );
+    console.log('Fetching reports with parameters:', {
+      reportNo,
+      type,
+      startDate,
+      endDate,
+      page: this.paginatorStatus.page,
+      limit: this.paginatorStatus.itemsPerPage,
+    });
+
+    // Fetch reports from the service
+    this.reportsService
+      .searchReports(
+        type,
+        startDate,
+        endDate,
+        this.paginatorStatus.page,
+        this.paginatorStatus.itemsPerPage
+      )
+      .pipe(
+        catchError(err => {
+          console.error('Error fetching reports:', err); // Log any error
+          return of({ total: 0, reports: [] } as SearchReportResponse);
+        })
+      )
+      .subscribe((response: SearchReportResponse) => {
+        console.log('Fetched Reports Response:', response); // Log the response
+
+        this.isLoading = false;
+        this.filteredReports = response.reports ?? [];
+        // Ensure that reports have a valid type before displaying
+        this.filteredReports = this.filteredReports.map(report => ({
+          ...report,
+          type:
+            report.type === 'DAILY' || report.type === 'WEEKLY'
+              ? report.type
+              : 'Unknown', // Default to 'Unknown' for invalid types
+        }));
+
+        console.log('Filtered Reports:', this.filteredReports); // Log the filtered reports
+      });
   }
 
-  protected onViewReport(report: SearchReportDetailsResponse): void {
+  // Handle view report logic
+  onViewReport(report: SearchReportDetailsResponse): void {
     this.router.navigate([`/reports/read/${report?.reportId}`]);
   }
 
-  protected onDeleteReport(report: SearchReportDetailsResponse): void {
-    console.log('Deleting report:', report?.reportId);
+  // Handle deleting reports
+  onDeleteReport(report: SearchReportDetailsResponse): void {
+    console.log('Deleting report:', report.reportId); // Log report deletion
+    // Logic to delete the report can be added here
   }
 
-  protected onLatestClick(): void {
+  // Navigate to the "create report" page or other relevant route
+  onLatestClick(): void {
     this.router.navigate(['/reports/create']);
   }
 
-  protected onLogout(): void {
+  // Handle logout
+  onLogout(): void {
     this.authService.logout();
   }
 }

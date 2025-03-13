@@ -6,6 +6,12 @@ import { CyberReportHubComponent } from './cyber-report-hub.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {
   HttpClient,
@@ -122,6 +128,10 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     BrowserModule,
     BrowserAnimationsModule,
     ApiModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
