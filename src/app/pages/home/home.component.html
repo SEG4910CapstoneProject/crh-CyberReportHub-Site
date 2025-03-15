@@ -38,7 +38,7 @@
           <th>Type</th>
           <th>Generated Date</th>
           <th>Last Modified</th>
-          <th *ngIf="isLoggedIn">Email Sent</th>
+          <th *ngIf="isLoggedIn()">Email Sent</th>
         </tr>
       </thead>
       <tbody>
@@ -47,7 +47,7 @@
           <td>{{ latestPublishedReport.reportType }}</td>
           <td>{{ latestPublishedReport.generatedDate }}</td>
           <td>{{ latestPublishedReport.lastModified }}</td>
-          <td *ngIf="isLoggedIn">
+          <td *ngIf="isLoggedIn()">
             {{ latestPublishedReport.emailStatus ? '✔' : '✘' }}
           </td>
         </tr>

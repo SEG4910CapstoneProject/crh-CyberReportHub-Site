@@ -32,3 +32,41 @@
 .category-section h2 {
   margin-bottom: 10px;
 }
+
+/* Styling for the See More / See Less buttons */
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.star-icon {
+  cursor: pointer;
+  color: #ccc;
+  margin-left: 10px;
+}
+
+.star-icon.fav {
+  color: gold; /* Highlight the star when it's a favourite */
+}
+
+.favourites {
+  margin-top: 20px;
+}
+
+.favourites ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.favourites ul li {
+  margin: 5px 0;
+}
