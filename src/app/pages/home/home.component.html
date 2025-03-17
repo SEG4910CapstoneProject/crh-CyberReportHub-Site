@@ -25,27 +25,34 @@
     </ul>
   </div>
 
-  <!-- Previous Published Reports -->
+  <!-- Latest Published Report -->
   <div class="box reports">
     <div class="box-header">
-      <h2>Previous Published Reports</h2>
+      <h2>Latest Published Report</h2>
       <a routerLink="/reports" class="see-more-button">See More</a>
     </div>
     <table>
       <thead>
         <tr>
-          <th>Report #</th>
+          <th>ID</th>
           <th>Type</th>
-          <th>Template</th>
           <th>Generated Date</th>
+          <th>Last Modified</th>
+          <th *ngIf="isLoggedIn()">Email Sent</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let report of previousPublishedReports">
-          <td>{{ report.reportNumber }}</td>
-          <td>{{ report.type }}</td>
-          <td>{{ report.template }}</td>
-          <td>{{ report.generatedDate }}</td>
+        <tr *ngIf="latestPublishedReport">
+          <td>{{ latestPublishedReport.reportId }}</td>
+          <td>{{ latestPublishedReport.reportType }}</td>
+          <td>{{ latestPublishedReport.generatedDate }}</td>
+          <td>{{ latestPublishedReport.lastModified }}</td>
+          <td *ngIf="isLoggedIn()">
+            {{ latestPublishedReport.emailStatus ? '✔' : '✘' }}
+          </td>
+        </tr>
+        <tr *ngIf="!latestPublishedReport">
+          <td colspan="5">Loading...</td>
         </tr>
       </tbody>
     </table>

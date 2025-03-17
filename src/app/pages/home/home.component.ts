@@ -1,11 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { AuthService } from '../../shared/services/auth.service';
+import { ReportsService } from '../../shared/services/reports.service';
+import { JsonReportResponse } from '../../shared/sdk/rest-api/model/jsonReportResponse';
 
 @Component({
   selector: 'crh-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  private authService = inject(AuthService);
+  private reportsService = inject(ReportsService);
+  protected isLoggedIn = signal<boolean>(false);
+
+  // This property will hold the latest published report data
+  latestPublishedReport: JsonReportResponse | null = null;
+
+  ngOnInit() {
+    this.authService.isLoggedIn$.subscribe(status => {
+      console.log('Is Logged In:', status); // Debugging login status
+      this.isLoggedIn.set(status);
+    });
+
+    // Fetch the latest published report
+    this.reportsService.getLatestReport().subscribe(
+      (data: JsonReportResponse) => {
+        console.log('Latest Published Report Data:', data); // Log the fetched data
+        this.latestPublishedReport = data;
+      },
+      error => {
+        console.error('Error fetching latest report:', error); // Debugging error
+      }
+    );
+  }
+
   // Hardcoded Articles of Note
   articlesOfNote = [
     { title: 'Cyber Threats in 2024', link: 'https://example.com/article1' },
@@ -33,21 +61,5 @@ export class HomeComponent {
       link: 'https://example.com/article5',
     },
     { title: 'AI in Cybersecurity', link: 'https://example.com/article6' },
-  ];
-
-  // Hardcoded Previous Published Reports
-  previousPublishedReports = [
-    {
-      reportNumber: 100234,
-      type: 'Phishing',
-      template: 'Daily',
-      generatedDate: 'Feb 20th',
-    },
-    {
-      reportNumber: 100235,
-      type: 'Malware',
-      template: 'Weekly',
-      generatedDate: 'Feb 19th',
-    },
   ];
 }

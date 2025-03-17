@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Article {
+  articleId: string;
+  title: string;
+  description: string;
+  category: string;
   link: string;
+  publishDate: string;
   type: string;
 }
 
@@ -10,14 +16,26 @@ export interface Article {
   providedIn: 'root',
 })
 export class ArticleService {
-  private articles: Article[] = [];
-  private articlesSubject = new BehaviorSubject<Article[]>([]);
+  private apiUrl = 'http://localhost:8080/api/v1/articles';
 
-  // Observable for components to subscribe to article changes
-  articles$ = this.articlesSubject.asObservable();
+  constructor(private http: HttpClient) {}
 
-  addArticle(article: Article): void {
-    this.articles.push(article);
-    this.articlesSubject.next(this.articles);
+  //Calls API
+  addArticle(article: Article): Observable<any> {
+    return this.http.post(`${this.apiUrl}/add`, article);
+  }
+
+  // Fetch articles by type
+  getArticlesByType(type: string): Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.apiUrl}/type/${type}`);
+  }
+
+  // Fetch all article types with articles (for the articles page)
+  getAllArticleTypesWithArticles(
+    days: number
+  ): Observable<{ [key: string]: Article[] }> {
+    return this.http.get<{ [key: string]: Article[] }>(
+      `${this.apiUrl}/article-types-with-articles?days=${days}`
+    );
   }
 }

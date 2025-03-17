@@ -4,7 +4,7 @@
       {{ 'reportSearch.header' | translate }}
     </h1>
     <crh-button
-      *ngIf="isLoggedIn()"
+      *ngIf="isLoggedIn"
       class="report-search-header-latest"
       (click)="onLatestClick()">
       {{ 'reportSearch.latest' | translate }}
@@ -13,7 +13,7 @@
 
   <form class="report-search-control" [formGroup]="searchFormGroup">
     <div class="report-search-control-filters">
-      <!-- TEXT INPUTS -->
+      <!-- TEXT INPUT: REPORT NUMBER -->
       <div class="filter-wrapper">
         <div class="floating-label">
           <input
@@ -24,38 +24,26 @@
           <label>Report No</label>
         </div>
       </div>
+
+      <!-- DROPDOWN FOR TYPE SELECTION -->
       <div class="filter-wrapper">
-        <div class="floating-label">
-          <input
-            type="text"
-            formControlName="template"
-            placeholder=" "
-            class="search-box" />
-          <label>Template</label>
-        </div>
-      </div>
-      <div class="filter-wrapper">
-        <div class="floating-label">
-          <input
-            type="text"
-            formControlName="type"
-            placeholder=" "
-            class="search-box" />
-          <label>Type</label>
-        </div>
+        <mat-form-field class="dropdown-form-field" appearance="outline">
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="type">
+            <mat-option value="DAILY">Daily</mat-option>
+            <mat-option value="WEEKLY">Weekly</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
-      <!-- ANGULAR MATERIAL DATE PICKER: FROM DATE -->
+      <!-- DATE PICKER: START DATE -->
       <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
-          <mat-label>{{
-            'reportSearch.search.fromLabel' | translate
-          }}</mat-label>
+          <mat-label>Start Date</mat-label>
           <input
             matInput
-            [formControlName]="'startDate'"
             [matDatepicker]="pickerFrom"
-            placeholder=" " />
+            formControlName="startDate" />
           <mat-datepicker-toggle
             matSuffix
             [for]="pickerFrom"></mat-datepicker-toggle>
@@ -63,15 +51,14 @@
         </mat-form-field>
       </div>
 
-      <!-- ANGULAR MATERIAL DATE PICKER: TO DATE -->
+      <!-- DATE PICKER: END DATE -->
       <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
-          <mat-label>{{ 'reportSearch.search.toLabel' | translate }}</mat-label>
+          <mat-label>End Date</mat-label>
           <input
             matInput
-            [formControlName]="'endDate'"
             [matDatepicker]="pickerTo"
-            placeholder=" " />
+            formControlName="endDate" />
           <mat-datepicker-toggle
             matSuffix
             [for]="pickerTo"></mat-datepicker-toggle>
@@ -84,55 +71,37 @@
         <button class="search-button" (click)="onSearch()">Search</button>
       </div>
     </div>
-
-    <div class="report-search-control-pages">
-      <crh-paginator
-        [options]="[10, 20, 50]"
-        [totalResults]="reportSearchTotalSignal()"
-        (pageStatus)="paginatorStatusSignal.set($event)">
-      </crh-paginator>
-    </div>
   </form>
 </div>
 
-<div>
-  <hr class="report-search-divider" />
-</div>
-
-<!-- REPORT TABLE -->
 <div class="report-search-content">
   <table class="report-table">
     <thead>
       <tr>
         <th>No</th>
         <th>Type</th>
-        <th>Template</th>
         <th>Generated Date</th>
         <th>Last Modified</th>
-        <th>Email Sent</th>
+        <th *ngIf="isLoggedIn">Email Sent</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <!-- Show "No Data" message when no reports exist -->
-      <tr *ngIf="filteredReportsSignal()?.length === 0">
+      <tr *ngIf="filteredReports.length === 0">
         <td colspan="6" class="no-data">No reports available</td>
       </tr>
-
-      <!-- Loop through filtered reports -->
-      <tr *ngFor="let report of filteredReportsSignal()">
-        <td>{{ report.reportId }}</td>
-        <td>{{ report.type }}</td>
-        <td>{{ report.template }}</td>
-        <td>{{ report.generatedDate | date: 'medium' }}</td>
-        <td>{{ report.lastModified | date: 'medium' }}</td>
-        <td>{{ report.emailStatus ? '✔' : '✘' }}</td>
+      <tr *ngFor="let report of filteredReports">
+        <td>{{ report?.reportId }}</td>
+        <td>{{ report?.type === 'DAILY' ? 'Daily' : 'Weekly' }}</td>
+        <td>{{ report?.generatedDate | date: 'medium' }}</td>
+        <td>{{ report?.lastModified | date: 'medium' }}</td>
+        <td *ngIf="isLoggedIn">{{ report?.emailStatus ? '✔' : '✘' }}</td>
         <td class="actions-column">
           <button class="view-button" (click)="onViewReport(report)">
             View
           </button>
           <button
-            *ngIf="isLoggedIn()"
+            *ngIf="isLoggedIn"
             class="delete-button"
             (click)="onDeleteReport(report)">
             Delete
