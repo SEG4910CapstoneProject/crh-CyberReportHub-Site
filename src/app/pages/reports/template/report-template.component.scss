@@ -1,0 +1,26 @@
+.report-template {
+  border: 2px solid;
+  border-radius: 8px;
+  padding: 24px;
+  background-color: white;
+  max-width: 800px;
+  margin: auto;
+}
+
+.report-header {
+  padding: 16px;
+  color: white;
+  text-align: center;
+}
+
+.report-logo {
+  max-height: 50px;
+  margin-bottom: 10px;
+}
+
+.report-content {
+  padding: 16px;
+  h2 {
+    margin-top: 0;
+  }
+}

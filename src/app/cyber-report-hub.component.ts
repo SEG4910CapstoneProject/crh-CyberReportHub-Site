@@ -5,6 +5,7 @@ import { filter, map, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Language } from './shared/models/languages.model';
 import { CrhTranslationService } from './shared/services/crh-translation.service';
+import { DarkModeService } from './shared/services/dark-mode.service';
 
 @Component({
   selector: 'crh-cyber-report-hub',
@@ -17,6 +18,13 @@ export class CyberReportHubComponent {
   private translateService = inject(TranslateService);
   private crhTranslationService = inject(CrhTranslationService);
   private activatedRoute = inject(ActivatedRoute);
+  private darkModeService = inject(DarkModeService);
+
+  ngOnInit(): void {
+    this.darkModeService.isDarkMode$.subscribe(isDark => {
+      document.body.classList.toggle('dark-mode', isDark);
+    });
+  }
 
   constructor() {
     this.translateService.setDefaultLang('en');

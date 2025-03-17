@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 @use 'cyber-report-hub-base-theme' as base-theme;
 @use 'theme-utils/theme-generator' as theme-generator;
 @use '@angular/material' as mat;
@@ -6,10 +5,9 @@
 
 @import '@angular/cdk/overlay-prebuilt.css';
 
-// Adds theme over html element
-// Default Light Theme
+// ======== ORIGINAL LIGHT THEME (KEEPING IT) ========
+
 body {
-  // Place desired custom theme here
   @include theme-generator.setup-theme(base-theme.$theme);
   @include mat.core();
   @include mat.all-component-themes(util.$default-mat-theme);
@@ -19,12 +17,62 @@ body {
     color 0.3s;
 }
 
-// Apply dark mode theme
-.dark-mode {
-  @include theme-generator.setup-theme(base-theme.$dark-theme);
+// ======== DARK MODE OVERRIDES (MANUAL CONTROL) ========
+// This overrides Material's theming for dark mode (since Material is problematic in your setup)
+
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+
+  // Override navbar, page background, text colors, etc.
+  a {
+    color: #64b5f6;
+  }
+
+  button {
+    background-color: #333;
+    color: #f5f5f5;
+    border: 1px solid #555;
+
+    &:hover {
+      background-color: #555;
+    }
+  }
+
+  table {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+
+    th,
+    td {
+      border: 1px solid #555;
+    }
+  }
+
+  input,
+  select,
+  textarea {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #555;
+  }
+
+  // Optional: If your custom components have "box" classes or containers
+  .box {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #555;
+  }
+
+  // If you have a header or navbar wrapper, make it dark-friendly
+  nav {
+    background-color: #181818;
+    color: #ffffff;
+    border-bottom: 1px solid #444;
+  }
 }
 
-// ==== Below are material overrides ===
+// ======== MATERIAL OVERRIDES (KEEP THIS) ========
 .cdk-overlay-container {
   // Mat Options
   mat-option {
@@ -37,11 +85,9 @@ body {
     --mat-datepicker-calendar-date-selected-state-background-color: var(
       --crh-primary-color
     );
-
     --mat-datepicker-calendar-date-today-outline-color: var(
       --crh-primary-color
     );
-
     --mat-datepicker-calendar-date-preview-state-outline-color: var(
       --crh-primary-color
     );

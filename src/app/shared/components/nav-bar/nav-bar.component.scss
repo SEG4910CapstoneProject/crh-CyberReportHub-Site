@@ -3,16 +3,19 @@
 .crh-nav-bar-container {
   display: flex;
   flex-direction: column;
-
   background-color: var(--crh-background-color);
   box-shadow: 0px 4px 8px 0px var(--crh-nav-bar-shadow-color);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
+
 
 .crh-nav-bar-main-content {
   display: flex;
   flex-direction: row;
-
   padding: 0 size(18);
+
   .crh-nav-bar-item {
     display: flex;
     flex-direction: row;
@@ -36,11 +39,9 @@
 }
 
 .crh-nav-bar-logo {
-  // Manually specified for Logo purposes
   color: var(--crh-primary-color);
   font-family: 'Work Sans';
   font-size: 24px;
-  font-style: normal;
   font-weight: 700;
   line-height: normal;
 
@@ -107,8 +108,46 @@
   }
 }
 
+
+body.dark-mode {
+  .crh-nav-bar-container {
+    background-color: #181818;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.6);
+  }
+
+  .crh-nav-bar-logo {
+    color: #64b5f6;
+  }
+
+  .crh-nav-bar-link a {
+    color: #e0e0e0;
+  }
+
+  .crh-nav-bar-link a:hover,
+  .crh-nav-bar-link.crh-nav-link-selected > a {
+    color: #64b5f6;
+  }
+
+  .crh-nav-bar-lang {
+    color: #e0e0e0;
+  }
+
+  .crh-nav-bar-extended {
+    background-color: #1e1e1e;
+
+    a {
+      color: #e0e0e0;
+
+      &:hover {
+        color: #64b5f6;
+      }
+    }
+  }
+}
+
+
 .settings-icon img {
-  width: 32px; /* Adjust size */
+  width: 32px;
   height: 32px;
   cursor: pointer;
   transition: opacity 0.3s ease-in-out;

@@ -1,0 +1,11 @@
+<div class="report-template" [style.borderColor]="primaryColor">
+  <div class="report-header" [style.backgroundColor]="primaryColor">
+    <img *ngIf="logo" [src]="logo" alt="Report Logo" class="report-logo" />
+    <h1>Report #{{ reportId }}</h1>
+  </div>
+
+  <div class="report-content">
+    <h2 [style.color]="accentColor">Report Details</h2>
+    <p>Here are the details of the report...</p>
+  </div>
+</div>

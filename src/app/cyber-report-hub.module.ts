@@ -62,6 +62,7 @@ import { ArticlesComponent } from './pages/articles/articles.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
@@ -116,6 +117,7 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     RouterModule,
     RouterModule.forRoot([]),
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,

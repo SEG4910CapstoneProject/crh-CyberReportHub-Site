@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+//user tries to go protected route will be redirected to login
+
 @Injectable({
   providedIn: 'root',
 })

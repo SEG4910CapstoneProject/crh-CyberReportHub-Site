@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DateTime } from 'luxon';
@@ -13,11 +14,13 @@ import {
   startWith,
   switchMap,
   tap,
+  shareReplay,
 } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 import { Router } from '@angular/router';
+import { DarkModeService } from '../../shared/services/dark-mode.service';
 import { ReportsService } from '../../shared/sdk/rest-api/api/reports.service';
 
 @Component({
@@ -26,14 +29,14 @@ import { ReportsService } from '../../shared/sdk/rest-api/api/reports.service';
   styleUrl: './report-search.component.scss',
 })
 export class ReportSearchComponent implements OnInit {
-  private readonly REPORT_TYPE = 'DAILY';
 
   private reportsService = inject(ReportsService);
   private router = inject(Router);
 
   private authService = inject(AuthService);
-  protected isLoggedIn = signal<boolean>(false);
+  private darkModeService = inject(DarkModeService);
 
+  protected isLoggedIn = signal<boolean>(false);
   protected searchFormGroup = new FormGroup({
     reportNo: new FormControl(''),
     template: new FormControl(''),

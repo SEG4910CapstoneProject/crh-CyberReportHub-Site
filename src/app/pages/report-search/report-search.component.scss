@@ -49,36 +49,25 @@
   margin-bottom: size(16);
 
   .report-search-control-filters {
-    /* Center the entire row horizontally */
-    margin: 0 40px; /* Equal margin on left and right */
+    margin: 0 40px;
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    width: auto; /* Let content determine width */
+    width: auto;
 
     /* Each filter (including date pickers) is in a filter-wrapper */
     .filter-wrapper {
       display: inline-block;
       width: 160px;
-      /* Add horizontal spacing between wrappers */
       margin-right: 24px;
       margin-left: 24px;
-      /* Ensure consistent vertical alignment */
       vertical-align: middle;
-
-      /* If you need more or less space from the left edge,
-         you can also add margin-left: 24px here, or adjust the .report-search-control-filters margin. */
     }
 
     /* Remove right margin for the last filter (Search button) */
     .filter-wrapper:last-child {
       margin-right: 0;
-      /* Let the search button auto-size */
       width: auto;
-      /* Optionally push the search button to the far right:
-         margin-left: auto;
-         If you prefer the button to stay next to the last date picker, remove this line.
-      */
     }
   }
 
@@ -226,7 +215,7 @@ button.search-button:hover {
 }
 
 .report-table tr:nth-child(even) {
-  background-color: #002d72; /* Slightly lighter blue */
+  background-color: #002d72;
 }
 
 .no-data {
