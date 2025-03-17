@@ -13,7 +13,6 @@ export class ArticlesComponent implements OnInit {
   articlesByCategory: { [key: string]: Article[] } = {};
   articlesToShow: { [key: string]: number } = {}; // To track how many articles to display per category
   favouriteArticles: Article[] = []; // To store favourite articles
-  isLoading: boolean = true;
 
   isLoggedIn = false;
 
@@ -34,7 +33,6 @@ export class ArticlesComponent implements OnInit {
       if (data['articlesData']) {
         this.articlesByCategory = data['articlesData'];
         this.categories = Object.keys(data['articlesData']);
-        this.isLoading = false;
 
         // Initialize articlesToShow to show 5 articles initially for each category
         this.categories.forEach(category => {

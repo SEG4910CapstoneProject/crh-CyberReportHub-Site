@@ -7,15 +7,8 @@
     </button>
   </div>
 
-  <!-- Loading Spinner -->
-  <div *ngIf="isLoading" class="loading-overlay">
-    <div class="spinner"></div>
-    <p>Loading articles...</p>
-  </div>
-
-  <!-- Articles Section -->
-  <div *ngIf="!isLoading" class="sections">
-    <!-- Loop through the categories -->
+  <!-- Loop through the categories -->
+  <div class="sections">
     <div *ngFor="let category of categories" class="category-section">
       <h2>{{ category }}</h2>
       <div *ngIf="articlesByCategory[category]?.length; else emptySection">
