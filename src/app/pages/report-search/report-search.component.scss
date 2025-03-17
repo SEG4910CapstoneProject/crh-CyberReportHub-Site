@@ -49,6 +49,7 @@
   margin-bottom: size(16);
 
   .report-search-control-filters {
+<<<<<<< HEAD
     margin: 0 40px;
     display: flex;
     align-items: center;
@@ -147,14 +148,11 @@
   }
 }
 
-/* Angular Material date picker override
-   (For .mat-form-field with class .date-picker-form-field, appearance="outline") */
 /* Angular Material date picker override */
 .date-picker-form-field.mat-form-field-appearance-outline {
-  width: 200px; /* match text input width */
-  margin: 0 !important; /* override material defaults if needed */
   width: 220px; /* Increased width */
   margin: 0 !important;
+
   .mat-form-field-outline {
     border-color: black !important;
     border-radius: 8px !important;
@@ -162,7 +160,6 @@
   }
 
   .mat-form-field-flex {
-    min-height: 44px !important; /* match text input height */
     min-height: 44px !important;
     background-color: #fff !important;
     border-radius: 8px !important;
@@ -174,10 +171,7 @@
     color: #333 !important;
     text-align: center;
   }
-  .mat-form-field-outline-thick {
-    border-color: black !important;
-  }
-  /* Focus state */
+
   &.mat-focused .mat-form-field-outline-thick {
     border-color: #002d72 !important;
     border-width: 2.5px !important;
@@ -198,7 +192,6 @@ button.search-button {
   transition:
     transform 0.2s,
     box-shadow 0.2s;
-  height: 38px; /* match input & date picker */
   height: 38px;
   margin-left: 20px;
   margin-bottom: 20px;
@@ -222,7 +215,6 @@ button.search-button:hover {
 .report-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 12px; /* Adjust space above the table */
   margin-top: 12px;
   background-color: #002d72;
   color: #e0e0e0;
@@ -230,19 +222,14 @@ button.search-button:hover {
 
 .report-table th {
   text-align: left;
-  font-size: 18px; /* Increased font size */
-  padding: 16px 32px; /* Added more spacing between columns */
   font-size: 18px;
   padding: 16px 32px;
   border-bottom: 2px solid black;
-  color: white; /* White text for headers */
   color: white;
   background-color: #001f54;
 }
 
 .report-table td {
-  font-size: 18px; /* Increased font size */
-  padding: 14px 32px; /* Increased spacing between columns */
   font-size: 18px;
   padding: 14px 32px;
   border-bottom: 1px solid #ddd;
