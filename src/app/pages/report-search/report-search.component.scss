@@ -49,28 +49,7 @@
   margin-bottom: size(16);
 
   .report-search-control-filters {
-<<<<<<< HEAD
-    margin: 0 40px;
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    width: auto;
 
-    /* Each filter (including date pickers) is in a filter-wrapper */
-    .filter-wrapper {
-      display: inline-block;
-      width: 160px;
-      margin-right: 24px;
-      margin-left: 24px;
-      vertical-align: middle;
-    }
-
-    /* Remove right margin for the last filter (Search button) */
-    .filter-wrapper:last-child {
-      margin-right: 0;
-      width: auto;
-    }
-=======
     display: flex;
     align-items: center;
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
@@ -90,7 +69,7 @@
   .filter-wrapper:last-child {
     margin-right: 0;
     width: auto;
->>>>>>> 81aad849f8c70d189f10c8e25756dde7a06375ad
+
   }
 
   .report-search-control-pages {

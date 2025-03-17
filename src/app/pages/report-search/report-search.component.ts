@@ -1,22 +1,14 @@
-<<<<<<< HEAD
 import { Component, computed, inject, signal, OnInit } from '@angular/core';
-import { Component, inject, signal, OnInit } from '@angular/core';
-=======
-import { Component, OnInit, inject } from '@angular/core';
->>>>>>> 81aad849f8c70d189f10c8e25756dde7a06375ad
 import { AuthService } from '../../shared/services/auth.service';
-import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ReportsService } from '../../shared/services/reports.service';
 import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
-<<<<<<< HEAD
+
 import {
   catchError,
   combineLatest,
   distinctUntilChanged,
   map,
   of,
-  shareReplay,
   startWith,
   switchMap,
   tap,
@@ -28,11 +20,10 @@ import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/sea
 import { Router } from '@angular/router';
 import { DarkModeService } from '../../shared/services/dark-mode.service';
 import { ReportsService } from '../../shared/sdk/rest-api/api/reports.service';
-=======
-import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
-import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
->>>>>>> 81aad849f8c70d189f10c8e25756dde7a06375ad
+import { DateTime } from 'luxon';
+
+
+
 
 @Component({
   selector: 'crh-report-search',
@@ -40,14 +31,11 @@ import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/sea
   styleUrls: ['./report-search.component.scss'],
 })
 export class ReportSearchComponent implements OnInit {
-<<<<<<< HEAD
 
-=======
->>>>>>> 81aad849f8c70d189f10c8e25756dde7a06375ad
   private reportsService = inject(ReportsService);
   private router = inject(Router);
   private authService = inject(AuthService);
-<<<<<<< HEAD
+
   private darkModeService = inject(DarkModeService);
 
   protected isLoggedIn = signal<boolean>(false);
@@ -58,10 +46,8 @@ export class ReportSearchComponent implements OnInit {
     startDate: new FormControl<DateTime | undefined>(undefined),
     endDate: new FormControl<DateTime | undefined>(undefined),
   });
-=======
 
-  protected isLoggedIn = false;
->>>>>>> 81aad849f8c70d189f10c8e25756dde7a06375ad
+
 
   // Declare form controls and form group
   reportNo: string = '';
@@ -69,7 +55,7 @@ export class ReportSearchComponent implements OnInit {
   startDate: FormControl = new FormControl(null); // Default to null
   endDate: FormControl = new FormControl(null); // Default to null
 
-  searchFormGroup!: FormGroup;
+
 
   protected paginatorStatus: PaginatorStatus = {
     itemsPerPage: 10,
@@ -88,15 +74,7 @@ export class ReportSearchComponent implements OnInit {
     // Subscribe to login status
     this.authService.isLoggedIn$.subscribe(status => {
       console.log('Is Logged In:', status); // Debugging login status
-      this.isLoggedIn = status;
-    });
-
-    // Initialize form group with controls
-    this.searchFormGroup = new FormGroup({
-      reportNo: new FormControl(''),
-      type: new FormControl(this.type),
-      startDate: this.startDate,
-      endDate: this.endDate,
+      this.isLoggedIn.set(status);
     });
 
     // Fetch reports initially (no filters applied)
@@ -118,12 +96,16 @@ export class ReportSearchComponent implements OnInit {
       limit: this.paginatorStatus.itemsPerPage,
     });
 
+    const startDateStr = startDate ? startDate.toString() : '';
+    const endDateStr = endDate ? endDate.toString() : '';
+    const typeStr = type ?? 'DAILY';
+
     // Fetch reports from the service
     this.reportsService
       .searchReports(
-        type,
-        startDate,
-        endDate,
+        typeStr,
+        startDateStr,
+        endDateStr,
         this.paginatorStatus.page,
         this.paginatorStatus.itemsPerPage
       )
