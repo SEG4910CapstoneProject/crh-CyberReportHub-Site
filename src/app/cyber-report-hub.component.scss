@@ -1,6 +1,4 @@
-
 @use 'sass:color';
-
 
 @use '@angular/material' as mat;
 
@@ -11,11 +9,9 @@
   z-index: 1;
 }
 
-
 $primary-color: #1976d2;
 $accent-color: #ff9800;
 $warn-color: #f44336;
-
 
 $light-theme: (
   color: (
@@ -37,13 +33,12 @@ $dark-theme: (
   density: 0,
 );
 
-
 body {
-  color: map.get($light-theme, color, primary);
+  color: map-get($light-theme, color, primary);
   background-color: #ffffff;
 }
 
 body.dark-mode {
-  color: map.get($dark-theme, color, primary);
+  color: map-get($dark-theme, color, primary);
   background-color: #121212;
 }
