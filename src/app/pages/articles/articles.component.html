@@ -54,12 +54,12 @@
 
         <!-- Show 'See More' or 'See Less' button depending on whether the full list is visible -->
         <button
-          *ngIf="articlesToShow[category] === 5"
+          *ngIf="articlesToShow[category] === 3"
           (click)="toggleArticles(category)">
           See More
         </button>
         <button
-          *ngIf="articlesToShow[category] !== 5"
+          *ngIf="articlesToShow[category] !== 3"
           (click)="toggleArticles(category)">
           See Less
         </button>
