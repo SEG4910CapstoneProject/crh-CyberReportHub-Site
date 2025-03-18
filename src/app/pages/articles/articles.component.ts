@@ -39,9 +39,9 @@ export class ArticlesComponent implements OnInit {
         this.categories = Object.keys(data['articlesData']);
         this.isLoading = false;
 
-        // Initialize articlesToShow to show 5 articles initially for each category
+        // Initialize articlesToShow to show 3 articles initially for each category
         this.categories.forEach(category => {
-          this.articlesToShow[category] = 5;
+          this.articlesToShow[category] = 3;
         });
       }
     });
@@ -63,12 +63,12 @@ export class ArticlesComponent implements OnInit {
 
   // Toggle functionality for See More / See Less
   toggleArticles(category: string): void {
-    if (this.articlesToShow[category] === 5) {
+    if (this.articlesToShow[category] === 3) {
       // Show all articles
       this.articlesToShow[category] = this.articlesByCategory[category].length;
     } else {
-      // Show only 5 articles
-      this.articlesToShow[category] = 5;
+      // Show only 3 articles
+      this.articlesToShow[category] = 3;
     }
   }
 
