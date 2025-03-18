@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService, Article } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
@@ -13,9 +13,11 @@ export class ArticlesComponent implements OnInit {
   articlesByCategory: { [key: string]: Article[] } = {};
   articlesToShow: { [key: string]: number } = {}; // To track how many articles to display per category
   favouriteArticles: Article[] = []; // To store favourite articles
+  articlesOfNote: Article[] = []; // To store articles of note
   isLoading: boolean = true;
 
-  isLoggedIn = false;
+  // Use signal to track logged-in status
+  protected isLoggedIn = signal<boolean>(false);
 
   constructor(
     private route: ActivatedRoute,
@@ -24,9 +26,10 @@ export class ArticlesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Track logged-in status using signal
     this.authService.isLoggedIn$.subscribe(status => {
       console.log('Is Logged In:', status); // Debugging login status
-      this.isLoggedIn = status;
+      this.isLoggedIn.set(status);  // Update the signal with the current login status
     });
 
     this.route.data.subscribe(data => {
@@ -51,6 +54,13 @@ export class ArticlesComponent implements OnInit {
     );
   }
 
+  // Check if the article is in the articles of note list
+  isArticleOfNote(article: Article): boolean {
+    return this.articlesOfNote.some(
+      note => note.articleId === article.articleId
+    );
+  }
+
   // Toggle functionality for See More / See Less
   toggleArticles(category: string): void {
     if (this.articlesToShow[category] === 5) {
@@ -64,6 +74,8 @@ export class ArticlesComponent implements OnInit {
 
   // Add or remove article from favourites
   toggleFavourite(article: Article): void {
+    if (!this.isLoggedIn()) return; // Prevent non-logged-in users from adding to favourites
+
     const index = this.favouriteArticles.findIndex(
       fav => fav.articleId === article.articleId
     );
@@ -73,6 +85,24 @@ export class ArticlesComponent implements OnInit {
     } else {
       // Otherwise, add it to favourites
       this.favouriteArticles.push(article);
+    }
+  }
+
+  // Add or remove article from Articles of Note
+  toggleArticleOfNote(article: Article, event: any): void {
+    if (!this.isLoggedIn()) return; // Prevent non-logged-in users from adding to Articles of Note
+
+    if (event.target.checked) {
+      // If checked, add to Articles of Note
+      this.articlesOfNote.push(article);
+    } else {
+      // If unchecked, remove from Articles of Note
+      const index = this.articlesOfNote.findIndex(
+        note => note.articleId === article.articleId
+      );
+      if (index !== -1) {
+        this.articlesOfNote.splice(index, 1);
+      }
     }
   }
 }

@@ -31,13 +31,24 @@
             <p>{{ article.description }}</p>
             <p><strong>Published:</strong> {{ article.publishDate }}</p>
 
-            <!-- Star icon to mark article as favourite -->
+            <!-- Only show the star icon for logged-in users -->
             <span
               class="star-icon"
+              *ngIf="isLoggedIn()"
               (click)="toggleFavourite(article)"
               [class.fav]="isFavourite(article)">
               &#9733;
             </span>
+
+            <!-- Only show the checkbox for "Article of Note" for logged-in users -->
+            <label *ngIf="isLoggedIn()">
+              <input
+                type="checkbox"
+                (change)="toggleArticleOfNote(article, $event)"
+                [checked]="isArticleOfNote(article)">
+              Article of Note
+            </label>
+
           </li>
         </ul>
 
@@ -60,7 +71,7 @@
   </div>
 
   <!-- Show the Favourites section if the user is logged in -->
-  <div *ngIf="isLoggedIn">
+  <div *ngIf="isLoggedIn()">
     <h2>Your Favourites</h2>
     <div *ngIf="favouriteArticles.length; else noFavourites">
       <ul>
@@ -73,4 +84,15 @@
       <p>No favourites yet.</p>
     </ng-template>
   </div>
+
+  <!-- Show the "Articles of Note" section for all users -->
+  <div>
+    <h2>Your Articles of Note</h2>
+    <ul>
+      <li *ngFor="let article of articlesOfNote">
+        <a [href]="article.link" target="_blank">{{ article.title }}</a>
+      </li>
+    </ul>
+  </div>
+
 </div>

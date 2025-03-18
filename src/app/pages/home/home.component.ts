@@ -13,7 +13,6 @@ export class HomeComponent implements OnInit {
   private reportsService = inject(ReportsService);
   protected isLoggedIn = signal<boolean>(false);
 
-  // This property will hold the latest published report data
   latestPublishedReport: JsonReportResponse | null = null;
 
   ngOnInit() {
@@ -32,6 +31,13 @@ export class HomeComponent implements OnInit {
         console.error('Error fetching latest report:', error); // Debugging error
       }
     );
+
+    // Articles of Note example
+    this.articlesOfNote = [
+      { title: 'Cyber Threats in 2024', link: 'https://example.com/article1' },
+      { title: 'Understanding Ransomware', link: 'https://example.com/article2' },
+      { title: 'Phishing Attacks are on the Rise', link: 'https://example.com/article3' },
+    ];
   }
 
   // Hardcoded Articles of Note
