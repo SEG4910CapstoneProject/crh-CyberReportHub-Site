@@ -16,6 +16,7 @@ import { ArticlesComponent } from './pages/articles/articles.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
+import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
 
 export const routes: Routes = [
   /**
@@ -27,6 +28,11 @@ export const routes: Routes = [
     path: 'settings',
     component: SettingsComponent,
     data: { selectedNav: 'settings' },
+  },
+  {
+    path: 'reports-articles',
+    component: ReportArticlesComponent,
+    data: { selectedNav: 'none' satisfies NavBarSelectedLinkOptions },
   },
   {
     path: 'articles',

@@ -69,6 +69,7 @@ import { ArticlesComponent } from './pages/articles/articles.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
+import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
@@ -117,6 +118,7 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     ChatbotComponent,
     ArticlesComponent,
     ReportNewComponent,
+    ReportArticlesComponent,
     SettingsComponent,
   ],
   imports: [

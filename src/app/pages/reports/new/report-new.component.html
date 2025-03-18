@@ -1,7 +1,7 @@
-<div class="report-new" [class.dark]="isDarkMode">
+<div class="report-new" [class.dark]="isDarkMode$">
   <h1>Create New Report</h1>
 
-  <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
+  <form *ngIf="form" [formGroup]="form">
     <div class="form-section">
       <label>Report Type:</label>
       <select formControlName="reportType">
@@ -19,53 +19,10 @@
       </select>
     </div>
 
-    <div class="form-section">
-      <label>Articles:</label>
-      <div class="article-list">
-        <div
-          *ngFor="let article of articles.controls; let i = index"
-          [formGroup]="article">
-          <input placeholder="Title" formControlName="title" readonly />
-          <select formControlName="type">
-            <option [value]="article.get('type')?.value">
-              {{ article.get('type')?.value }}
-            </option>
-          </select>
-          <select formControlName="category">
-            <option value="">-- Select Category --</option>
-            <option value="activeThreats">Active Threats</option>
-            <option value="emergingInternationalThreats">
-              Emerging and International Threats
-            </option>
-            <option value="globalNews">Global Information & News Watch</option>
-            <option value="customerThreats">Customer Threats</option>
-          </select>
-          <input placeholder="Link" formControlName="link" readonly />
-          <button type="button" (click)="removeArticle(i)">Remove</button>
-        </div>
-      </div>
-    </div>
-
     <div class="form-actions">
       <button type="button" (click)="cancel()">Cancel</button>
-      <button type="submit">Create Report</button>
+      <button type="submit" (click)="next()">Next</button>
     </div>
   </form>
 </div>
 
-<div class="article-selection-box" [class.dark]="isDarkMode">
-  <h2>Select Articles</h2>
-  <input
-    type="text"
-    placeholder="Search articles..."
-    [(ngModel)]="articleSearchTerm"
-    (input)="filterArticles()" />
-  <div class="article-list-container">
-    <div
-      *ngFor="let article of filteredArticles"
-      (click)="addArticleFromSelection(article)">
-      <span>{{ article.title }}</span>
-      <button class="add-button">+</button>
-    </div>
-  </div>
-</div>
