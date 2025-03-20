@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
   // Method to fetch most viewed articles
   fetchMostViewedArticles() {
     this.articleService.getTopMostViewedArticles().subscribe(
-      (articles: Article[]) => { // Explicitly typing articles as Article[]
+      (articles: Article[]) => {
         console.log('Most Viewed Articles:', articles);
         this.mostViewedArticles = articles.slice(0, 5); // Limiting to top 5 articles
       },

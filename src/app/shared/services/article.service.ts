@@ -44,4 +44,10 @@ export class ArticleService {
   getTopMostViewedArticles(): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.apiUrl}/top-viewed`);
   }
+
+  //Update view count each time a link is clicked
+  incrementViewCount(articleId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/incrementViewCount/${articleId}`, {});
+  }
+
 }

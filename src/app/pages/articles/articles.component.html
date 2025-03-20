@@ -27,7 +27,9 @@
                 articlesToShow[category]
               )
             ">
-            <a [href]="article.link" target="_blank">{{ article.title }}</a>
+            <a [href]="article.link" target="_blank" (click)="incrementViewCount(article.articleId)">
+              {{ article.title }} ({{ article.viewCount }})
+            </a>
             <p>{{ article.description }}</p>
             <p><strong>Published:</strong> {{ article.publishDate }}</p>
 
