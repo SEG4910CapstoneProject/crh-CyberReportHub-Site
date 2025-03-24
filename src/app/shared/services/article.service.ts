@@ -16,6 +16,9 @@ export interface Article {
   providedIn: 'root',
 })
 export class ArticleService {
+  getArticles() {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8080/api/v1/articles';
 
   constructor(private http: HttpClient) {}

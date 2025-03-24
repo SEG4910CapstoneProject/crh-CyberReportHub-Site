@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ReportsService } from '../../../shared/sdk/rest-api/api/reports.service';
-import { ArticlesService } from '../../../shared/sdk/rest-api/api/articles.service';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
+import { AuthService } from '../../../shared/services/auth.service';
+import { ArticleService, Article } from '../../../shared/services/article.service';
 
 @Component({
   selector: 'crh-report-articles',
@@ -15,14 +15,13 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;
   protected isDarkMode: boolean = false;
   protected articleSearchTerm: string = '';
-  protected articlesFromOpenCTI: any[] = [];
-  protected filteredArticles: any[] = [];
+  protected suggestedArticles: any[] = []; // Store suggested articles
   protected selectedArticleIds: any[] = [];
   private subscriptions: Subscription[] = [];
+  private articleService = inject(ArticleService);
 
-  private reportsService = inject(ReportsService);
-  private articlesService = inject(ArticlesService);
   private darkModeService = inject(DarkModeService);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
 
@@ -33,8 +32,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadBrandingSettings();
-    this.fetchArticlesFromOpenCTI();
+    this.fetchSuggestedArticles(); // Fetch suggested articles
     this.subscriptions.push(
       this.darkModeService.isDarkMode$.subscribe(mode => {
         this.isDarkMode = mode;
@@ -47,31 +45,22 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  private loadBrandingSettings(): void {
-    const savedSettings = localStorage.getItem('brandingSettings');
-    if (savedSettings) {
-      const settings = JSON.parse(savedSettings);
-      this.form.patchValue({
-        primaryColor: settings.primaryColor || '#002D72',
-        accentColor: settings.accentColor || '#FF5733',
-        logo: settings.logo || null,
-      });
-    }
-  }
+  private fetchSuggestedArticles(): void {
+    console.log('Fetching suggested articles...');
 
-  private fetchArticlesFromOpenCTI(): void {
-    this.articlesService.getArticle('some-id').subscribe(
-      articles => {
-        this.articlesFromOpenCTI = [articles];
-        this.filteredArticles = [...this.articlesFromOpenCTI];
+    const days = 30; // Fetch articles from the last 30 days (modify if needed)
+    this.articleService.getAllArticleTypesWithArticles(days).subscribe(
+      (response) => {
+        console.log('Suggested articles response:', response);
+        this.suggestedArticles = Object.values(response).flat(); // Flatten response into a single array
       },
-      error => console.error('Error fetching articles:', error)
+      (error) => console.error('Error fetching suggested articles:', error)
     );
   }
 
   filterArticles(): void {
     const term = this.articleSearchTerm.toLowerCase().trim();
-    this.filteredArticles = this.articlesFromOpenCTI.filter(article =>
+    this.suggestedArticles = this.suggestedArticles.filter(article =>
       article.title.toLowerCase().includes(term)
     );
   }
@@ -82,11 +71,11 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
   addArticleFromSelection(article: any): void {
     const articleForm = this.fb.group({
-      id: [article.id, Validators.required],
+      id: [article.articleId, Validators.required],
       title: [article.title, Validators.required],
-      type: [article.type, Validators.required],
-      category: [''],
-      link: [article.link],
+      type: [article.type || '', Validators.required],
+      category: [article.category || ''],
+      link: [article.link || ''],
     });
     this.articles.push(articleForm);
   }
@@ -110,12 +99,9 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Get selected articles
     this.selectedArticleIds = this.articles.value.map(article => article.id);
-
-    console.log('Selected Articles:', this.selectedArticleIds);}
-
-
+    console.log('Selected Articles:', this.selectedArticleIds);
+  }
 
   back(): void {
     this.router.navigate(['/reports/create']);

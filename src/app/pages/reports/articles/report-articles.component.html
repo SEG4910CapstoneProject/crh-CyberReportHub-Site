@@ -38,7 +38,7 @@
 </div>
 
 <div class="article-selection-box" [class.dark]="isDarkMode">
-  <h2>Select Articles</h2>
+  <h2>Suggested Articles</h2>
   <input
     type="text"
     placeholder="Search articles..."
@@ -46,8 +46,8 @@
     (input)="filterArticles()" />
   <div class="article-list-container">
     <div
-      *ngFor="let article of filteredArticles"
-      (click)="addArticleFromSelection(article)">
+      *ngFor="let article of suggestedArticles"
+      (click)="addArticleFromSelection(article)" class="article-item">
       <span>{{ article.title }}</span>
       <button class="add-button">+</button>
     </div>
