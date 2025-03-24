@@ -21,7 +21,9 @@
     </div>
     <ul>
       <li *ngFor="let article of mostViewedArticles">
-        <a [href]="article.link" target="_blank">{{ article.title }}</a>
+        <a [href]="article.link" target="_blank">
+          {{ article.title }} ({{ article.viewCount }})
+        </a>
       </li>
     </ul>
   </div>

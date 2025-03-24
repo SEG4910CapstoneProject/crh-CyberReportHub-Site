@@ -10,6 +10,7 @@ export interface Article {
   link: string;
   publishDate: string;
   type: string;
+  viewCount: number;
 }
 
 @Injectable({
@@ -23,7 +24,7 @@ export class ArticleService {
 
   constructor(private http: HttpClient) {}
 
-  //Calls API
+  // Calls API to add an article
   addArticle(article: Article): Observable<any> {
     return this.http.post(`${this.apiUrl}/add`, article);
   }
@@ -41,4 +42,15 @@ export class ArticleService {
       `${this.apiUrl}/article-types-with-articles?days=${days}`
     );
   }
+
+  // Fetch top 10 most viewed articles
+  getTopMostViewedArticles(): Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.apiUrl}/top-viewed`);
+  }
+
+  //Update view count each time a link is clicked
+  incrementViewCount(articleId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/incrementViewCount/${articleId}`, {});
+  }
+
 }

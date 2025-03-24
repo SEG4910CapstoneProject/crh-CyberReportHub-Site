@@ -105,4 +105,17 @@ export class ArticlesComponent implements OnInit {
       }
     }
   }
+
+  // Increment view count on article click
+  incrementViewCount(articleId: string): void {
+    this.articleService.incrementViewCount(articleId).subscribe(
+      response => {
+        console.log('View count incremented', response);
+      },
+      error => {
+        console.error('Error incrementing view count', error);
+      }
+    );
+  }
+
 }
