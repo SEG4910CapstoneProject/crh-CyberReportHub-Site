@@ -2,7 +2,8 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { ReportsService } from '../../shared/services/reports.service';
 import { JsonReportResponse } from '../../shared/sdk/rest-api/model/jsonReportResponse';
-import { ArticleService, Article } from '../../shared/services/article.service'; // Correct import
+import { ArticleService, Article, MostViewedArticle, ArticleOfNote } from '../../shared/services/article.service';
+
 
 @Component({
   selector: 'crh-home',
@@ -13,17 +14,13 @@ export class HomeComponent implements OnInit {
   private authService = inject(AuthService);
   private reportsService = inject(ReportsService);
   protected isLoggedIn = signal<boolean>(false);
-  private articleService = inject(ArticleService); // Correct service to use
+  private articleService = inject(ArticleService);
 
   latestPublishedReport: JsonReportResponse | null = null;
-  mostViewedArticles: Article[] = []; // Array to store most viewed articles
 
-  // Hardcoded Articles of Note
-  articlesOfNote = [
-    { title: 'Cyber Threats in 2024', link: 'https://example.com/article1' },
-    { title: 'Understanding Ransomware', link: 'https://example.com/article2' },
-    { title: 'Phishing Attacks are on the Rise', link: 'https://example.com/article3' },
-  ];
+  mostViewedArticles: MostViewedArticle[] = [];
+
+  articlesOfNote: ArticleOfNote[] = [];
 
   // Hardcoded Current Items of Interest
   currentItemsOfInterest = [
@@ -53,18 +50,34 @@ export class HomeComponent implements OnInit {
     );
 
     // Fetch most viewed articles
-    this.fetchMostViewedArticles(); // Fetch top 5 most viewed articles
+    this.fetchMostViewedArticles();
+
+    // Fetch Articles of Note
+    this.fetchArticlesOfNote();
   }
 
   // Method to fetch most viewed articles
   fetchMostViewedArticles() {
     this.articleService.getTopMostViewedArticles().subscribe(
-      (articles: Article[]) => {
+      (articles: MostViewedArticle[]) => {
         console.log('Most Viewed Articles:', articles);
-        this.mostViewedArticles = articles.slice(0, 5); // Limiting to top 5 articles
+        this.mostViewedArticles = articles.slice(0, 5);  // Limiting to top 5 articles
       },
-      (error: any) => { // Explicitly typing error as any
+      (error: any) => {
         console.error('Error fetching most viewed articles:', error);
+      }
+    );
+  }
+
+  // Fetch Articles of Note
+  fetchArticlesOfNote() {
+    this.articleService.getArticlesOfNote().subscribe(
+      (articles: ArticleOfNote[]) => {
+        console.log('Articles of Note:', articles);
+        this.articlesOfNote = articles;
+      },
+      (error: any) => {
+        console.error('Error fetching Articles of Note:', error);
       }
     );
   }

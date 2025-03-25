@@ -11,6 +11,17 @@ export interface Article {
   publishDate: string;
   type: string;
   viewCount: number;
+  isArticleOfNote: boolean;
+  url?: string;
+}
+
+export interface MostViewedArticle {
+  url: string;
+  viewCount: number;
+}
+
+export interface ArticleOfNote  {
+  url: string;
 }
 
 @Injectable({
@@ -40,14 +51,24 @@ export class ArticleService {
     );
   }
 
-  // Fetch top 10 most viewed articles
-  getTopMostViewedArticles(): Observable<Article[]> {
-    return this.http.get<Article[]>(`${this.apiUrl}/top-viewed`);
+  // Fetch most viewed articles
+  getTopMostViewedArticles(): Observable<MostViewedArticle[]> {
+    return this.http.get<MostViewedArticle[]>(`${this.apiUrl}/top-10`);
   }
 
   //Update view count each time a link is clicked
   incrementViewCount(articleId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/incrementViewCount/${articleId}`, {});
+    return this.http.post(`${this.apiUrl}/increment-view/${articleId}`, {});
+  }
+
+  // Choose the "article of note" status
+  chooseArticleOfNote(articleId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/toggle-article-of-note/${articleId}`, {});
+  }
+
+  // Fetch articles that are marked as "Articles of Note"
+  getArticlesOfNote(): Observable<ArticleOfNote[]> {
+    return this.http.get<ArticleOfNote[]>(`${this.apiUrl}/articles-of-note`);
   }
 
 }

@@ -9,7 +9,7 @@
     </div>
     <ul>
       <li *ngFor="let article of articlesOfNote">
-        <a [href]="article.link" target="_blank">{{ article.title }}</a>
+        <a [href]="article.url" target="_blank">{{ article.url }}</a>
       </li>
     </ul>
   </div>
@@ -19,13 +19,21 @@
     <div class="box-header">
       <h2>Most Viewed Articles</h2>
     </div>
-    <ul>
-      <li *ngFor="let article of mostViewedArticles">
-        <a [href]="article.link" target="_blank">
-          {{ article.title }} ({{ article.viewCount }})
-        </a>
-      </li>
-    </ul>
+    <div class="most-viewed-table">
+      <!-- Headers for Link and Views -->
+      <div class="table-header">
+        <div class="table-header-item">Link</div>
+        <div class="table-header-item">Views</div>
+      </div>
+      <div *ngFor="let article of mostViewedArticles" class="table-row">
+        <div class="table-item">
+          <a [href]="article.url" target="_blank">{{ article.url }}</a>
+        </div>
+        <div class="table-item">
+          {{ article.viewCount }}
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Latest Published Report -->

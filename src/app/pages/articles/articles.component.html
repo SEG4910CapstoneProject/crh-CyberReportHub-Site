@@ -21,12 +21,7 @@
       <div *ngIf="articlesByCategory[category]?.length; else emptySection">
         <ul>
           <li
-            *ngFor="
-              let article of articlesByCategory[category]?.slice(
-                0,
-                articlesToShow[category]
-              )
-            ">
+            *ngFor="let article of articlesByCategory[category]?.slice(0, articlesToShow[category])">
             <a [href]="article.link" target="_blank" (click)="incrementViewCount(article.articleId)">
               {{ article.title }} ({{ article.viewCount }})
             </a>
@@ -50,19 +45,14 @@
                 [checked]="isArticleOfNote(article)">
               Article of Note
             </label>
-
           </li>
         </ul>
 
         <!-- Show 'See More' or 'See Less' button depending on whether the full list is visible -->
-        <button
-          *ngIf="articlesToShow[category] === 3"
-          (click)="toggleArticles(category)">
+        <button *ngIf="articlesToShow[category] === 3" (click)="toggleArticles(category)">
           See More
         </button>
-        <button
-          *ngIf="articlesToShow[category] !== 3"
-          (click)="toggleArticles(category)">
+        <button *ngIf="articlesToShow[category] !== 3" (click)="toggleArticles(category)">
           See Less
         </button>
       </div>
@@ -92,9 +82,9 @@
     <h2>Your Articles of Note</h2>
     <ul>
       <li *ngFor="let article of articlesOfNote">
-        <a [href]="article.link" target="_blank">{{ article.title }}</a>
+        <!-- Display only the URL for Articles of Note -->
+        <a [href]="article.url" target="_blank">{{ article.url }}</a>
       </li>
     </ul>
   </div>
-
 </div>
