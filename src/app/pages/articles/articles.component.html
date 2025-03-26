@@ -73,18 +73,22 @@
       </ul>
     </div>
     <ng-template #noFavourites>
-      <p>No favourites yet.</p>
+      <p>No favourites yet...</p>
     </ng-template>
   </div>
 
   <!-- Show the "Articles of Note" section for all users -->
   <div>
     <h2>Your Articles of Note</h2>
-    <ul>
-      <li *ngFor="let article of articlesOfNote">
-        <!-- Display only the URL for Articles of Note -->
-        <a [href]="article.url" target="_blank">{{ article.url }}</a>
-      </li>
-    </ul>
+    <div *ngIf="articlesOfNote.length; else noArticlesOfNote">
+      <ul>
+        <li *ngFor="let article of articlesOfNote">
+          <a [href]="article.url" target="_blank">{{ article.url }}</a>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noArticlesOfNote>
+      <p>No articles of note yet...</p>
+    </ng-template>
   </div>
 </div>

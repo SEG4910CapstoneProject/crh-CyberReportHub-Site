@@ -60,8 +60,9 @@ export class HomeComponent implements OnInit {
   fetchMostViewedArticles() {
     this.articleService.getTopMostViewedArticles().subscribe(
       (articles: MostViewedArticle[]) => {
-        console.log('Most Viewed Articles:', articles);
-        this.mostViewedArticles = articles.slice(0, 5);  // Limiting to top 5 articles
+        this.mostViewedArticles = articles
+          .filter(article => article.viewCount > 0) //Only articles with view count >= 1 show up
+          .slice(0, 5);
       },
       (error: any) => {
         console.error('Error fetching most viewed articles:', error);

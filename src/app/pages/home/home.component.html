@@ -7,11 +7,14 @@
       <h2>Articles of Note</h2>
       <a routerLink="/articles#articles-of-note" class="see-more-button">See More</a>
     </div>
-    <ul>
+    <ul *ngIf="articlesOfNote.length; else noArticlesOfNote">
       <li *ngFor="let article of articlesOfNote">
         <a [href]="article.url" target="_blank">{{ article.url }}</a>
       </li>
     </ul>
+    <ng-template #noArticlesOfNote>
+      <p>No articles of note yet...</p>
+    </ng-template>
   </div>
 
   <!-- Most Viewed Articles -->
@@ -19,21 +22,29 @@
     <div class="box-header">
       <h2>Most Viewed Articles</h2>
     </div>
-    <div class="most-viewed-table">
-      <!-- Headers for Link and Views -->
-      <div class="table-header">
-        <div class="table-header-item">Link</div>
-        <div class="table-header-item">Views</div>
-      </div>
-      <div *ngFor="let article of mostViewedArticles" class="table-row">
-        <div class="table-item">
-          <a [href]="article.url" target="_blank">{{ article.url }}</a>
-        </div>
-        <div class="table-item">
-          {{ article.viewCount }}
-        </div>
-      </div>
+
+    <!-- Show message if no articles are available -->
+    <div *ngIf="mostViewedArticles.length === 0; else mostViewedTable">
+      <p>No articles available yet...</p>
     </div>
+
+    <ng-template #mostViewedTable>
+      <div class="most-viewed-table">
+        <!-- Headers for Link and Views -->
+        <div class="table-header">
+          <div class="table-header-item">Link</div>
+          <div class="table-header-item">Views</div>
+        </div>
+        <div *ngFor="let article of mostViewedArticles" class="table-row">
+          <div class="table-item">
+            <a [href]="article.url" target="_blank">{{ article.url }}</a>
+          </div>
+          <div class="table-item">
+            {{ article.viewCount }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
   </div>
 
   <!-- Latest Published Report -->
