@@ -6,6 +6,13 @@ import { DarkModeService } from '../../../shared/services/dark-mode.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { ArticleService, Article } from '../../../shared/services/article.service';
 
+import { Dialog } from '@angular/cdk/dialog';
+import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
+import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
+import { ReportsService } from '../../../shared/sdk/rest-api/api/reports.service';
+import { map, filter, switchMap } from 'rxjs/operators';
+import { EditStatDialogResult, EditStatDialogResultObject } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.model';
+
 @Component({
   selector: 'crh-report-articles',
   templateUrl: './report-articles.component.html',
@@ -24,6 +31,37 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+
+  private dialog = inject(Dialog);
+  private statisticsService = inject(StatisticsService);
+  private reportsService = inject(ReportsService);
+
+  //Mock data for now - This will be replaced with an API call
+  protected reportId = 1;
+
+  // Method for handling opening the statistics dialog
+  openAddStatDialog(): void {
+    this.dialog
+      .open(EditStatisticDialogComponent)
+      .closed.pipe(
+        map(data => data as EditStatDialogResult),
+        filter((data): data is EditStatDialogResultObject => !!data),
+        switchMap(data =>
+          this.statisticsService.addStat(data.value, data.title, data.subtitle)
+        ),
+        map(response => response.uid),
+        switchMap(statId =>
+          this.reportsService.patchReportSuggestions(
+            this.reportId,
+            undefined,
+            statId
+          )
+        )
+      )
+      .subscribe(() => {
+        console.log("Stat added successfully");
+      });
+  }
 
   constructor() {
     this.form = this.fb.group({

@@ -261,3 +261,20 @@ body.dark-mode .add-button {
 body.dark-mode .add-button:hover {
   background-color: #388e3c;
 }
+
+.add-statistics-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: #388e3c;
+  }
+
+  &.dark {
+    background-color: #81c784;
+  }
+}

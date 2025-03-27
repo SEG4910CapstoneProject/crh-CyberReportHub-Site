@@ -39,6 +39,10 @@
 
 <div class="article-selection-box" [class.dark]="isDarkMode">
   <h2>Suggested Articles</h2>
+
+  <!-- Add Statistics button -->
+  <button type="button" (click)="openAddStatDialog()">Add Statistics</button>
+
   <input
     type="text"
     placeholder="Search articles..."
