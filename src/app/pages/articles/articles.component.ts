@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ArticleService, Article } from '../../shared/services/article.service';
+import { ArticleService, Article, ArticleOfNote } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class ArticlesComponent implements OnInit {
   articlesByCategory: { [key: string]: Article[] } = {};
   articlesToShow: { [key: string]: number } = {}; // To track how many articles to display per category
   favouriteArticles: Article[] = []; // To store favourite articles
-  articlesOfNote: Article[] = []; // To store articles of note
+  articlesOfNote: ArticleOfNote[] = []; // To store articles of note
   isLoading: boolean = true;
 
   // Use signal to track logged-in status
@@ -45,6 +45,9 @@ export class ArticlesComponent implements OnInit {
         });
       }
     });
+
+    // Fetch Articles of Note
+    this.fetchArticlesOfNote();
   }
 
   // Check if the article is in the favourites list
@@ -57,7 +60,7 @@ export class ArticlesComponent implements OnInit {
   // Check if the article is in the articles of note list
   isArticleOfNote(article: Article): boolean {
     return this.articlesOfNote.some(
-      note => note.articleId === article.articleId
+      (note: ArticleOfNote) => note.url === article.link
     );
   }
 
@@ -92,18 +95,43 @@ export class ArticlesComponent implements OnInit {
   toggleArticleOfNote(article: Article, event: any): void {
     if (!this.isLoggedIn()) return; // Prevent non-logged-in users from adding to Articles of Note
 
-    if (event.target.checked) {
-      // If checked, add to Articles of Note
-      this.articlesOfNote.push(article);
-    } else {
-      // If unchecked, remove from Articles of Note
-      const index = this.articlesOfNote.findIndex(
-        note => note.articleId === article.articleId
-      );
-      if (index !== -1) {
-        this.articlesOfNote.splice(index, 1);
+    const isChecked = event.target.checked;
+    this.articleService.chooseArticleOfNote(article.articleId).subscribe(
+      (response) => {
+        console.log('Article of Note status toggled', response);
+        article.isArticleOfNote = isChecked;  // Update the status locally
+
+        if (isChecked) {
+          // If checked, add to Articles of Note
+          const articleOfNote: ArticleOfNote = { url: article.link };
+          this.articlesOfNote.push(articleOfNote);
+        } else {
+          // If unchecked, remove from Articles of Note
+          const index = this.articlesOfNote.findIndex(
+            (note: ArticleOfNote) => note.url === article.link
+          );
+          if (index !== -1) {
+            this.articlesOfNote.splice(index, 1);
+          }
+        }
+      },
+      (error) => {
+        console.error('Error toggling article of note:', error);
       }
-    }
+    );
+  }
+
+  // Fetch articles that are marked as "Articles of Note"
+  fetchArticlesOfNote() {
+    this.articleService.getArticlesOfNote().subscribe(
+      (articles: ArticleOfNote[]) => {
+        console.log('Articles of Note:', articles);
+        this.articlesOfNote = articles;
+      },
+      (error: any) => {
+        console.error('Error fetching Articles of Note:', error);
+      }
+    );
   }
 
   // Increment view count on article click
@@ -117,5 +145,4 @@ export class ArticlesComponent implements OnInit {
       }
     );
   }
-
 }

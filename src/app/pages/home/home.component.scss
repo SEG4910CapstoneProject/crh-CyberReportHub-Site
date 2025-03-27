@@ -97,3 +97,31 @@
     background-color: #b71c1c;
   }
 }
+.most-viewed-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-header {
+  display: flex;
+  font-weight: bold;
+}
+
+.table-header-item {
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-item {
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+  word-wrap: break-word;
+}
+

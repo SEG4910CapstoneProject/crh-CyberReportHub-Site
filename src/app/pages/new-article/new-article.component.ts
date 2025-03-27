@@ -16,6 +16,7 @@ export class NewArticleComponent {
     publishDate: '',
     type: '',
     viewCount: 0,
+    isArticleOfNote: false,
   };
 
   constructor(private articleService: ArticleService) {}
@@ -36,6 +37,7 @@ export class NewArticleComponent {
         this.article.publishDate || new Date().toISOString().split('T')[0],
       type: this.article.type,
       viewCount: this.article.viewCount || 0,
+      isArticleOfNote: this.article.isArticleOfNote || false,
     };
 
     this.articleService.addArticle(newArticle).subscribe(response => {
