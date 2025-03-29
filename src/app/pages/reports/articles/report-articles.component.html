@@ -4,6 +4,18 @@
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
 
     <div class="form-section">
+      <label for="analyst-comment">{{ 'reportNew.analyst' | translate }}:</label>
+      <textarea
+        id="analyst-comment"
+        formControlName="analystComment"
+        [attr.maxLength]="maxCommentLength"
+        rows="4"
+        placeholder="{{ 'reportNew.commentplaceholder' | translate }}"
+        class="analyst-comment-textarea"
+      ></textarea>
+      <div class="char-counter">
+        {{ currentCommentLength }}/{{ maxCommentLength }}
+      </div>
       <label>Articles:</label>
       <div class="article-list">
         <div
@@ -16,16 +28,16 @@
             </option>
           </select>
           <select formControlName="category">
-            <option value="">-- Select Category --</option>
-            <option value="activeThreats">Active Threats</option>
+            <option value="">-- {{ 'reportNew.category' | translate }} --</option>
+            <option value="activeThreats">{{ 'reportNew.activethreats' | translate }}</option>
             <option value="emergingInternationalThreats">
-              Emerging and International Threats
+              {{ 'reportNew.emergingthreats' | translate }}
             </option>
-            <option value="globalNews">Global Information & News Watch</option>
-            <option value="customerThreats">Customer Threats</option>
+            <option value="globalNews">{{ 'reportNew.globalnews' | translate }}</option>
+            <option value="customerThreats">{{ 'reportNew.customerthreats' | translate }}</option>
           </select>
           <input placeholder="Link" formControlName="link" readonly />
-          <button type="button" (click)="removeArticle(i)">Remove</button>
+          <button type="button" (click)="removeArticle(i)">{{ 'common.remove' | translate }}</button>
         </div>
       </div>
     </div>
@@ -45,7 +57,7 @@
 
   <input
     type="text"
-    placeholder="Search articles..."
+    placeholder="{{ 'reportNew.searcharticles' | translate }}..."
     [(ngModel)]="articleSearchTerm"
     (input)="filterArticles()" />
   <div class="article-list-container">
@@ -57,5 +69,5 @@
       <span>{{ article.title }}</span>
       <button class="add-button">+</button>
 
-  
+
 </div>

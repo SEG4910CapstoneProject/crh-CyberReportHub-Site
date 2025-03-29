@@ -9,6 +9,7 @@
   "common.next": "Next",
   "common.submit": "Submit",
   "common.back": "Back",
+  "common.remove": "Remove",
 
   "login.login": "Login",
   "login.logout": "Logout",
@@ -80,6 +81,14 @@
   "reportNew.chatbot": "Chatbot Summaries",
   "reportNew.addstats": "Add Statistics",
   "reportNew.searcharticles": "Search Articles",
+  "reportNew.commentplaceholder": "Enter your comment here...",
+  "reportNew.analyst": "Analyst's Comment",
+  "reportNew.category": "Select Category",
+  "reportNew.activethreats": "Active Threats",
+  "reportNew.emergingthreats": "Emerging and International Threats",
+  "reportNew.globalnews": "Global Information and News Watch",
+  "reportNew.customerthreats": "Customer threats",
+
 
   "report.layout.edit": "Edit Article",
   "report.layout.view": "View Article",

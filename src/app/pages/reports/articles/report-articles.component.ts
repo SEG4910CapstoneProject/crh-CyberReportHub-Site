@@ -38,6 +38,12 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   private statisticsService = inject(StatisticsService);
   private reportsService = inject(ReportsService);
 
+  protected maxCommentLength = 1000;
+  get currentCommentLength(): number {
+    return this.form?.get('analystComment')?.value?.length || 0;
+  }
+
+
   //Mock data for now - This will be replaced with an API call
   protected reportId = 1;
 
@@ -67,6 +73,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.form = this.fb.group({
+      analystComment: ['', [Validators.maxLength(1000)]],
       articles: this.fb.array([] as FormGroup[]),
     });
   }
