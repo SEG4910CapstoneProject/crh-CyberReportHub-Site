@@ -207,7 +207,6 @@
   height: 50px;
 }
 
-
 .article-item {
   display: flex;
   justify-content: space-between;
@@ -256,6 +255,7 @@
     border: 1px solid #555;
   }
 }
+
 .char-counter {
   font-size: 0.875rem;
   text-align: right;
@@ -288,6 +288,7 @@ body.dark-mode .add-button {
 body.dark-mode .add-button:hover {
   background-color: #388e3c;
 }
+
 .add-statistics-container {
   display: flex;
   justify-content: center;
@@ -317,7 +318,6 @@ body.dark-mode .add-button:hover {
     color: #ffffff;
   }
 }
-
 
 .add-article-container {
   display: flex;

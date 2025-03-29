@@ -5,7 +5,7 @@ import { Subscription, EMPTY, Observable, Subject, of } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { ArticleService, Article } from '../../../shared/services/article.service';
-import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
+import { CrhTranslationService } from '../../../shared/services/crh-translation.service'; 
 import { Dialog } from '@angular/cdk/dialog';
 import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
@@ -38,6 +38,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   ]);
 
   protected reloadReportDataSubject$ = new Subject<void>();
+
   private darkModeService = inject(DarkModeService);
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
@@ -46,7 +47,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   private dialog = inject(Dialog);
   private statisticsService = inject(StatisticsService);
   private reportsService = inject(ReportsService);
-
 
   protected maxCommentLength = 1000;
   get currentCommentLength(): number {
@@ -157,8 +157,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-
-
   constructor() {
     this.form = this.fb.group({
       analystComment: ['', [Validators.maxLength(1000)]],
@@ -180,7 +178,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-
   private fetchSuggestedArticles(): void {
     this.isLoading = true;
     console.log('Fetching suggested articles...');
@@ -189,7 +186,8 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.articleService.getAllArticleTypesWithArticles(days).subscribe(
       (response) => {
         console.log('Suggested articles response:', response);
-        this.suggestedArticles = Object.values(response).flat();
+        this.allSuggestedArticles = Object.values(response).flat();
+        this.suggestedArticles = [...this.allSuggestedArticles];
         this.isLoading = false;
       },
       (error) => console.error('Error fetching suggested articles:', error)
@@ -198,7 +196,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
   filterArticles(): void {
     const term = this.articleSearchTerm.toLowerCase().trim();
-    this.suggestedArticles = this.suggestedArticles.filter(article =>
+    this.suggestedArticles = this.allSuggestedArticles.filter(article =>
       article.title.toLowerCase().includes(term)
     );
   }
