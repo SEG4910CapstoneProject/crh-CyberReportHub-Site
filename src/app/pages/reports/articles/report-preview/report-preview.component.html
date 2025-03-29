@@ -1,9 +1,9 @@
 <div class="report-preview">
-  <h1>Report Preview</h1>
+  <h1>{{ 'reportNew.preview' | translate }}</h1>
 
   <!-- Display Statistics -->
   <div *ngIf="stats.length">
-    <h2>Statistics:</h2>
+    <h2>{{ 'reportNew.addstats' | translate }}:</h2>
     <ul>
       <li *ngFor="let stat of stats">
         {{ stat.title }}: {{ stat.value }}
@@ -26,6 +26,6 @@
 
   <!-- Back Button -->
   <div class="form-actions">
-    <button type="button" (click)="goBack()">Back</button>
+    <button type="button" (click)="goBack()">{{ 'common.back' | translate }}</button>
   </div>
 </div>
