@@ -5,8 +5,12 @@ import { Subscription, EMPTY, Observable, Subject, of } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
 import { AuthService } from '../../../shared/services/auth.service';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { ArticleService, Article } from '../../../shared/services/article.service';
 import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
+=======
+import { ArticleService } from '../../../shared/services/article.service';
+>>>>>>> Stashed changes
 =======
 import { ArticleService } from '../../../shared/services/article.service';
 >>>>>>> Stashed changes
@@ -34,8 +38,11 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private articleService = inject(ArticleService);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   protected isLoading = true; //spinner
 =======
+=======
+>>>>>>> Stashed changes
   private destroyRef = inject(DestroyRef);
   protected newArticleForm = new FormControl<string | null>(null, [
     Validators.required,
@@ -43,6 +50,9 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   ]);
 
   protected reloadReportDataSubject$ = new Subject<void>();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
   private darkModeService = inject(DarkModeService);
@@ -55,6 +65,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   private reportsService = inject(ReportsService);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   protected maxCommentLength = 1000;
   get currentCommentLength(): number {
     return this.form?.get('analystComment')?.value?.length || 0;
@@ -62,6 +73,9 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
 
   //Mock data for now - This will be replaced with an API call
+=======
+  // Mock data for now - This will be replaced with an API call
+>>>>>>> Stashed changes
 =======
   // Mock data for now - This will be replaced with an API call
 >>>>>>> Stashed changes

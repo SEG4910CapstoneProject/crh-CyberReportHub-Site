@@ -3,6 +3,28 @@
 
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
     <!-- Statistics Section -->
+<<<<<<< Updated upstream
+=======
+    <div class="form-section">
+      <label>Statistics:</label>
+      <div class="stat-list">
+        <div *ngFor="let stat of addedStats">
+          <div class="stat-item">
+            <span>{{ stat.title }}</span>
+            <button type="button" (click)="removeStat(stat)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add statistics button -->
+      <div class="add-statistics-container">
+        <button class="add-statistics-button" (click)="openAddStatDialog()">+</button>
+      </div>
+    </div>
+
+
+    <!-- Articles Section -->
+>>>>>>> Stashed changes
     <div class="form-section">
       <label>Statistics:</label>
       <div class="stat-list">
@@ -96,9 +118,12 @@
   <h2>Articles</h2>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   <!-- Add Statistics button -->
   <button type="button" (click)="openAddStatDialog()">{{ 'reportNew.addstats' | translate }}</button>
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   <input
