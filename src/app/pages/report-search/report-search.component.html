@@ -21,7 +21,7 @@
             formControlName="reportNo"
             placeholder=" "
             class="search-box" />
-          <label>Report No</label>
+          <label>{{ 'reportSearch.no' | translate }}</label>
         </div>
       </div>
 
@@ -30,8 +30,8 @@
         <mat-form-field class="dropdown-form-field" appearance="outline">
           <mat-label>Type</mat-label>
           <mat-select formControlName="type">
-            <mat-option value="DAILY">Daily</mat-option>
-            <mat-option value="WEEKLY">Weekly</mat-option>
+            <mat-option value="DAILY">{{ 'reportSearch.daily' | translate }}</mat-option>
+            <mat-option value="WEEKLY">{{ 'reportSearch.weekly' | translate }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -39,7 +39,7 @@
       <!-- DATE PICKER: START DATE -->
       <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
-          <mat-label>Start Date</mat-label>
+          <mat-label>{{ 'reportSearch.startdate' | translate }}</mat-label>
           <input
             matInput
             [matDatepicker]="pickerFrom"
@@ -54,7 +54,7 @@
       <!-- DATE PICKER: END DATE -->
       <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
-          <mat-label>End Date</mat-label>
+          <mat-label>{{ 'reportSearch.enddate' | translate }}</mat-label>
           <input
             matInput
             [matDatepicker]="pickerTo"
@@ -68,7 +68,7 @@
 
       <!-- SEARCH BUTTON -->
       <div class="filter-wrapper">
-        <button class="search-button" (click)="onSearch()">Search</button>
+        <button class="search-button" (click)="onSearch()">{{ 'reportSearch.search' | translate }}</button>
       </div>
     </div>
   </form>
@@ -80,15 +80,15 @@
       <tr>
         <th>No</th>
         <th>Type</th>
-        <th>Generated Date</th>
-        <th>Last Modified</th>
-        <th *ngIf="isLoggedIn">Email Sent</th>
+        <th>{{ 'reportSearch.date' | translate }}</th>
+        <th>{{ 'reportSearch.modified' | translate }}</th>
+        <th *ngIf="isLoggedIn">{{ 'reportSearch.email' | translate }}</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngIf="filteredReports.length === 0">
-        <td colspan="6" class="no-data">No reports available</td>
+        <td colspan="6" class="no-data">{{ 'reportSearch.noreports' | translate }}</td>
       </tr>
       <tr *ngFor="let report of filteredReports">
         <td>{{ report?.reportId }}</td>

@@ -88,9 +88,9 @@ export class NavBarComponent {
   private linkHomeTranslationSignal = toSignal(
     this.translateService.getTranslationFromKeyAsStream('navBar.link.home')
   );
-  private linkReportSearchTranslationSignal = toSignal(
+  private linkReportsTranslationSignal = toSignal(
     this.translateService.getTranslationFromKeyAsStream(
-      'navBar.link.reportSearch'
+      'navBar.link.reports'
     )
   );
   private linkReportStatsTranslationSignal = toSignal(
@@ -120,9 +120,7 @@ export class NavBarComponent {
       },
       {
         id: 'reportSearch',
-        // label: this.linkReportSearchTranslationSignal(),
-        // Add translations later
-        label: 'Reports',
+        label: this.linkReportsTranslationSignal(),
         path: '/reports',
       },
       {
@@ -130,7 +128,7 @@ export class NavBarComponent {
         label: this.linkReportStatsTranslationSignal(),
         path: '/reports/statistics',
       },
-      // Added nav bar-options. We can add translations later
+
       {
         id: 'articles',
         label: 'Articles',

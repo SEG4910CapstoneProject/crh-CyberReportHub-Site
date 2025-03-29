@@ -1,27 +1,27 @@
 <div class="report-new" [class.dark]="isDarkMode()">
-  <h1>Create New Report</h1>
+  <h1>{{ 'reportNew.header' | translate }}</h1>
 
   <form *ngIf="form" [formGroup]="form">
     <div class="form-section">
-      <label>Report Type:</label>
+      <label>{{ 'reportNew.type' | translate }}:</label>
       <select formControlName="reportType">
-        <option value="DAILY">Daily</option>
-        <option value="WEEKLY">Weekly</option>
-        <option value="MONTHLY">Monthly</option>
+        <option value="DAILY">{{ 'reportNew.daily' | translate }}</option>
+        <option value="WEEKLY">{{ 'reportNew.weekly' | translate }}</option>
+        <option value="MONTHLY">{{ 'reportNew.monthly' | translate }}</option>
       </select>
     </div>
 
     <div class="form-section">
-      <label>Template Type:</label>
+      <label>{{ 'reportNew.template' | translate }}:</label>
       <select formControlName="templateType">
-        <option value="byType">By Type</option>
-        <option value="chatbotSummaries">Chatbot Summaries (Future)</option>
+        <option value="byType">{{ 'reportNew.bytype' | translate }}</option>
+        <option value="chatbotSummaries">{{ 'reportNew.chatbot' | translate }}</option>
       </select>
     </div>
 
     <div class="form-actions">
-      <button type="button" (click)="cancel()">Cancel</button>
-      <button type="submit" (click)="next()">Next</button>
+      <button type="button" (click)="cancel()">{{ 'common.cancel' | translate }}</button>
+      <button type="submit" (click)="next()">{{ 'common.next' | translate }}</button>
     </div>
   </form>
 </div>

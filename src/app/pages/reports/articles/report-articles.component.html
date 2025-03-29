@@ -1,5 +1,5 @@
 <div class="report-articles" [class.dark]="isDarkMode">
-  <h1>Create New Report</h1>
+  <h1>{{ 'reportNew.header' | translate }}</h1>
 
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
 
@@ -31,17 +31,17 @@
     </div>
 
     <div class="form-actions">
-      <button type="button" (click)="back()">Back</button>
-      <button type="submit">Create Report</button>
+      <button type="button" (click)="back()">{{ 'common.next' | translate }}</button>
+      <button type="submit">{{ 'common.submit' | translate }}</button>
     </div>
   </form>
 </div>
 
 <div class="article-selection-box" [class.dark]="isDarkMode">
-  <h2>Suggested Articles</h2>
+  <h2>Articles</h2>
 
   <!-- Add Statistics button -->
-  <button type="button" (click)="openAddStatDialog()">Add Statistics</button>
+  <button type="button" (click)="openAddStatDialog()">{{ 'reportNew.addstats' | translate }}</button>
 
   <input
     type="text"
@@ -49,11 +49,13 @@
     [(ngModel)]="articleSearchTerm"
     (input)="filterArticles()" />
   <div class="article-list-container">
+    <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
+    <ng-container *ngIf="!isLoading">
     <div
       *ngFor="let article of suggestedArticles"
       (click)="addArticleFromSelection(article)" class="article-item">
       <span>{{ article.title }}</span>
       <button class="add-button">+</button>
-    </div>
-  </div>
+
+  
 </div>

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { ArticleService, Article } from '../../../shared/services/article.service';
-
+import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
@@ -22,10 +22,12 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;
   protected isDarkMode: boolean = false;
   protected articleSearchTerm: string = '';
-  protected suggestedArticles: any[] = []; // Store suggested articles
+  protected suggestedArticles: any[] = []; // Store articles
+  protected allSuggestedArticles: any[] = []; // Store ALL articles (original list)
   protected selectedArticleIds: any[] = [];
   private subscriptions: Subscription[] = [];
   private articleService = inject(ArticleService);
+  protected isLoading = true; //spinner
 
   private darkModeService = inject(DarkModeService);
   private authService = inject(AuthService);
@@ -83,14 +85,17 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
+
   private fetchSuggestedArticles(): void {
+    this.isLoading = true;
     console.log('Fetching suggested articles...');
 
     const days = 30; // Fetch articles from the last 30 days (modify if needed)
     this.articleService.getAllArticleTypesWithArticles(days).subscribe(
       (response) => {
         console.log('Suggested articles response:', response);
-        this.suggestedArticles = Object.values(response).flat(); // Flatten response into a single array
+        this.suggestedArticles = Object.values(response).flat();
+        this.isLoading = false;
       },
       (error) => console.error('Error fetching suggested articles:', error)
     );
