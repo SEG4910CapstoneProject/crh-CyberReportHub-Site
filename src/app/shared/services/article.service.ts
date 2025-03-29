@@ -18,10 +18,12 @@ export interface Article {
 export interface MostViewedArticle {
   url: string;
   viewCount: number;
+  title: string;
 }
 
 export interface ArticleOfNote  {
   url: string;
+  title: string;
 }
 
 @Injectable({
@@ -72,6 +74,10 @@ export class ArticleService {
   // Fetch articles that are marked as "Articles of Note"
   getArticlesOfNote(): Observable<ArticleOfNote[]> {
     return this.http.get<ArticleOfNote[]>(`${this.apiUrl}/articles-of-note`);
+  }
+
+  getArticleByLink(link: string): Observable<any> {
+    return this.http.get<any>(`/api/articles?link=${link}`);
   }
 
 }

@@ -66,6 +66,7 @@ import { ArticleSuggestionComponent } from './pages/reports/edit/article-suggest
 import { NewArticleComponent } from './pages/new-article/new-article.component';
 import { ChatbotComponent } from './pages/chatbot/chatbot.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
+import { ReportPreviewComponent } from './pages/reports/articles/report-preview/report-preview.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
@@ -117,6 +118,7 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     NewArticleComponent,
     ChatbotComponent,
     ArticlesComponent,
+    ReportPreviewComponent,
     ReportNewComponent,
     ReportArticlesComponent,
     SettingsComponent,

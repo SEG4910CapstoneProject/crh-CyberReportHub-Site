@@ -9,7 +9,8 @@
     </div>
     <ul *ngIf="articlesOfNote.length; else noArticlesOfNote">
       <li *ngFor="let article of articlesOfNote">
-        <a [href]="article.url" target="_blank">{{ article.url }}</a>
+        <!-- Link to the article -->
+        <a [href]="article.url" target="_blank">{{ article.title }}</a>
       </li>
     </ul>
     <ng-template #noArticlesOfNote>
@@ -37,7 +38,8 @@
         </div>
         <div *ngFor="let article of mostViewedArticles" class="table-row">
           <div class="table-item">
-            <a [href]="article.url" target="_blank">{{ article.url }}</a>
+            <!-- Link to the article -->
+            <a [href]="article.url" target="_blank">{{ article.title }}</a>
           </div>
           <div class="table-item">
             {{ article.viewCount }}
@@ -55,6 +57,7 @@
     </div>
     <table>
       <thead>
+<<<<<<< Updated upstream
         <tr>
           <th>ID</th>
           <th>Type</th>
@@ -62,20 +65,29 @@
           <th>{{ 'home.modified' | translate }}</th>
           <th *ngIf="isLoggedIn()">{{ 'home.email' | translate }}</th>
         </tr>
+=======
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Generated Date</th>
+        <th>Last Modified</th>
+        <th *ngIf="isLoggedIn()">Email Sent</th>
+      </tr>
+>>>>>>> Stashed changes
       </thead>
       <tbody>
-        <tr *ngIf="latestPublishedReport">
-          <td>{{ latestPublishedReport.reportId }}</td>
-          <td>{{ latestPublishedReport.reportType }}</td>
-          <td>{{ latestPublishedReport.generatedDate }}</td>
-          <td>{{ latestPublishedReport.lastModified }}</td>
-          <td *ngIf="isLoggedIn()">
-            {{ latestPublishedReport.emailStatus ? '✔' : '✘' }}
-          </td>
-        </tr>
-        <tr *ngIf="!latestPublishedReport">
-          <td colspan="5">Loading...</td>
-        </tr>
+      <tr *ngIf="latestPublishedReport">
+        <td>{{ latestPublishedReport.reportId }}</td>
+        <td>{{ latestPublishedReport.reportType }}</td>
+        <td>{{ latestPublishedReport.generatedDate }}</td>
+        <td>{{ latestPublishedReport.lastModified }}</td>
+        <td *ngIf="isLoggedIn()">
+          {{ latestPublishedReport.emailStatus ? '✔' : '✘' }}
+        </td>
+      </tr>
+      <tr *ngIf="!latestPublishedReport">
+        <td colspan="5">Loading...</td>
+      </tr>
       </tbody>
     </table>
   </div>

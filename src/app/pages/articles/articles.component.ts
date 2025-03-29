@@ -103,7 +103,7 @@ export class ArticlesComponent implements OnInit {
 
         if (isChecked) {
           // If checked, add to Articles of Note
-          const articleOfNote: ArticleOfNote = { url: article.link };
+          const articleOfNote: ArticleOfNote = { title: article.title, url: article.link };
           this.articlesOfNote.push(articleOfNote);
         } else {
           // If unchecked, remove from Articles of Note

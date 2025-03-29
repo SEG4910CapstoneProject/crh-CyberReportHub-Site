@@ -17,6 +17,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
 import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
+import { ReportPreviewComponent } from './pages/reports/articles/report-preview/report-preview.component';
 
 export const routes: Routes = [
   /**
@@ -24,6 +25,11 @@ export const routes: Routes = [
    */
 
   //Added Headers
+  {
+    path: 'report-preview',
+    component: ReportPreviewComponent
+    },
+
   {
     path: 'settings',
     component: SettingsComponent,
