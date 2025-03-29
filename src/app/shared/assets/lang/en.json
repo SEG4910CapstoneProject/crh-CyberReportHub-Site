@@ -16,6 +16,15 @@
   "login.account": "Account",
   "login.password": "Password",
 
+  "settings.header": "Settings",
+  "settings.appearance": "Appearance",
+  "settings.light": "Light Mode",
+  "settings.dark": "Dark Mode",
+  "settings.report": "Report (Admin Only)",
+  "settings.primary": "Primary Color",
+  "settings.accent": "Accent Color",
+  "settings.save": "Save Settings",
+
   "home.title": "Welcome to CyberReport Hub",
   "home.articlesnote": "Articles of note",
   "home.articlesmostviewed": "Most viewed articles",
