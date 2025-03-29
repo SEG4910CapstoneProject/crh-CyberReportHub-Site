@@ -193,7 +193,8 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.articleService.getAllArticleTypesWithArticles(days).subscribe(
       (response) => {
         console.log('Suggested articles response:', response);
-        this.suggestedArticles = Object.values(response).flat();
+        this.allSuggestedArticles = Object.values(response).flat();
+        this.suggestedArticles = [...this.allSuggestedArticles];
         this.isLoading = false;
       },
       (error) => console.error('Error fetching suggested articles:', error)
@@ -202,7 +203,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
   filterArticles(): void {
     const term = this.articleSearchTerm.toLowerCase().trim();
-    this.suggestedArticles = this.suggestedArticles.filter(article =>
+    this.suggestedArticles = this.allSuggestedArticles.filter(article =>
       article.title.toLowerCase().includes(term)
     );
   }
