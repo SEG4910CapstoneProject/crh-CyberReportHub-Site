@@ -8,10 +8,7 @@
   </div>
 
   <!-- Loading Spinner -->
-  <div *ngIf="isLoading" class="loading-overlay">
-    <div class="spinner"></div>
-    <p>Loading articles...</p>
-  </div>
+  <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
 
   <!-- Articles Section -->
   <div *ngIf="!isLoading" class="sections">
