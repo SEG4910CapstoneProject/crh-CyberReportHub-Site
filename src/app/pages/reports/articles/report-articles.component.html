@@ -4,12 +4,12 @@
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
     <!-- Statistics Section -->
     <div class="form-section">
-      <label>Statistics:</label>
+      <label>{{ 'reportNew.addstats' | translate }}:</label>
       <div class="stat-list">
         <div *ngFor="let stat of addedStats">
           <div class="stat-item">
             <span>{{ stat.title }}</span>
-            <button type="button" (click)="removeStat(stat)">Remove</button>
+            <button type="button" (click)="removeStat(stat)">{{ ' common.remove' | translate }}</button>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@
         <input
           type="text"
           [formControl]="newArticleForm"
-          placeholder="Add Article URL"
+          placeholder="{{ 'reportNew.addurl' | translate }}"
           (focus)="newArticleForm.setValue('')" />
         <button (click)="addNewArticle()" class="add-button">+</button>
       </div>
@@ -68,7 +68,7 @@
 
     <div class="form-actions">
       <button type="button" (click)="back()">{{ 'common.next' | translate }}</button>
-      <button type="button" (click)="viewReport()">{{ 'Preview' | translate }}</button>
+      <button type="button" (click)="viewReport()">{{ 'common.preview' | translate }}</button>
       <button type="submit">{{ 'common.submit' | translate }}</button>
     </div>
   </form>

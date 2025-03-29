@@ -10,6 +10,7 @@
   "common.submit": "Submit",
   "common.back": "Back",
   "common.remove": "Remove",
+  "common.preview": "Preview",
 
   "login.login": "Login",
   "login.logout": "Logout",
@@ -88,7 +89,8 @@
   "reportNew.monthly": "Monthly",
   "reportNew.bytype": "By type",
   "reportNew.chatbot": "Chatbot Summaries",
-  "reportNew.addstats": "Add Statistics",
+  "reportNew.addstats": "Statistics",
+  "reportNew.addurl": "Add Article URL",
   "reportNew.searcharticles": "Search Articles",
   "reportNew.commentplaceholder": "Enter your comment here...",
   "reportNew.analyst": "Analyst's Comment",

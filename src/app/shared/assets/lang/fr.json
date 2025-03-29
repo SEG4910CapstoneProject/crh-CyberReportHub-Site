@@ -10,6 +10,7 @@
   "common.submit": "Soumettre",
   "common.back": "Retour",
   "common.remove": "Supprimer",
+  "common.preview": "Aperçu",
 
   "login.login": "Connexion",
   "login.logout": "Déconnexion",
@@ -88,7 +89,8 @@
   "reportNew.monthly": "Mensuel",
   "reportNew.bytype": "Par Type",
   "reportNew.chatbot": "Résumés du Chatbot",
-  "reportNew.addstats": "Ajouter des statistiques",
+  "reportNew.addstats": "Statistiques",
+  "reportNew.addurl": "Ajouter l'URL d'un article",
   "reportNew.searcharticles": "Chercher des articles",
   "reportNew.commentplaceholder": "Entrez votre commentaire ici...",
   "reportNew.analyst": "Commentaire de l'analyste",
