@@ -3,8 +3,6 @@
 
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
     <!-- Statistics Section -->
-<<<<<<< Updated upstream
-=======
     <div class="form-section">
       <label>Statistics:</label>
       <div class="stat-list">
@@ -21,27 +19,6 @@
         <button class="add-statistics-button" (click)="openAddStatDialog()">+</button>
       </div>
     </div>
-
-
-    <!-- Articles Section -->
->>>>>>> Stashed changes
-    <div class="form-section">
-      <label>Statistics:</label>
-      <div class="stat-list">
-        <div *ngFor="let stat of addedStats">
-          <div class="stat-item">
-            <span>{{ stat.title }}</span>
-            <button type="button" (click)="removeStat(stat)">Remove</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Add statistics button -->
-      <div class="add-statistics-container">
-        <button class="add-statistics-button" (click)="openAddStatDialog()">+</button>
-      </div>
-    </div>
-
 
     <!-- Articles Section -->
     <div class="form-section">
@@ -57,6 +34,7 @@
       <div class="char-counter">
         {{ currentCommentLength }}/{{ maxCommentLength }}
       </div>
+
       <label>Articles:</label>
 
       <!-- Add Article Search Box -->
@@ -76,21 +54,11 @@
             <option [value]="article.get('type')?.value">{{ article.get('type')?.value }}</option>
           </select>
           <select formControlName="category">
-<<<<<<< Updated upstream
             <option value="">-- {{ 'reportNew.category' | translate }} --</option>
             <option value="activeThreats">{{ 'reportNew.activethreats' | translate }}</option>
-            <option value="emergingInternationalThreats">
-              {{ 'reportNew.emergingthreats' | translate }}
-            </option>
+            <option value="emergingInternationalThreats">{{ 'reportNew.emergingthreats' | translate }}</option>
             <option value="globalNews">{{ 'reportNew.globalnews' | translate }}</option>
             <option value="customerThreats">{{ 'reportNew.customerthreats' | translate }}</option>
-=======
-            <option value="">-- Select Category --</option>
-            <option value="activeThreats">Active Threats</option>
-            <option value="emergingInternationalThreats">Emerging and International Threats</option>
-            <option value="globalNews">Global Information & News Watch</option>
-            <option value="customerThreats">Customer Threats</option>
->>>>>>> Stashed changes
           </select>
           <input placeholder="Link" formControlName="link" readonly />
           <button type="button" (click)="removeArticle(i)">{{ 'common.remove' | translate }}</button>
@@ -98,17 +66,10 @@
       </div>
     </div>
 
-
-
     <div class="form-actions">
-<<<<<<< Updated upstream
       <button type="button" (click)="back()">{{ 'common.next' | translate }}</button>
+      <button type="button" (click)="viewReport()">{{ 'Preview' | translate }}</button>
       <button type="submit">{{ 'common.submit' | translate }}</button>
-=======
-      <button type="button" (click)="back()">Back</button>
-      <button type="button" (click)="viewReport()">Preview</button>
-      <button type="submit">Create Report</button>
->>>>>>> Stashed changes
     </div>
   </form>
 </div>
@@ -117,15 +78,6 @@
 <div class="article-selection-box" [class.dark]="isDarkMode">
   <h2>Articles</h2>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  <!-- Add Statistics button -->
-  <button type="button" (click)="openAddStatDialog()">{{ 'reportNew.addstats' | translate }}</button>
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   <input
     type="text"
     placeholder="{{ 'reportNew.searcharticles' | translate }}..."
@@ -135,12 +87,13 @@
   <div class="article-list-container">
     <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
     <ng-container *ngIf="!isLoading">
-    <div
-      *ngFor="let article of suggestedArticles"
-      (click)="addArticleFromSelection(article)"
-      class="article-item">
-      <span>{{ article.title }}</span>
-      <button class="add-button">+</button>
-
-
+      <div
+        *ngFor="let article of suggestedArticles"
+        (click)="addArticleFromSelection(article)"
+        class="article-item">
+        <span>{{ article.title }}</span>
+        <button class="add-button">+</button>
+      </div>
+    </ng-container>
+  </div>
 </div>
