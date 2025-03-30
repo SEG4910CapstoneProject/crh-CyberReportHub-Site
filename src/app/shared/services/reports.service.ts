@@ -55,6 +55,7 @@ export class ReportsService {
 
   // Delete a report by its ID
   deleteReport(reportId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${reportId}`);
+    return this.http.delete<void>(`/api/v1/reports/delete/${reportId}`);
   }
+
 }

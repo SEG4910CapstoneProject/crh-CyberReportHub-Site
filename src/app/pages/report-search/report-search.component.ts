@@ -115,9 +115,21 @@ export class ReportSearchComponent implements OnInit {
 
   // Handle deleting reports
   onDeleteReport(report: SearchReportDetailsResponse): void {
-    console.log('Deleting report:', report.reportId); // Log report deletion
-    // Logic to delete the report can be added here
+    console.log('Deleting report:', report.reportId);
+
+    // Call the ReportsService to delete the report
+    this.reportsService.deleteReport(report.reportId).subscribe(
+      () => {
+        console.log('Report deleted successfully');
+        // After successful deletion, remove it from the filteredReports array
+        this.filteredReports = this.filteredReports.filter(r => r.reportId !== report.reportId);
+      },
+      error => {
+        console.error('Error deleting report:', error);
+      }
+    );
   }
+
 
   // Navigate to the "create report" page or other relevant route
   onLatestClick(): void {
