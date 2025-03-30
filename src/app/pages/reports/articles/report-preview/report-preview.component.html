@@ -1,19 +1,23 @@
 <div class="report-preview">
-  <h1>{{ 'reportNew.preview' | translate }}</h1>
+  <!-- Title of the report -->
+  <h1>Report Preview</h1>
 
-  <!-- Display Statistics -->
-  <div *ngIf="stats.length">
-    <h2>{{ 'reportNew.addstats' | translate }}:</h2>
+  <!-- Subtitle for statistics -->
+  <h2>Statistics</h2>
+  <div *ngIf="stats.length > 0">
     <ul>
       <li *ngFor="let stat of stats">
         {{ stat.title }}: {{ stat.value }}
       </li>
     </ul>
   </div>
+  <div *ngIf="stats.length === 0">
+    <p>No statistics available.</p>
+  </div>
 
-  <!-- Display Articles -->
-  <div *ngIf="articles.length">
-    <h2>Articles:</h2>
+  <!-- Subtitle for articles -->
+  <h2>Articles</h2>
+  <div *ngIf="articlesByCategory">
     <div *ngFor="let category of articlesByCategory | keyvalue">
       <h3>{{ category.key }}</h3>
       <ul>
@@ -22,10 +26,13 @@
         </li>
       </ul>
     </div>
+    <div *ngIf="articles.length === 0">
+      <p>No articles available.</p>
+    </div>
   </div>
 
   <!-- Back Button -->
   <div class="form-actions">
-    <button type="button" (click)="goBack()">{{ 'common.back' | translate }}</button>
+    <button type="button" (click)="goBack()">Back</button>
   </div>
 </div>

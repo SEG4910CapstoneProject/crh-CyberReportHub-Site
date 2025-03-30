@@ -5,7 +5,7 @@ import { Subscription, EMPTY, Observable, Subject, of } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { ArticleService, Article } from '../../../shared/services/article.service';
-import { CrhTranslationService } from '../../../shared/services/crh-translation.service'; 
+import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
@@ -81,6 +81,14 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
           statId: statId.toString(),
         });
         console.log('Stat added successfully');
+
+        // Navigate back to preview page with updated state
+        this.router.navigate(['/report-preview'], {
+          state: {
+            articles: this.articles.value, // Pass the current articles as well
+            stats: this.addedStats, // Pass the updated statistics
+          },
+        });
       });
   }
 
@@ -214,6 +222,14 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       link: [article.link || ''],
     });
     this.articles.push(articleForm);
+
+    // Navigate back to preview page with updated state
+    this.router.navigate(['/report-preview'], {
+      state: {
+        articles: this.articles,
+        stats: this.addedStats,
+      },
+    });
   }
 
   removeArticle(index: number): void {

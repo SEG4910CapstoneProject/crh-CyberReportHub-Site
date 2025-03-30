@@ -13,14 +13,24 @@ export class ReportPreviewComponent {
 
   // Group articles by category
   get articlesByCategory(): { [key: string]: any[] } {
-    return this.articles.reduce((acc, article) => {
+    const categories = this.articles.reduce((acc, article) => {
       if (!acc[article.category]) {
         acc[article.category] = [];
       }
       acc[article.category].push(article);
       return acc;
     }, {} as { [key: string]: any[] });
+
+    // Sort categories by category name
+    const sortedCategories = Object.keys(categories).sort();
+
+    // Return the sorted object
+    return sortedCategories.reduce((acc, category) => {
+      acc[category] = categories[category];
+      return acc;
+    }, {} as { [key: string]: any[] });
   }
+
 
   constructor(private location: Location) {}
 
