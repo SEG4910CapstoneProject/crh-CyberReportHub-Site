@@ -43,7 +43,6 @@ export const routes: Routes = [
   {
     path: 'articles',
     component: ArticlesComponent,
-    resolve: { articlesData: ArticlesResolverService }, //Attach resolver
     data: { selectedNav: 'articles' satisfies NavBarSelectedLinkOptions },
   },
   {
