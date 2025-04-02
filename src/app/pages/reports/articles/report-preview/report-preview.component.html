@@ -3,7 +3,7 @@
   <h1>Report Preview</h1>
 
   <!-- Subtitle for statistics -->
-  <h2>Statistics</h2>
+  <h2 *ngIf="stats.length > 0">Statistics</h2>
   <div *ngIf="stats.length > 0">
     <ul>
       <li *ngFor="let stat of stats">
@@ -11,24 +11,24 @@
       </li>
     </ul>
   </div>
-  <div *ngIf="stats.length === 0">
-    <p>No statistics available.</p>
-  </div>
 
   <!-- Subtitle for articles -->
-  <h2>Articles</h2>
-  <div *ngIf="articlesByCategory">
-    <div *ngFor="let category of articlesByCategory | keyvalue">
-      <h3>{{ category.key }}</h3>
+  <h2 *ngIf="hasArticles()">Articles</h2>
+  <div *ngIf="hasArticles()">
+    <div *ngFor="let category of articleCategories">
+      <h3>{{ category }}</h3>
       <ul>
-        <li *ngFor="let article of category.value">
+        <li *ngFor="let article of articlesByCategory[category]">
           <a [href]="article.link" target="_blank">{{ article.title }}</a>
         </li>
       </ul>
     </div>
-    <div *ngIf="articles.length === 0">
-      <p>No articles available.</p>
-    </div>
+  </div>
+
+  <!-- Subtitle for Analyst Comments -->
+  <h2 *ngIf="analystComment">Analyst Comment</h2>
+  <div *ngIf="analystComment">
+    <p>{{ analystComment }}</p>
   </div>
 
   <!-- Back Button -->
