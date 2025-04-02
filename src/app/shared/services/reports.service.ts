@@ -9,6 +9,9 @@ import { JsonReportResponse } from '../sdk/rest-api/model/jsonReportResponse';
 })
 export class ReportsService {
   private apiUrl = 'http://localhost:8080/api/v1/reports';
+  basePath: any;
+  httpClient: any;
+  configuration: any;
 
   constructor(private http: HttpClient) {}
 
@@ -57,5 +60,19 @@ export class ReportsService {
   deleteReport(reportId: number): Observable<void> {
     return this.http.delete<void>(`/api/v1/reports/delete/${reportId}`);
   }
+
+  //Create Report
+  createBasicReport(reportType: string): Observable<{ reportId: number }> {
+    const url = 'http://localhost:8080/api/v1/reports/create-basic-report';
+    const options = {
+      params: { reportType },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    return this.http.post<{ reportId: number }>(url, {}, options);
+  }
+
 
 }
