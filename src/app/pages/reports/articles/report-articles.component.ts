@@ -5,7 +5,6 @@ import { Subscription, EMPTY, Observable, Subject, of } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { ArticleService, Article } from '../../../shared/services/article.service';
-import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
@@ -173,6 +172,17 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state ?? window.history.state;
+    if (state?.reportId != null) {
+      this.reportId = state.reportId;
+      console.log('Received report ID from previous page:', this.reportId);
+    } else {
+      console.warn('No report ID received. Redirecting...');
+      this.router.navigate(['/reports/create']);
+      return;
+    }
+
     this.fetchSuggestedArticles();
     this.subscriptions.push(
       this.darkModeService.isDarkMode$.subscribe(mode => {
