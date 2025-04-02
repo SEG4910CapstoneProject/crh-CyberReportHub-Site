@@ -85,7 +85,7 @@
     (input)="filterArticles()" />
 
   <div class="article-list-container">
-    <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
+    <div *ngIf = "isLoading" class = "spinner-wrapper"><crh-progress-spinner></crh-progress-spinner></div>
     <ng-container *ngIf="!isLoading">
       <div
         *ngFor="let article of suggestedArticles"
