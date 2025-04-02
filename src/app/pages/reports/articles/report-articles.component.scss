@@ -353,6 +353,22 @@ body.dark-mode .add-button:hover {
   border: 1px solid #007bff;
 }
 
+.cancel-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 8px;
+
+  &:hover {
+    background-color: #c82333;
+  }
+}
+
+
 .manual-article-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
