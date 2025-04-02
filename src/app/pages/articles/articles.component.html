@@ -16,13 +16,14 @@
     <div *ngFor="let category of categories" class="category-section">
       <h2>{{ category }}</h2>
       <div *ngIf="articlesByCategory[category]?.length; else emptySection">
-        <ul>
+        <ul class="article-list">
           <li
-            *ngFor="let article of articlesByCategory[category]?.slice(0, articlesToShow[category])">
-            <a [href]="article.link" target="_blank" (click)="incrementViewCount(article.articleId)">
-              {{ article.title }} ({{ article.viewCount }})
+            *ngFor="let article of articlesByCategory[category]?.slice(0, articlesToShow[category])"
+            class="article-item">
+            <a [href]="article.link" target="_blank" (click)="incrementViewCount(article.articleId)" class="article-link">
+              <h3>{{ article.title }}</h3>
             </a>
-            <p>{{ article.description }}</p>
+            <p class="article-description">{{ article.description }}</p>
             <p><strong>Published:</strong> {{ article.publishDate }}</p>
 
             <!-- Only show the star icon for logged-in users -->
@@ -35,7 +36,7 @@
             </span>
 
             <!-- Only show the checkbox for "Article of Note" for logged-in users -->
-            <label *ngIf="isLoggedIn()">
+            <label *ngIf="isLoggedIn()" class="article-of-note-label">
               <input
                 type="checkbox"
                 (change)="toggleArticleOfNote(article, $event)"
@@ -46,46 +47,40 @@
         </ul>
 
         <!-- Show 'See More' or 'See Less' button depending on whether the full list is visible -->
-        <button *ngIf="articlesToShow[category] === 3" (click)="toggleArticles(category)">
+        <button *ngIf="articlesToShow[category] === 3" (click)="toggleArticles(category)" class="see-more-btn">
           See More
         </button>
-        <button *ngIf="articlesToShow[category] !== 3" (click)="toggleArticles(category)">
+        <button *ngIf="articlesToShow[category] !== 3" (click)="toggleArticles(category)" class="see-less-btn">
           See Less
         </button>
       </div>
       <ng-template #emptySection>
-        <p>No articles yet.</p>
+        <p class="empty-section">No articles yet.</p>
       </ng-template>
     </div>
   </div>
 
-  <!-- Show the Favourites section if the user is logged in -->
-  <div *ngIf="isLoggedIn()">
+  <!-- Show the Favourites section if the user is logged in and has favourites -->
+  <div *ngIf="isLoggedIn() && favouriteArticles.length">
     <h2>Your Favourites</h2>
-    <div *ngIf="favouriteArticles.length; else noFavourites">
-      <ul>
-        <li *ngFor="let fav of favouriteArticles">
-          <a [href]="fav.link" target="_blank">{{ fav.title }}</a>
+    <div>
+      <ul class="favourites-list">
+        <li *ngFor="let fav of favouriteArticles" class="favourite-item">
+          <a [href]="fav.link" target="_blank" class="favourite-link">{{ fav.title }}</a>
         </li>
       </ul>
     </div>
-    <ng-template #noFavourites>
-      <p>No favourites yet...</p>
-    </ng-template>
   </div>
 
-  <!-- Show the "Articles of Note" section for all users -->
-  <div>
+  <!-- Show the "Articles of Note" section if there are any articles of note -->
+  <div *ngIf="articlesOfNote.length">
     <h2>Your Articles of Note</h2>
-    <div *ngIf="articlesOfNote.length; else noArticlesOfNote">
-      <ul>
-        <li *ngFor="let article of articlesOfNote">
-          <a [href]="article.url" target="_blank">{{ article.url }}</a>
+    <div>
+      <ul class="articles-of-note-list">
+        <li *ngFor="let article of articlesOfNote" class="article-of-note-item">
+          <a [href]="article.url" target="_blank" class="article-of-note-link">{{ article.url }}</a>
         </li>
       </ul>
     </div>
-    <ng-template #noArticlesOfNote>
-      <p>No articles of note yet...</p>
-    </ng-template>
   </div>
 </div>
