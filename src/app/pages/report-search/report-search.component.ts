@@ -115,9 +115,9 @@ export class ReportSearchComponent implements OnInit {
 
   // Handle deleting reports
   onDeleteReport(report: SearchReportDetailsResponse): void {
-    console.log('Deleting report:', report.reportId);
+    const confirmed = confirm(`Are you sure you want to delete report #${report.reportId}?`);
+    if (!confirmed) return;
 
-    // Call the ReportsService to delete the report
     this.reportsService.deleteReport(report.reportId).subscribe(
       () => {
         console.log('Report deleted successfully');
@@ -129,6 +129,7 @@ export class ReportSearchComponent implements OnInit {
       }
     );
   }
+
 
 
   // Navigate to the "create report" page or other relevant route

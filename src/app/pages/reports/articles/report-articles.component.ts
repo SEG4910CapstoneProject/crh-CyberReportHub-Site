@@ -217,6 +217,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras?.state ?? window.history.state;
+
     if (state?.reportId != null) {
       this.reportId = state.reportId;
       console.log('Received report ID from previous page:', this.reportId);
@@ -226,7 +227,34 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Restore previously selected articles (if any)
+    if (state?.articles?.length) {
+      state.articles.forEach((article: any) => {
+        const articleForm = this.fb.group({
+          id: [article.articleId, Validators.required],
+          title: [article.title, Validators.required],
+          type: [article.type || '', Validators.required],
+          category: [article.category || ''],
+          link: [article.link || ''],
+        });
+        this.articles.push(articleForm);
+      });
+    }
+
+    // Restore stats (if any)
+    if (state?.stats?.length) {
+      this.addedStats = state.stats;
+    }
+
+    // Restore analyst comment (if any)
+    if (state?.analystComment) {
+      this.form.get('analystComment')?.setValue(state.analystComment);
+    }
+
+    // Load article suggestions
     this.fetchSuggestedArticles();
+
+    // Setup dark mode handling
     this.subscriptions.push(
       this.darkModeService.isDarkMode$.subscribe(mode => {
         this.isDarkMode = mode;
@@ -234,6 +262,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       })
     );
   }
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());

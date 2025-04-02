@@ -42,12 +42,16 @@ export class ReportPreviewComponent {
     return this.articleCategories.length > 0;
   }
 
-  constructor(private location: Location) {}
+  constructor(private router: Router) {}
 
   goBack(): void {
-    history.state.articles = this.articles;
-    history.state.stats = this.stats;
-    this.location.back();
+    this.router.navigate(['/reports-articles'], {
+      state: {
+        articles: this.articles,
+        stats: this.stats,
+        analystComment: this.analystComment,
+      },
+    });
   }
 }
 
