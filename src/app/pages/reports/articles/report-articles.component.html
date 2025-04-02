@@ -6,13 +6,25 @@
     <div class="form-section">
       <label>{{ 'reportNew.addstats' | translate }}:</label>
       <div class="stat-list">
-        <div *ngFor="let stat of addedStats">
-          <div class="stat-item">
-            <span>{{ stat.title }}</span>
-            <button type="button" (click)="removeStat(stat)">{{ ' common.remove' | translate }}</button>
+        <div *ngFor="let stat of addedStats" class="stat-card">
+          <div class="stat-content">
+            <div class="stat-header">
+              <strong>{{ stat.title }}</strong>
+              <span class="stat-number">#{{ stat.statisticNumber }}</span>
+            </div>
+            <div class="stat-subtitle">{{ stat.subtitle }}</div>
+          </div>
+          <div class="stat-actions">
+            <button mat-icon-button (click)="onStatEdit(stat)" aria-label="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onStatRemove(stat.statisticId)" aria-label="Delete" class="delete">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
         </div>
       </div>
+
 
       <!-- Add statistics button -->
       <div class="add-statistics-container">
@@ -44,8 +56,42 @@
           [formControl]="newArticleForm"
           placeholder="{{ 'reportNew.addurl' | translate }}"
           (focus)="newArticleForm.setValue('')" />
-        <button (click)="addNewArticle()" class="add-button">+</button>
+        <button type="button" (click)="toggleArticleForm()" class="add-button">+</button>
       </div>
+
+      <!-- Article Form For Adding a Link Manually-->
+      <!-- This will be removed in future implementations -->
+      <div *ngIf="isArticleFormVisible" class="article-form">
+        <div class="manual-article-form">
+          <div class="form-field">
+            <label for="articleTitle">Title</label>
+            <input id="articleTitle" [(ngModel)]="newArticle.title" placeholder="Enter article title" />
+          </div>
+          <div class="form-field">
+            <label for="articleType">Type</label>
+            <select id="articleType" [(ngModel)]="newArticle.type">
+              <option value="" disabled selected hidden>-- Select Type --</option>
+              <option *ngFor="let type of articleTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="articleCategory">Category</label>
+            <select id="articleCategory" [(ngModel)]="newArticle.category">
+              <option value="" disabled selected hidden>-- Select Category --</option>
+              <option value="activeThreats">{{ 'reportNew.activethreats' | translate }}</option>
+              <option value="emergingInternationalThreats">{{ 'reportNew.emergingthreats' | translate }}</option>
+              <option value="globalNews">{{ 'reportNew.globalnews' | translate }}</option>
+              <option value="customerThreats">{{ 'reportNew.customerthreats' | translate }}</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="articleLink">Link</label>
+            <input id="articleLink" [(ngModel)]="newArticle.link" placeholder="Enter article link" />
+          </div>
+          <button type="button" (click)="addNewArticle()">Add Article</button>
+        </div>
+      </div>
+
 
       <div class="article-list">
         <div *ngFor="let article of articles.controls; let i = index" [formGroup]="article">

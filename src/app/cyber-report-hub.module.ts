@@ -11,6 +11,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {
@@ -136,6 +138,7 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     MatInputModule,
     MatFormFieldModule,
     MatNativeDateModule,
+    MatIconModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
