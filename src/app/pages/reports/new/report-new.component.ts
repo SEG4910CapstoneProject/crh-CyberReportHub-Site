@@ -3,6 +3,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
+import { ReportsService } from '../../../shared/services/reports.service';
+
 
 
 @Component({
@@ -19,7 +21,9 @@ export class ReportNewComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private darkModeService = inject(DarkModeService);
+  private reportsService = inject(ReportsService);
   protected isDarkMode$ = this.darkModeService.isDarkMode$;
+
 
   constructor() {
     this.form = this.fb.group({
@@ -52,8 +56,25 @@ export class ReportNewComponent implements OnInit, OnDestroy {
     }
   }
   next(): void {
-    this.router.navigate(['/reports-articles']);
+    const reportType = this.form.get('reportType')?.value;
+
+    this.reportsService.createBasicReport(reportType).subscribe({
+      next: (response) => {
+        const reportId = response.reportId;
+        console.log('Report created with ID:', reportId);
+
+        // Navigate to the next page and pass reportId in state
+        this.router.navigate(['/reports-articles'], {
+          state: { reportId },
+        });
+      },
+      error: (err: any) => {
+        console.error('Error creating report:', err);
+        alert('Failed to create report');
+      }
+    });
   }
+
 
 
 
