@@ -32,23 +32,19 @@ export class ArticlesComponent implements OnInit {
       this.isLoggedIn.set(status);  // Update the signal with the current login status
     });
 
-    this.articleService.getAllArticleTypesWithArticles(30).subscribe(
-      response => {
-        this.articlesByCategory = response;
-        this.categories = Object.keys(response);
+    this.route.data.subscribe(data => {
+      console.log('Resolved data:', data);
+      if (data['articlesData']) {
+        this.articlesByCategory = data['articlesData'];
+        this.categories = Object.keys(data['articlesData']);
         this.isLoading = false;
 
         // Initialize articlesToShow to show 3 articles initially for each category
         this.categories.forEach(category => {
           this.articlesToShow[category] = 3;
         });
-      },
-      error => {
-        console.error('Error fetching articles:', error);
-        this.isLoading = false;
       }
-    );
-
+    });
 
     // Fetch Articles of Note
     this.fetchArticlesOfNote();

@@ -94,45 +94,25 @@
 
 
       <div class="article-list">
-        <div
-          class="article"
-          *ngFor="let article of articles.controls; let i = index"
-          [formGroup]="article">
-
-          <input
-            placeholder="Title"
-            formControlName="title"
-            readonly
-            class="article-title" />
-
-          <input
-            placeholder="Type"
-            formControlName="type"
-            readonly
-            class="article-type" />
-
-          <select formControlName="category" class="article-category">
+        <div *ngFor="let article of articles.controls; let i = index" [formGroup]="article">
+          <input placeholder="Title" formControlName="title" readonly />
+          <select formControlName="type">
+            <option [value]="article.get('type')?.value">{{ article.get('type')?.value }}</option>
+          </select>
+          <select formControlName="category">
             <option value="">-- {{ 'reportNew.category' | translate }} --</option>
             <option value="activeThreats">{{ 'reportNew.activethreats' | translate }}</option>
             <option value="emergingInternationalThreats">{{ 'reportNew.emergingthreats' | translate }}</option>
             <option value="globalNews">{{ 'reportNew.globalnews' | translate }}</option>
             <option value="customerThreats">{{ 'reportNew.customerthreats' | translate }}</option>
           </select>
-
-          <input
-            placeholder="Link"
-            formControlName="link"
-            readonly
-            class="article-link" />
-
-          <button type="button" (click)="removeArticle(i)">
-            {{ 'common.remove' | translate }}
-          </button>
+          <input placeholder="Link" formControlName="link" readonly />
+          <button type="button" (click)="removeArticle(i)">{{ 'common.remove' | translate }}</button>
         </div>
       </div>
     </div>
 
-      <div class="form-actions">
+    <div class="form-actions">
       <button type="button" (click)="back()">{{ 'common.back' | translate }}</button>
       <button type="button" (click)="viewReport()">{{ 'common.preview' | translate }}</button>
       <button type="submit">{{ 'common.submit' | translate }}</button>
