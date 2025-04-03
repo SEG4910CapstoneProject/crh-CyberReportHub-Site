@@ -28,7 +28,7 @@
 
       <!-- Add statistics button -->
       <div class="add-statistics-container">
-        <button class="add-statistics-button" type="button" (click)="openAddStatDialog()">+</button>
+        <button class="add-statistics-button" (click)="openAddStatDialog()">+</button>
       </div>
     </div>
 
@@ -65,10 +65,7 @@
         <div class="manual-article-form">
           <div class="form-field">
             <label for="articleTitle">Title</label>
-            <input
-              id="articleTitle"
-              [(ngModel)]="newArticle.title"
-              placeholder="Enter article title" />
+            <input id="articleTitle" [(ngModel)]="newArticle.title" placeholder="Enter article title" />
           </div>
           <div class="form-field">
             <label for="articleType">Type</label>
@@ -87,18 +84,14 @@
               <option value="customerThreats">{{ 'reportNew.customerthreats' | translate }}</option>
             </select>
           </div>
-
-          <!-- Submit + Cancel Buttons -->
-          <div class="form-actions">
-            <button type="button" (click)="addNewArticle()">
-              {{ 'common.add' | translate }}
-            </button>
-            <button type="button" (click)="toggleArticleForm()">
-              {{ 'common.cancel' | translate }}
-            </button>
+          <div class="form-field">
+            <label for="articleLink">Link</label>
+            <input id="articleLink" [(ngModel)]="newArticle.link" placeholder="Enter article link" />
           </div>
+          <button type="button" (click)="addNewArticle()">Add Article</button>
         </div>
       </div>
+
 
       <div class="article-list">
         <div

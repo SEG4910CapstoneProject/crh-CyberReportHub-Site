@@ -169,12 +169,12 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   //Method for user to manually add a link to the report
   //Future implementation: ML language will be able to classify the category just from the link
   addNewArticle(): void {
-    const link = this.newArticleForm.value?.trim();
-    const { title, type, category } = this.newArticle;
+    const { title, type, category, link } = this.newArticle;
 
-    if (link && link !== '') {
+    if (link && link.trim() !== '') {
+      // If link is valid, create a new article with the given values
       const newArticle = {
-        articleId: this.generateArticleId(),
+        articleId: this.generateArticleId(), // Generate a unique ID for the article
         title,
         type,
         category,
@@ -182,16 +182,13 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       };
 
       this.addArticleFromSelection(newArticle);
-
-      // Clear form values
-      this.newArticleForm.reset();
-      this.newArticle = { title: '', type: '', category: '', link: '' };
-      this.isArticleFormVisible = false;
     } else {
       console.log('Invalid link or empty input');
     }
-  }
 
+    // Hide the form again after submission
+    this.isArticleFormVisible = false;
+  }
 
   // Generate a unique article ID
   generateArticleId(): string {
@@ -307,10 +304,16 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       category: [article.category || ''],
       link: [article.link || ''],
     });
-
     this.articles.push(articleForm);
-  }
 
+    // Navigate back to preview page with updated state
+    this.router.navigate(['/report-preview'], {
+      state: {
+        articles: this.articles,
+        stats: this.addedStats,
+      },
+    });
+  }
 
   removeArticle(index: number): void {
     this.articles.removeAt(index);

@@ -10,12 +10,7 @@
     <ul *ngIf="articlesOfNote.length; else noArticlesOfNote">
       <li *ngFor="let article of articlesOfNote">
         <!-- Link to the article -->
-        <a
-          href="{{ article.url }}"
-          target="_blank"
-          (click)="incrementViewCountByUrl(article.url)">
-          {{ article.title }}
-        </a>
+        <a [href]="article.url" target="_blank">{{ article.title }}</a>
       </li>
     </ul>
     <ng-template #noArticlesOfNote>
@@ -44,12 +39,7 @@
         <div *ngFor="let article of mostViewedArticles" class="table-row">
           <div class="table-item">
             <!-- Link to the article -->
-            <a
-              href="{{ article.url }}"
-              target="_blank"
-              (click)="incrementViewCountByUrl(article.url)">
-              {{ article.title }}
-            </a>
+            <a [href]="article.url" target="_blank">{{ article.title }}</a>
           </div>
           <div class="table-item">
             {{ article.viewCount }}
