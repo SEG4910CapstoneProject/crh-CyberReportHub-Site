@@ -291,35 +291,6 @@ body.dark-mode .add-button:hover {
   background-color: #388e3c;
 }
 
-.add-statistics-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.add-statistics-button {
-  background-color: #f0f0f0;
-  color: #007bff;
-  width: 40px;
-  height: 40px;
-  border-radius: 6px;
-  font-size: 30px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #d0d0d0;
-  }
-
-  &.dark {
-    background-color: #2c2c2c;
-    color: #ffffff;
-  }
-}
 
 .add-article-container {
   display: flex;
@@ -364,3 +335,114 @@ body.dark-mode .add-button:hover {
   background-color: #ffffff;
   border: 1px solid #007bff;
 }
+
+.manual-article-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  label {
+    margin-bottom: 4px;
+    font-weight: bold;
+  }
+
+  button {
+    grid-column: span 2;
+    margin-top: 12px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+.stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.2s ease;
+
+  &.dark {
+    background-color: #2c2c2c;
+    border: 1px solid #444;
+  }
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+
+  strong {
+    font-size: 16px;
+  }
+}
+
+.stat-number {
+  font-size: 13px;
+  color: #666;
+}
+
+.stat-subtitle {
+  font-size: 14px;
+  color: #777;
+}
+
+.stat-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #333;
+
+    &.delete {
+      color: #e74c3c;
+    }
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+}
+
