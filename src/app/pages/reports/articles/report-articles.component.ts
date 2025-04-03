@@ -169,12 +169,12 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   //Method for user to manually add a link to the report
   //Future implementation: ML language will be able to classify the category just from the link
   addNewArticle(): void {
-    const { title, type, category, link } = this.newArticle;
+    const link = this.newArticleForm.value?.trim();
+    const { title, type, category } = this.newArticle;
 
-    if (link && link.trim() !== '') {
-      // If link is valid, create a new article with the given values
+    if (link && link !== '') {
       const newArticle = {
-        articleId: this.generateArticleId(), // Generate a unique ID for the article
+        articleId: this.generateArticleId(),
         title,
         type,
         category,
@@ -182,13 +182,16 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       };
 
       this.addArticleFromSelection(newArticle);
+
+      // Clear form values
+      this.newArticleForm.reset();
+      this.newArticle = { title: '', type: '', category: '', link: '' };
+      this.isArticleFormVisible = false;
     } else {
       console.log('Invalid link or empty input');
     }
-
-    // Hide the form again after submission
-    this.isArticleFormVisible = false;
   }
+
 
   // Generate a unique article ID
   generateArticleId(): string {
@@ -217,6 +220,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras?.state ?? window.history.state;
+
     if (state?.reportId != null) {
       this.reportId = state.reportId;
       console.log('Received report ID from previous page:', this.reportId);
@@ -226,7 +230,34 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Restore previously selected articles (if any)
+    if (state?.articles?.length) {
+      state.articles.forEach((article: any) => {
+        const articleForm = this.fb.group({
+          id: [article.articleId, Validators.required],
+          title: [article.title, Validators.required],
+          type: [article.type || '', Validators.required],
+          category: [article.category || ''],
+          link: [article.link || ''],
+        });
+        this.articles.push(articleForm);
+      });
+    }
+
+    // Restore stats (if any)
+    if (state?.stats?.length) {
+      this.addedStats = state.stats;
+    }
+
+    // Restore analyst comment (if any)
+    if (state?.analystComment) {
+      this.form.get('analystComment')?.setValue(state.analystComment);
+    }
+
+    // Load article suggestions
     this.fetchSuggestedArticles();
+
+    // Setup dark mode handling
     this.subscriptions.push(
       this.darkModeService.isDarkMode$.subscribe(mode => {
         this.isDarkMode = mode;
@@ -234,6 +265,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       })
     );
   }
+
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -275,16 +307,10 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       category: [article.category || ''],
       link: [article.link || ''],
     });
-    this.articles.push(articleForm);
 
-    // Navigate back to preview page with updated state
-    this.router.navigate(['/report-preview'], {
-      state: {
-        articles: this.articles,
-        stats: this.addedStats,
-      },
-    });
+    this.articles.push(articleForm);
   }
+
 
   removeArticle(index: number): void {
     this.articles.removeAt(index);

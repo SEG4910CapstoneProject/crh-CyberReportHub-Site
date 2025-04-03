@@ -28,7 +28,7 @@
 
       <!-- Add statistics button -->
       <div class="add-statistics-container">
-        <button class="add-statistics-button" (click)="openAddStatDialog()">+</button>
+        <button class="add-statistics-button" type="button" (click)="openAddStatDialog()">+</button>
       </div>
     </div>
 
@@ -65,7 +65,10 @@
         <div class="manual-article-form">
           <div class="form-field">
             <label for="articleTitle">Title</label>
-            <input id="articleTitle" [(ngModel)]="newArticle.title" placeholder="Enter article title" />
+            <input
+              id="articleTitle"
+              [(ngModel)]="newArticle.title"
+              placeholder="Enter article title" />
           </div>
           <div class="form-field">
             <label for="articleType">Type</label>
@@ -84,35 +87,59 @@
               <option value="customerThreats">{{ 'reportNew.customerthreats' | translate }}</option>
             </select>
           </div>
-          <div class="form-field">
-            <label for="articleLink">Link</label>
-            <input id="articleLink" [(ngModel)]="newArticle.link" placeholder="Enter article link" />
+
+          <!-- Submit + Cancel Buttons -->
+          <div class="form-actions">
+            <button type="button" (click)="addNewArticle()">
+              {{ 'common.add' | translate }}
+            </button>
+            <button type="button" (click)="toggleArticleForm()">
+              {{ 'common.cancel' | translate }}
+            </button>
           </div>
-          <button type="button" (click)="addNewArticle()">Add Article</button>
         </div>
       </div>
 
-
       <div class="article-list">
-        <div *ngFor="let article of articles.controls; let i = index" [formGroup]="article">
-          <input placeholder="Title" formControlName="title" readonly />
-          <select formControlName="type">
-            <option [value]="article.get('type')?.value">{{ article.get('type')?.value }}</option>
-          </select>
-          <select formControlName="category">
+        <div
+          class="article"
+          *ngFor="let article of articles.controls; let i = index"
+          [formGroup]="article">
+
+          <input
+            placeholder="Title"
+            formControlName="title"
+            readonly
+            class="article-title" />
+
+          <input
+            placeholder="Type"
+            formControlName="type"
+            readonly
+            class="article-type" />
+
+          <select formControlName="category" class="article-category">
             <option value="">-- {{ 'reportNew.category' | translate }} --</option>
             <option value="activeThreats">{{ 'reportNew.activethreats' | translate }}</option>
             <option value="emergingInternationalThreats">{{ 'reportNew.emergingthreats' | translate }}</option>
             <option value="globalNews">{{ 'reportNew.globalnews' | translate }}</option>
             <option value="customerThreats">{{ 'reportNew.customerthreats' | translate }}</option>
           </select>
-          <input placeholder="Link" formControlName="link" readonly />
-          <button type="button" (click)="removeArticle(i)">{{ 'common.remove' | translate }}</button>
+
+          <input
+            placeholder="Link"
+            formControlName="link"
+            readonly
+            class="article-link" />
+
+          <button type="button" (click)="removeArticle(i)">
+            {{ 'common.remove' | translate }}
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="form-actions">
+      <div class="form-actions">
       <button type="button" (click)="back()">{{ 'common.back' | translate }}</button>
       <button type="button" (click)="viewReport()">{{ 'common.preview' | translate }}</button>
       <button type="submit" (click)="generateReport()">{{ 'common.submit' | translate }}</button>

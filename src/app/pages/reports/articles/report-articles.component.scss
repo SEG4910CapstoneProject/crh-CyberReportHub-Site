@@ -66,23 +66,40 @@
 
       .article {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr auto;
-        align-items: center;
+        grid-template-columns: 2fr 1fr 1.2fr 2fr auto;
         gap: 8px;
+        align-items: center;
 
         input,
         select {
           width: 100%;
+          padding: 8px;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+        }
+
+        .article-title {
+          font-weight: bold;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .article-link {
+          font-style: italic;
+          font-size: 13px;
+          color: #555;
         }
 
         button {
+          padding: 8px 12px;
           background-color: #e74c3c;
           color: white;
           border: none;
-          padding: 8px 12px;
-          cursor: pointer;
           border-radius: 6px;
           font-size: 12px;
+          cursor: pointer;
 
           &:hover {
             background-color: #c0392b;
@@ -335,6 +352,22 @@ body.dark-mode .add-button:hover {
   background-color: #ffffff;
   border: 1px solid #007bff;
 }
+
+.cancel-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 8px;
+
+  &:hover {
+    background-color: #c82333;
+  }
+}
+
 
 .manual-article-form {
   display: grid;
