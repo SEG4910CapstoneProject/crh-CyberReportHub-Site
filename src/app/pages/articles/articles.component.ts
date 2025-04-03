@@ -149,4 +149,22 @@ export class ArticlesComponent implements OnInit {
       }
     );
   }
+
+  //Necessary to increment view count from articles of note (since backend only sends URLs)
+  //This will be deleted later
+  incrementViewCountFromUrl(url: string): void {
+    this.articleService.getArticleByLink(url).subscribe(
+      (article) => {
+        if (article?.articleId) {
+          this.incrementViewCount(article.articleId);
+        } else {
+          console.warn('No articleId found for URL:', url);
+        }
+      },
+      (error) => {
+        console.error('Error fetching article by URL:', error);
+      }
+    );
+  }
+
 }

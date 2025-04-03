@@ -50,6 +50,7 @@ export class ReportPreviewComponent {
         articles: this.articles,
         stats: this.stats,
         analystComment: this.analystComment,
+        reportId: history.state?.reportId
       },
     });
   }
