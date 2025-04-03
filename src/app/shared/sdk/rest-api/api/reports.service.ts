@@ -31,6 +31,9 @@ import { Configuration } from '../configuration';
 
 @Injectable()
 export class ReportsService {
+  generatePdf(payload: { reportID: number; analystComments: any; articles: { articleId: any; title: any; category: any; link: any; type: any; }[]; statistics: { title: string; subtitle: string | undefined; }[]; }) {
+    throw new Error('Method not implemented.');
+  }
   createReport(arg0: any) {
     throw new Error('Method not implemented.');
   }

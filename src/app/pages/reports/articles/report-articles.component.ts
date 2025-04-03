@@ -8,7 +8,7 @@ import { ArticleService, Article } from '../../../shared/services/article.servic
 import { Dialog } from '@angular/cdk/dialog';
 import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
-import { ReportsService } from '../../../shared/sdk/rest-api/api/reports.service';
+import { ReportsService } from '../../../shared/services/reports.service';
 import { map, switchMap, tap, catchError, filter } from 'rxjs/operators';
 import { JsonStatsResponse } from '../../../shared/sdk/rest-api/model/jsonStatsResponse';
 import {
@@ -308,6 +308,38 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.selectedArticleIds = this.articles.value.map(article => article.id);
     console.log('Selected Articles:', this.selectedArticleIds);
   }
+
+  generateReport(): void {
+    const payload = {
+      reportID: this.reportId,
+      analystComments: this.form.get('analystComment')?.value || '',
+      articles: this.articles.value.map(article => ({
+        articleId: article.id,
+        title: article.title,
+        category: article.category,
+        link: article.link,
+        type: article.type,
+      })),
+      statistics: this.addedStats.map(stat => ({
+        title: stat.title,
+        subtitle: stat.subtitle,
+      }))
+    };
+
+    this.reportsService.generatePdf(payload).subscribe({
+      next: (response: any) => {
+        console.log('PDF generated response:', response);
+
+        alert('Report PDF generated successfully!');
+      },
+      error: (err: any) => {
+        console.error('Error generating report:', err);
+        alert('Failed to generate report PDF.');
+      }
+    });
+  }
+
+
 
   back(): void {
     this.router.navigate(['/reports/create']);

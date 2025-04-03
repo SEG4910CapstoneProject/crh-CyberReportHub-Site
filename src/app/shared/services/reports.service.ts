@@ -8,6 +8,11 @@ import { JsonReportResponse } from '../sdk/rest-api/model/jsonReportResponse';
   providedIn: 'root',
 })
 export class ReportsService {
+  addSingleStatToReport(reportId: number, statId: string): Observable<any> {
+    const url = `${this.apiUrl}/${reportId}/addStat/${statId}`;
+    return this.http.patch(url, {});
+  }
+
   private apiUrl = 'http://localhost:8080/api/v1/reports';
   basePath: any;
   httpClient: any;
@@ -73,6 +78,14 @@ export class ReportsService {
 
     return this.http.post<{ reportId: number }>(url, {}, options);
   }
+
+  generatePdf(payload: any): Observable<any> {
+    return this.http.post('/api/v1/reports/create-pdf', payload);
+  }
+
+
+
+
 
 
 }
