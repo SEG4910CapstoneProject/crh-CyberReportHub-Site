@@ -10,12 +10,7 @@ import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-stati
 import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
 import { ReportsService } from '../../../shared/sdk/rest-api/api/reports.service';
 import { map, switchMap, tap, catchError, filter } from 'rxjs/operators';
-import { JsonStatsResponse } from '../../../shared/sdk/rest-api/model/jsonStatsResponse';
-import {
-  EditStatDialogData,
-  EditStatDialogResult,
-  EditStatDialogResultObject,
-} from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.model';
+import { EditStatDialogResultObject } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.model';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -60,31 +55,8 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   // Mock data for now - This will be replaced with an API call
   protected reportId = 1;
 
-  // Store the added statistics
-  protected addedStats: JsonStatsResponse[] = [];
-
-  // Store the form values for the new article
-  newArticle = {
-    title: '',
-    type: '',
-    category: '',
-    link: ''
-  };
-
-  protected articleTypes: string[] = [
-    'Phishing',
-    'Malware',
-    'Vulnerability',
-    'Data Leak',
-    'Cyber Attack',
-    'Cloud',
-    'AI & 5G',
-    'Canada',
-    'World'
-  ];
-
-  // Flag to control visibility of the article form
-  isArticleFormVisible = false;
+  // Manage added statistics here
+  protected addedStats: { title: string, statId: string }[] = [];
 
   // Method for handling opening the statistics dialog
   openAddStatDialog(): void {
@@ -93,30 +65,94 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       .closed.pipe(
         map((data) => data as EditStatDialogResultObject),
         filter((data) => !!data),
+        switchMap((data) =>
+          this.statisticsService.addStat(data.value, data.title, data.subtitle)
+        ),
+        map((response) => response.uid),
+        switchMap((statId) =>
+          this.reportsService.patchReportSuggestions(this.reportId, undefined, statId.toString())
+        )
       )
-      .subscribe((data) => {
-        const newStat: JsonStatsResponse = {
-          statisticNumber: data.value,
-          title: data.title,
-          subtitle: data.subtitle,
-          statisticId: 'stat-' + Math.random().toString(36).substr(2, 9),
-        };
-        this.addedStats.push(newStat);
+      .subscribe((statId) => {
+        // Add the new stat to the addedStats array
+        this.addedStats.push({
+          title: statId.toString(),
+          statId: statId.toString(),
+        });
+        console.log('Stat added successfully');
+
+        // Navigate back to preview page with updated state
+        this.router.navigate(['/report-preview'], {
+          state: {
+            articles: this.articles.value, // Pass the current articles as well
+            stats: this.addedStats, // Pass the updated statistics
+          },
+        });
       });
   }
 
+  fetchArticlesByLinkOrUndefined(link: string): Observable<any> {
+    return this.articleService.getArticleByLink(link).pipe(
+      catchError((err) => {
+        console.error(err);
+        return EMPTY;
+      })
+    );
+  }
 
-  // Add a statistic to the report
-  onStatAdd(statId: string): void {
+  // Method to remove the statistic from addedStats
+  removeStat(stat: { title: string, statId: string }): void {
+    this.addedStats = this.addedStats.filter(s => s.statId !== stat.statId);
+    console.log('Stat removed successfully');
+  }
+
+  // Method to view the report preview
+  viewReport(): void {
+    this.router.navigate(['/report-preview'], {
+      state: {
+        articles: this.articles.value,
+        stats: this.addedStats,
+      },
+    });
+  }
+
+  // Method to add a new article
+  protected addNewArticle(): void {
     const reportId = this.reportId;
     if (!reportId) {
       return;
     }
 
-    this.reportsService
-      .addSingleStatToReport(reportId, statId)
+    if (!this.newArticleForm.valid) {
+      this.newArticleForm.markAllAsTouched();
+      return;
+    }
+
+    const providedLink = this.newArticleForm.value;
+    this.newArticleForm.setValue('');
+    this.newArticleForm.markAsUntouched();
+
+    if (!providedLink) {
+      this.newArticleForm.markAllAsTouched();
+      return;
+    }
+
+    of(providedLink)
       .pipe(
-        catchError((err) => {
+        switchMap(link => this.fetchArticlesByLinkOrUndefined(link)),
+        switchMap(articleResult => {
+          this.addArticleFromSelection(articleResult);
+          const articleId = articleResult?.articleId; // Ensure we get the articleId
+          if (!articleId) {
+            console.error('No articleId found for this article');
+            return EMPTY; // Prevent proceeding if no articleId exists
+          }
+          return of(articleId); // Return the valid articleId
+        }),
+        switchMap(articleId =>
+          this.reportsService.patchReportSuggestions(reportId, articleId)
+        ),
+        catchError(err => {
           console.error(err);
           return EMPTY;
         }),
@@ -126,85 +162,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe();
-  }
-
-  // Remove a statistic from the report
-  //Add API Call
-  onStatRemove(statId: string): void {
-    this.addedStats = this.addedStats.filter(stat => stat.statisticId !== statId);
-  }
-
-
-  // Edit an existing statistic
-  onStatEdit(stat: JsonStatsResponse): void {
-    this.dialog
-      .open(EditStatisticDialogComponent, {
-        data: {
-          stat,
-        } satisfies EditStatDialogData,
-      })
-      .closed.pipe(
-        map(data => data as EditStatDialogResult),
-        filter((data): data is EditStatDialogResultObject => !!data),
-      )
-      .subscribe((data) => {
-        const index = this.addedStats.findIndex(s => s.statisticId === stat.statisticId);
-        if (index !== -1) {
-          this.addedStats[index] = {
-            ...this.addedStats[index],
-            title: data.title,
-            subtitle: data.subtitle,
-            statisticNumber: data.value,
-          };
-        }
-      });
-  }
-
-
-  // Toggle visibility of the article form (We will remove the form after)
-  toggleArticleForm(): void {
-    this.isArticleFormVisible = !this.isArticleFormVisible;
-  }
-
-  //Method for user to manually add a link to the report
-  //Future implementation: ML language will be able to classify the category just from the link
-  addNewArticle(): void {
-    const { title, type, category, link } = this.newArticle;
-
-    if (link && link.trim() !== '') {
-      // If link is valid, create a new article with the given values
-      const newArticle = {
-        articleId: this.generateArticleId(), // Generate a unique ID for the article
-        title,
-        type,
-        category,
-        link,
-      };
-
-      this.addArticleFromSelection(newArticle);
-    } else {
-      console.log('Invalid link or empty input');
-    }
-
-    // Hide the form again after submission
-    this.isArticleFormVisible = false;
-  }
-
-  // Generate a unique article ID
-  generateArticleId(): string {
-    return 'article-' + Math.random().toString(36).substr(2, 9);  // Random ID
-  }
-
-
-  // Method to view the report preview
-  viewReport(): void {
-    this.router.navigate(['/report-preview'], {
-      state: {
-        articles: this.articles.value,
-        stats: this.addedStats,
-        analystComment: this.form.get('analystComment')?.value,
-      },
-    });
   }
 
   constructor() {
@@ -266,7 +223,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     return this.form.get('articles') as FormArray<FormGroup>;
   }
 
-  // Add new article to the report
   addArticleFromSelection(article: any): void {
     const articleForm = this.fb.group({
       id: [article.articleId, Validators.required],

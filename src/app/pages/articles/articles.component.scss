@@ -1,152 +1,80 @@
 .articles-page-container {
+  max-width: 800px;
+  margin: 20px auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  color: #333;
+}
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    h1 {
-      font-size: 32px;
-      font-weight: bold;
-      color: #444;
-    }
+.add-article-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-    .add-article-btn {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      font-size: 14px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+.sections {
+  margin-top: 20px;
+}
 
-      &:hover {
-        background-color: #0056b3;
-      }
-    }
-  }
+.category-section {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
 
-  .sections {
-    .category-section {
-      margin-bottom: 30px;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 20px;
+.category-section h2 {
+  margin-bottom: 10px;
+}
 
-      h2 {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 15px;
-        font-weight: 600;
-      }
+/* Styling for the See More / See Less buttons */
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
 
-      .article-list {
-        list-style: none;
-        padding-left: 0;
+button:hover {
+  background-color: #0056b3;
+}
 
-        .article-item {
-          background-color: #fff;
-          border: 1px solid #ddd;
-          padding: 15px;
-          border-radius: 8px;
-          margin-bottom: 15px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-          transition: box-shadow 0.3s;
+.star-icon {
+  cursor: pointer;
+  color: #ccc;
+  margin-left: 10px;
+}
 
-          &:hover {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          }
+.star-icon.fav {
+  color: gold; /* Highlight the star when it's a favourite */
+}
 
-          .article-link {
-            font-size: 18px;
-            font-weight: bold;
-            color: #007bff;
-            text-decoration: none;
-            transition: color 0.3s;
+.favourites {
+  margin-top: 20px;
+}
 
-            &:hover {
-              color: #0056b3;
-            }
-          }
+.favourites ul {
+  list-style-type: none;
+  padding-left: 0;
+}
 
-          .article-description {
-            font-size: 14px;
-            color: #777;
-            margin: 10px 0;
-          }
+.favourites ul li {
+  margin: 5px 0;
+}
 
-          .star-icon {
-            font-size: 20px;
-            color: #ffcc00;
-            cursor: pointer;
-            margin-right: 10px;
 
-            &.fav {
-              color: #ff9900;
-            }
-          }
-
-          .article-of-note-label {
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 14px;
-          }
-        }
-      }
-
-      .see-more-btn,
-      .see-less-btn {
-        background-color: #007bff;
-        color: white;
-        padding: 8px 16px;
-        font-size: 14px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: background-color 0.3s;
-
-        &:hover {
-          background-color: #0056b3;
-        }
-      }
-
-      .empty-section {
-        font-size: 16px;
-        color: #777;
-        text-align: center;
-      }
-    }
-
-    .favourites-list,
-    .articles-of-note-list {
-      list-style: none;
-      padding-left: 0;
-
-      .favourite-item,
-      .article-of-note-item {
-        padding: 10px;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-      }
-
-      .favourite-link,
-      .article-of-note-link {
-        font-size: 16px;
-        color: #007bff;
-        text-decoration: none;
-
-        &:hover {
-          color: #0056b3;
-        }
-      }
-    }
-  }
+crh-progress-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
 }
