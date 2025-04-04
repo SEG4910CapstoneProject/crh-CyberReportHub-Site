@@ -43,7 +43,7 @@ export class ReportNewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
-
+//To save settings (admin)
   private loadBrandingSettings(): void {
     const savedSettings = localStorage.getItem('brandingSettings');
     if (savedSettings) {
@@ -57,6 +57,8 @@ export class ReportNewComponent implements OnInit, OnDestroy {
   }
   next(): void {
     const reportType = this.form.get('reportType')?.value;
+
+    //Creates report ID in db
 
     this.reportsService.createBasicReport(reportType).subscribe({
       next: (response) => {

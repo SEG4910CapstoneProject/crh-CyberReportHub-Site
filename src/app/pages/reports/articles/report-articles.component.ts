@@ -334,7 +334,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.selectedArticleIds = this.articles.value.map(article => article.id);
     console.log('Selected Articles:', this.selectedArticleIds);
   }
-
+//Report generation
   generateReport(): void {
     const payload = {
       reportID: this.reportId,

@@ -9,12 +9,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrl: './settings.component.scss',
 })
 export class SettingsComponent implements OnInit {
-  // State signals
+
   protected isDarkMode = signal(false);
   protected isLoggedIn = signal(false);
   form: FormGroup;
 
-  // Inject dependencies
+
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private darkModeService = inject(DarkModeService);
@@ -58,6 +58,7 @@ export class SettingsComponent implements OnInit {
     this.darkModeService.setDarkMode(isChecked);
   }
 
+  //Logo
   handleLogoUpload(event: Event): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (file) {

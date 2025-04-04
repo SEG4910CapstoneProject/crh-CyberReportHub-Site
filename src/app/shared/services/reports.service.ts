@@ -80,6 +80,7 @@ export class ReportsService {
     return this.http.post<{ reportId: number }>(url, {}, options);
   }
 
+  //Report generation
   generatePdf(payload: any): Observable<any> {
     return this.http.post('/api/v1/reports/create-pdf', payload);
   }
