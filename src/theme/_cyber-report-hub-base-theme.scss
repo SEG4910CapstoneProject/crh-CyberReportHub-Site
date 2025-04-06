@@ -4,7 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500..700;1,700&display=swap');
 
-// Define colors
+// Light Mode Colors Definitions
 $primary-palette: define-color-palette(#050c9c, #ffffff);
 
 $background-palette: define-color-palette(#ffffff, #000000);
@@ -25,6 +25,18 @@ $warning-palette: define-color-palette(#ffdb00, #2d2d2c);
 
 $error-palette: define-color-palette(#e72929, #2d2d2c);
 
+// Dark Mode Colour Definitions
+$dark-primary-palette: define-color-palette(#90caf9, #121212);
+$dark-background-palette: define-color-palette(#121212, #ffffff);
+$dark-accent-links-palette: define-color-palette(#64b5f6, #ffffff);
+$dark-primary-highlight-palette: define-color-palette(#1e88e5, #ffffff);
+$dark-light-background-palette: define-color-palette(#1e1e1e, #ffffff);
+$dark-divider-palette: define-color-palette(#424242, #ffffff);
+$dark-base-text-palette: define-color-palette(#e0e0e0, #121212);
+$dark-success-palette: define-color-palette(#66bb6a, #121212);
+$dark-warning-palette: define-color-palette(#ffca28, #121212);
+$dark-error-palette: define-color-palette(#ef5350, #121212);
+
 // Define typography
 $heading-0-level: define-typography-level('Work Sans', 400, 36px);
 
@@ -43,7 +55,7 @@ $chip-level: define-typography-level('Heebo', 400, 12px);
 // Define base font size (should be in px)
 $base-font-size: 16;
 
-// boilerplate
+// Light Mode Theme
 $theme-color-config: define-color-config(
   $primary-palette,
   $background-palette,
@@ -70,5 +82,25 @@ $theme-typography-config: define-typography-config(
 $theme: define-theme(
   $base-font-size,
   $theme-color-config,
+  $theme-typography-config
+);
+
+// Dark Mode Theme
+$dark-theme-color-config: define-color-config(
+  $dark-primary-palette,
+  $dark-background-palette,
+  $dark-accent-links-palette,
+  $dark-primary-highlight-palette,
+  $dark-light-background-palette,
+  $dark-divider-palette,
+  $dark-base-text-palette,
+  $dark-success-palette,
+  $dark-warning-palette,
+  $dark-error-palette
+);
+
+$dark-theme: define-theme(
+  $base-font-size,
+  $dark-theme-color-config,
   $theme-typography-config
 );

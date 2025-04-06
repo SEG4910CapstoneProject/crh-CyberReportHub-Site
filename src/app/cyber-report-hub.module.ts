@@ -1,10 +1,19 @@
 import { NgModule } from '@angular/core';
 import { routes } from './app.routes';
 import { provideRouter, RouterModule } from '@angular/router';
+import { MatSelectModule } from '@angular/material/select';
 import { CyberReportHubComponent } from './cyber-report-hub.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+
+
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {
   HttpClient,
@@ -56,6 +65,14 @@ import { EditArticleDialogComponent } from './shared/dialogs/edit-article-dialog
 import { EditStatisticDialogComponent } from './shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 import { ConfirmCancelButtonsComponent } from './shared/components/confirm-cancel-buttons/confirm-cancel-buttons.component';
 import { ArticleSuggestionComponent } from './pages/reports/edit/article-suggestion/article-suggestion.component';
+import { NewArticleComponent } from './pages/new-article/new-article.component';
+import { ChatbotComponent } from './pages/chatbot/chatbot.component';
+import { ArticlesComponent } from './pages/articles/articles.component';
+import { ReportPreviewComponent } from './pages/reports/articles/report-preview/report-preview.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+
+import { ReportNewComponent } from './pages/reports/new/report-new.component';
+import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
@@ -100,14 +117,28 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     EditStatisticDialogComponent,
     ConfirmCancelButtonsComponent,
     ArticleSuggestionComponent,
+    NewArticleComponent,
+    ChatbotComponent,
+    ArticlesComponent,
+    ReportPreviewComponent,
+    ReportNewComponent,
+    ReportArticlesComponent,
+    SettingsComponent,
   ],
   imports: [
     RouterModule,
+    RouterModule.forRoot([]),
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     ApiModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatIconModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

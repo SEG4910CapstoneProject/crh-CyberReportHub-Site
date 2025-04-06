@@ -1,0 +1,38 @@
+<div class="report-preview">
+  <!-- Title of the report -->
+  <h1>Report Preview</h1>
+
+  <!-- Subtitle for statistics -->
+  <h2 *ngIf="stats.length > 0">Statistics</h2>
+  <div *ngIf="stats.length > 0">
+    <ul>
+      <li *ngFor="let stat of stats">
+        {{ stat.title }}: {{ stat.value }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Subtitle for articles -->
+  <h2 *ngIf="hasArticles()">Articles</h2>
+  <div *ngIf="hasArticles()">
+    <div *ngFor="let category of articleCategories">
+      <h3>{{ category }}</h3>
+      <ul>
+        <li *ngFor="let article of articlesByCategory[category]">
+          <a [href]="article.link" target="_blank">{{ article.title }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Subtitle for Analyst Comments -->
+  <h2 *ngIf="analystComment">Analyst Comment</h2>
+  <div *ngIf="analystComment">
+    <p>{{ analystComment }}</p>
+  </div>
+
+  <!-- Back Button -->
+  <div class="form-actions">
+    <button type="button" (click)="goBack()">Back</button>
+  </div>
+</div>

@@ -6,7 +6,7 @@ WORKDIR /project-build
 
 COPY ./ /project-build
 
-RUN npm i --ignore-scripts
+RUN npm install --legacy-peer-deps
 
 RUN npm run build
 

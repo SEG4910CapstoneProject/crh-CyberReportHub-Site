@@ -8,10 +8,55 @@ import { ReportResolverService } from './shared/resolvers/report-resolver.servic
 import { HomeComponent } from './pages/home/home.component';
 import { ReportSuggestionsResolverService } from './shared/resolvers/report-suggestions-resolver.service';
 
+import { ArticlesResolverService } from './shared/resolvers/articles-resolver.service';
+
+import { NewArticleComponent } from './pages/new-article/new-article.component';
+import { ChatbotComponent } from './pages/chatbot/chatbot.component';
+import { ArticlesComponent } from './pages/articles/articles.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+
+import { ReportNewComponent } from './pages/reports/new/report-new.component';
+import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
+import { ReportPreviewComponent } from './pages/reports/articles/report-preview/report-preview.component';
+
 export const routes: Routes = [
   /**
    * FIXME: Temporary setup, should be replaced as pages get added.
    */
+
+  //Added Headers
+  {
+    path: 'report-preview',
+    component: ReportPreviewComponent
+    },
+
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    data: { selectedNav: 'settings' },
+  },
+  {
+    path: 'reports-articles',
+    component: ReportArticlesComponent,
+    data: { selectedNav: 'none' satisfies NavBarSelectedLinkOptions },
+  },
+  {
+    path: 'articles',
+    component: ArticlesComponent,
+    data: { selectedNav: 'articles' satisfies NavBarSelectedLinkOptions },
+  },
+  {
+    path: 'articles/add',
+    component: NewArticleComponent,
+    data: { selectedNav: 'articles' satisfies NavBarSelectedLinkOptions },
+  },
+  {
+    path: 'chatbot',
+    component: ChatbotComponent,
+    data: { selectedNav: 'chatbot' satisfies NavBarSelectedLinkOptions },
+  },
+  //End of Added Code
+
   {
     path: 'test',
     component: TesterPageComponent,
@@ -39,10 +84,16 @@ export const routes: Routes = [
         data: {
           selectedNav: 'none' satisfies NavBarSelectedLinkOptions,
         },
+        //Added
         resolve: {
           reportData: ReportResolverService,
           suggestionData: ReportSuggestionsResolverService,
         },
+      },
+      {
+        path: 'create',
+        component: ReportNewComponent,
+        data: { selectedNav: 'none' satisfies NavBarSelectedLinkOptions },
       },
       {
         path: 'statistics',

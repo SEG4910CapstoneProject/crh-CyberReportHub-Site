@@ -1,1 +1,107 @@
 <h1 class="crh-home-title">{{ 'home.title' | translate }}</h1>
+
+<div class="home-container">
+  <!-- Articles of Note -->
+  <div class="box articles">
+    <div class="box-header">
+      <h2>{{ 'home.articlesnote' | translate }}</h2>
+      <a routerLink="/articles#articles-of-note" class="see-more-button">{{ 'home.seemore' | translate }}</a>
+    </div>
+    <ul *ngIf="articlesOfNote.length; else noArticlesOfNote">
+      <li *ngFor="let article of articlesOfNote">
+        <!-- Link to the article -->
+        <a
+          href="{{ article.url }}"
+          target="_blank"
+          (click)="incrementViewCountByUrl(article.url)">
+          {{ article.title }}
+        </a>
+      </li>
+    </ul>
+    <ng-template #noArticlesOfNote>
+      <p>No articles of note yet...</p>
+    </ng-template>
+  </div>
+
+  <!-- Most Viewed Articles -->
+  <div class="box most-viewed">
+    <div class="box-header">
+      <h2>{{ 'home.articlesmostviewed' | translate }}</h2>
+    </div>
+
+    <!-- Show message if no articles are available -->
+    <div *ngIf="mostViewedArticles.length === 0; else mostViewedTable">
+      <p>No articles available yet...</p>
+    </div>
+
+    <ng-template #mostViewedTable>
+      <div class="most-viewed-table">
+        <!-- Headers for Link and Views -->
+        <div class="table-header">
+          <div class="table-header-item">{{ 'home.link' | translate }}</div>
+          <div class="table-header-item">{{ 'home.views' | translate }}</div>
+        </div>
+        <div *ngFor="let article of mostViewedArticles" class="table-row">
+          <div class="table-item">
+            <!-- Link to the article -->
+            <a
+              href="{{ article.url }}"
+              target="_blank"
+              (click)="incrementViewCountByUrl(article.url)">
+              {{ article.title }}
+            </a>
+          </div>
+          <div class="table-item">
+            {{ article.viewCount }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Latest Published Report -->
+  <div class="box reports">
+    <div class="box-header">
+      <h2>{{ 'home.report' | translate }}</h2>
+      <a routerLink="/reports" class="see-more-button">{{ 'home.seemore' | translate }}</a>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>{{ 'home.date' | translate }}</th>
+          <th>{{ 'home.modified' | translate }}</th>
+          <th *ngIf="isLoggedIn()">{{ 'home.email' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="latestPublishedReport">
+        <td>{{ latestPublishedReport.reportId }}</td>
+        <td>{{ latestPublishedReport.reportType }}</td>
+        <td>{{ latestPublishedReport.generatedDate }}</td>
+        <td>{{ latestPublishedReport.lastModified }}</td>
+        <td *ngIf="isLoggedIn()">
+          {{ latestPublishedReport.emailStatus ? '✔' : '✘' }}
+        </td>
+      </tr>
+      <tr *ngIf="!latestPublishedReport">
+        <td colspan="5">Loading...</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Current Items of Interest -->
+  <div class="box interest">
+    <div class="box-header">
+      <h2>{{ 'home.itemsinterest' | translate }}</h2>
+      <a routerLink="/reports" class="see-more-button">{{ 'home.seemore' | translate }}</a>
+    </div>
+    <ul>
+      <li *ngFor="let item of currentItemsOfInterest">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+</div>

@@ -38,14 +38,30 @@
           {{ langSelectTranslationSignal() }}
         </a>
       </div>
+
+      <div>
+        <a routerLink="/settings" class="settings-icon">
+          <mat-icon>settings</mat-icon>
+        </a>
+      </div>
+
+
       <div>
         <ng-container
           *ngIf="responsiveModeSignal() === 'desktop'; else mobileContainer">
           <crh-button
             type="contained"
-            [ariaLabel]="loginTranslationSignal() ?? ''"
-            (click)="onLoginClick()">
-            {{ loginTranslationSignal() }}
+            [ariaLabel]="
+              (isLoggedIn()
+                ? logoutTranslationSignal()
+                : loginTranslationSignal()) ?? ''
+            "
+            (click)="onAuthButtonClick()">
+            {{
+              isLoggedIn()
+                ? logoutTranslationSignal()
+                : loginTranslationSignal()
+            }}
           </crh-button>
         </ng-container>
       </div>
@@ -69,8 +85,14 @@
       </a>
     </div>
     <div>
-      <a [ariaLabel]="'login.login' | translate" (click)="onLoginClick()">
-        {{ 'login.login' | translate }}
+      <a
+        [ariaLabel]="
+          isLoggedIn() ? logoutTranslationSignal() : loginTranslationSignal()
+        "
+        (click)="onAuthButtonClick()">
+        {{
+          isLoggedIn() ? logoutTranslationSignal() : loginTranslationSignal()
+        }}
       </a>
     </div>
   </div>

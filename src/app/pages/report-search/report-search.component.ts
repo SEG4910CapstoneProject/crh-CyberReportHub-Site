@@ -1,125 +1,144 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { DateTime } from 'luxon';
-import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
-import { multipleFieldsSameStateValidator } from '../../shared/class/crh-multi-field-validator';
-import {
-  catchError,
-  combineLatest,
-  distinctUntilChanged,
-  map,
-  of,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
+import { Component, OnInit, inject } from '@angular/core';
+import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { ReportsService } from '../../shared/sdk/rest-api/api/reports.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ReportsService } from '../../shared/services/reports.service';
+import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
+import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 
 @Component({
   selector: 'crh-report-search',
   templateUrl: './report-search.component.html',
-  styleUrl: './report-search.component.scss',
+  styleUrls: ['./report-search.component.scss'],
 })
-export class ReportSearchComponent {
-  private readonly REPORT_TYPE = 'DAILY';
-
+export class ReportSearchComponent implements OnInit {
   private reportsService = inject(ReportsService);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
-  protected dateFormGroup = new FormGroup(
-    {
-      startDate: new FormControl<DateTime | undefined>(undefined),
-      endDate: new FormControl<DateTime | undefined>(undefined),
-    },
-    { validators: multipleFieldsSameStateValidator(['startDate', 'endDate']) }
-  );
-  protected paginatorStatusSignal = signal<PaginatorStatus>({
+  protected isLoggedIn = false;
+
+  // Declare form controls and form group
+  reportNo: string = '';
+  type: 'DAILY' | 'WEEKLY' = 'DAILY'; // Default to 'DAILY'
+  startDate: FormControl = new FormControl(null); // Default to null
+  endDate: FormControl = new FormControl(null); // Default to null
+
+  searchFormGroup!: FormGroup;
+
+  protected paginatorStatus: PaginatorStatus = {
     itemsPerPage: 10,
     page: 0,
-  });
-  protected isLoadingSignal = signal<boolean>(true);
+  };
 
-  private paginatorStatus$ = toObservable(this.paginatorStatusSignal);
+  protected isLoading = false;
 
-  private dateFormValue$ = this.dateFormGroup.valueChanges.pipe(
-    // mark all as touched on the gruop does not work
-    map(value => {
-      if (!this.dateFormGroup.valid || !value.endDate || !value.startDate) {
-        return undefined;
-      }
-      return value;
-    }),
-    startWith(undefined)
-  );
+  // This will hold the fetched reports
+  filteredReports: SearchReportDetailsResponse[] = [];
 
-  private reportSearchResults$ = combineLatest([
-    this.dateFormValue$,
-    this.paginatorStatus$,
-  ]).pipe(
-    map(([dateValues, paginatorStatus]) => ({
-      startDate: dateValues?.startDate,
-      endDate: dateValues?.endDate,
-      page: paginatorStatus.page,
-      limit: paginatorStatus.itemsPerPage,
-    })),
-    map(({ startDate, endDate, page, limit }) => ({
-      startDate: startDate?.toISODate() ?? undefined,
-      endDate: endDate?.toISODate() ?? undefined,
-      page,
-      limit,
-    })),
-    distinctUntilChanged(
-      (prev, cur) =>
-        prev.startDate === cur.startDate &&
-        prev.endDate === cur.endDate &&
-        prev.page === cur.page &&
-        prev.limit === cur.limit
-    ),
-    tap(() => this.isLoadingSignal.set(true)),
-    switchMap(({ startDate, endDate, page, limit }) =>
-      this.reportsService.searchReports(
-        this.REPORT_TYPE,
+  ngOnInit() {
+    // Log when ngOnInit is called
+    console.log('ReportSearchComponent ngOnInit called.');
+
+    // Subscribe to login status
+    this.authService.isLoggedIn$.subscribe(status => {
+      console.log('Is Logged In:', status); // Debugging login status
+      this.isLoggedIn = status;
+    });
+
+    // Initialize form group with controls
+    this.searchFormGroup = new FormGroup({
+      reportNo: new FormControl(''),
+      type: new FormControl(this.type),
+      startDate: this.startDate,
+      endDate: this.endDate,
+    });
+
+    // Fetch reports initially (no filters applied)
+    this.onSearch();
+  }
+
+  // Handle search logic
+  onSearch(): void {
+    const { reportNo, type, startDate, endDate } = this.searchFormGroup.value;
+
+    this.isLoading = true;
+
+    console.log('Fetching reports with parameters:', {
+      reportNo,
+      type,
+      startDate,
+      endDate,
+      page: this.paginatorStatus.page,
+      limit: this.paginatorStatus.itemsPerPage,
+    });
+
+    // Fetch reports from the service
+    this.reportsService
+      .searchReports(
+        type,
         startDate,
         endDate,
-        page,
-        limit
+        this.paginatorStatus.page,
+        this.paginatorStatus.itemsPerPage
       )
-    ),
-    catchError(err => {
-      console.error(err);
-      return of({
-        total: 0,
-        reports: [],
-      } satisfies SearchReportResponse);
-    }),
-    tap(() => this.isLoadingSignal.set(false)),
-    shareReplay()
-  );
+      .pipe(
+        catchError(err => {
+          console.error('Error fetching reports:', err); // Log any error
+          return of({ total: 0, reports: [] } as SearchReportResponse);
+        })
+      )
+      .subscribe((response: SearchReportResponse) => {
+        console.log('Fetched Reports Response:', response); // Log the response
 
-  private reports$ = this.reportSearchResults$.pipe(
-    map(result => result.reports)
-  );
+        this.isLoading = false;
+        this.filteredReports = response.reports ?? [];
+        // Ensure that reports have a valid type before displaying
+        this.filteredReports = this.filteredReports.map(report => ({
+          ...report,
+          type:
+            report.type === 'DAILY' || report.type === 'WEEKLY'
+              ? report.type
+              : 'Unknown', // Default to 'Unknown' for invalid types
+        }));
 
-  private reportTotalSignal = toSignal(
-    this.reportSearchResults$.pipe(map(result => result.total))
-  );
+        console.log('Filtered Reports:', this.filteredReports); // Log the filtered reports
+      });
+  }
 
-  protected reportSearchResultsSignal = toSignal(this.reports$);
+  // Handle view report logic
+  onViewReport(report: SearchReportDetailsResponse): void {
+    this.router.navigate([`/reports/read/${report?.reportId}`]);
+  }
 
-  protected reportSearchTotalSignal = computed(() => {
-    const reportTotal = this.reportTotalSignal();
-    if (!reportTotal) {
-      return 0;
-    }
+  // Handle deleting reports
+  onDeleteReport(report: SearchReportDetailsResponse): void {
+    const confirmed = confirm(`Are you sure you want to delete report #${report.reportId}?`);
+    if (!confirmed) return;
 
-    return reportTotal;
-  });
+    this.reportsService.deleteReport(report.reportId).subscribe(
+      () => {
+        console.log('Report deleted successfully');
+        // After successful deletion, remove it from the filteredReports array
+        this.filteredReports = this.filteredReports.filter(r => r.reportId !== report.reportId);
+      },
+      error => {
+        console.error('Error deleting report:', error);
+      }
+    );
+  }
 
-  protected onLatestClick(): void {
-    this.router.navigate(['/reports/read/latest']);
+
+
+  // Navigate to the "create report" page or other relevant route
+  onLatestClick(): void {
+    this.router.navigate(['/reports/create']);
+  }
+
+  // Handle logout
+  onLogout(): void {
+    this.authService.logout();
   }
 }
