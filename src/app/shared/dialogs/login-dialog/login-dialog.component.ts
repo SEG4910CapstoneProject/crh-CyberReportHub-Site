@@ -1,5 +1,7 @@
-import { DialogRef } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DialogRef } from '@angular/cdk/dialog';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'crh-login-dialog',
@@ -7,9 +9,21 @@ import { Component, inject } from '@angular/core';
   styleUrl: './login-dialog.component.scss',
 })
 export class LoginDialogComponent {
-  private dialogRef = inject(DialogRef);
+  private authService = inject(AuthService);
+  private dialogRef = inject(DialogRef<unknown, boolean>);
+
+  protected username = '';
+  protected password = '';
+
+  protected login(): void {
+    if (this.authService.login(this.username, this.password)) {
+      this.dialogRef.close(true);
+    } else {
+      alert('Invalid credentials');
+    }
+  }
 
   protected onCancel(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 }

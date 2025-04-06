@@ -1,0 +1,41 @@
+<div class="settings-container">
+  <h1 class="settings-header">{{ 'settings.header' | translate }}</h1>
+
+  <!-- Dark Mode Toggle - Always Visible -->
+  <div class="settings-section">
+    <h2>{{ 'settings.appearance' | translate }}</h2>
+    <div class="mode-toggle">
+      <span>{{ 'settings.light' | translate }}</span>
+      <label class="toggle-switch">
+        <input type="checkbox" [checked]="isDarkMode()" (change)="onToggleChange($event)" />
+        <span class="slider"></span>
+      </label>
+      <span>{{ 'settings.dark' | translate }}</span>
+    </div>
+  </div>
+
+  <!-- Logo, Colors - Only Visible if Logged In -->
+  <div *ngIf="isLoggedIn()" class="settings-section">
+    <h2>{{ 'settings.report' | translate }}</h2>
+
+    <div class="form-section">
+      <label>{{ 'settings.primary' | translate }}:</label>
+      <input type="color" formControlName="primaryColor" />
+    </div>
+
+    <div class="form-section">
+      <label>{{ 'settings.accent' | translate }}:</label>
+      <input type="color" formControlName="accentColor" />
+    </div>
+
+    <div class="form-section">
+      <label>Logo:</label>
+      <input type="file" (change)="handleLogoUpload($event)" />
+    </div>
+
+    <div class="form-actions">
+      <button class="save-button" (click)="saveSettings()">{{ 'settings.save' | translate }}</button>
+    </div>
+  </div>
+</div>
+

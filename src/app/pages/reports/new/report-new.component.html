@@ -1,0 +1,28 @@
+<div class="report-new" [class.dark]="isDarkMode()">
+  <h1>{{ 'reportNew.header' | translate }}</h1>
+
+  <form *ngIf="form" [formGroup]="form">
+    <div class="form-section">
+      <label>{{ 'reportNew.type' | translate }}:</label>
+      <select formControlName="reportType">
+        <option value="DAILY">{{ 'reportNew.daily' | translate }}</option>
+        <option value="WEEKLY">{{ 'reportNew.weekly' | translate }}</option>
+        <option value="MONTHLY">{{ 'reportNew.monthly' | translate }}</option>
+      </select>
+    </div>
+
+    <div class="form-section">
+      <label>{{ 'reportNew.template' | translate }}:</label>
+      <select formControlName="templateType">
+        <option value="byType">{{ 'reportNew.bytype' | translate }}</option>
+        <option value="chatbotSummaries">{{ 'reportNew.chatbot' | translate }}</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="cancel()">{{ 'common.cancel' | translate }}</button>
+      <button type="submit" (click)="next()">{{ 'common.next' | translate }}</button>
+    </div>
+  </form>
+</div>
+

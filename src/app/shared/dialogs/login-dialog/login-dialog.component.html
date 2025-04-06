@@ -2,20 +2,30 @@
   <crh-dialog-heading>
     <h1 class="login-dialog-heading">{{ 'login.login' | translate }}</h1>
   </crh-dialog-heading>
+
   <crh-dialog-content class="login-dialog-content">
     <crh-text-input
       [dynamicHintSection]="true"
       [label]="'login.account' | translate"
-      [ariaLabel]="'login.account' | translate"></crh-text-input>
+      [ariaLabel]="'login.account' | translate"
+      [(ngModel)]="username"
+      name="username">
+    </crh-text-input>
+
     <crh-text-input
       [dynamicHintSection]="true"
       [label]="'login.password' | translate"
-      [ariaLabel]="'login.password' | translate"></crh-text-input>
+      [ariaLabel]="'login.password' | translate"
+      [(ngModel)]="password"
+      name="password">
+    </crh-text-input>
   </crh-dialog-content>
+
   <crh-confirm-cancel-buttons
     crh-dialog-footer
     class="login-dialog-footer"
     [confirmButtonText]="'login.login' | translate"
-    (onCancelPressed)="onCancel()">
+    (onCancelPressed)="onCancel()"
+    (onConfirmPressed)="login()">
   </crh-confirm-cancel-buttons>
 </crh-dialog>

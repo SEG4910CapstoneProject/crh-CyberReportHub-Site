@@ -31,6 +31,9 @@ import { Configuration } from '../configuration';
 
 @Injectable()
 export class ReportsService {
+  createReport(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
   protected basePath = 'http://localhost:51009';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
