@@ -39,14 +39,16 @@ export class HomeComponent implements OnInit {
     });
 
     // Fetch the latest published report
-    this.reportsService.getLatestReport().subscribe(
-      (data: JsonReportResponse) => {
+    this.reportsService.getLatestReport().subscribe({
+      next: (data: JsonReportResponse) => {
         console.log('Latest Published Report Data:', data); // Log the fetched data
         this.latestPublishedReport = data;
       },
-      error => {
+      error: (error) => {
         console.error('Error fetching latest report:', error); // Debugging error
       }
+    }
+
     );
 
     // Fetch most viewed articles
@@ -58,34 +60,34 @@ export class HomeComponent implements OnInit {
 
   // Method to fetch most viewed articles
   fetchMostViewedArticles() {
-    this.articleService.getTopMostViewedArticles().subscribe(
-      (articles: MostViewedArticle[]) => {
-        this.mostViewedArticles = articles
-          .filter(article => article.viewCount > 0) //Only articles with view count >= 1 show up
+    this.articleService.getTopMostViewedArticles().subscribe({
+      next: (articles: MostViewedArticle[]) => {
+        this.mostViewedArticles = articles?.filter(article => article.viewCount > 0) //Only articles with view count >= 1 show up
           .slice(0, 5);
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching most viewed articles:', error);
       }
+    }
     );
   }
 
   // Fetch Articles of Note
   fetchArticlesOfNote() {
-    this.articleService.getArticlesOfNote().subscribe(
-      (articles: ArticleOfNote[]) => {
+    this.articleService.getArticlesOfNote().subscribe({
+      next:(articles: ArticleOfNote[]) => {
         console.log('Articles of Note:', articles);
         this.articlesOfNote = articles;
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching Articles of Note:', error);
       }
-    );
+    });
   }
 
   incrementViewCountByUrl(url: string): void {
-    this.articleService.getArticleByLink(url).subscribe(
-      (article: Article) => {
+    this.articleService.getArticleByLink(url).subscribe({
+      next: (article: Article) => {
         if (article?.articleId) {
           this.articleService.incrementViewCount(article.articleId).subscribe({
             next: () => console.log(`View count incremented for ${article.articleId}`),
@@ -93,9 +95,10 @@ export class HomeComponent implements OnInit {
           });
         }
       },
-      error => {
+      error: error => {
         console.error('Article not found for URL:', url, error);
       }
+    }
     );
   }
 
