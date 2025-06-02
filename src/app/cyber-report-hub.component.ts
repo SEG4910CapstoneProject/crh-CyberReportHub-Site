@@ -14,7 +14,7 @@ import { CrhTranslationService } from './shared/services/crh-translation.service
 export class CyberReportHubComponent {
   title = 'test';
 
-  private translateService = inject(TranslateService);
+  private translateService = inject(TranslateService);// TODO differences between this line and the one after??
   private crhTranslationService = inject(CrhTranslationService);
   private activatedRoute = inject(ActivatedRoute);
 

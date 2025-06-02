@@ -6,6 +6,13 @@ This project acts as the frontend website to CyberReport Hub.
 
 Run `npm run start` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
+## Integration testing
+
+If you have the whole application running with the databases and all other services, but you made changes just to the website service, you can keep all other services up and running while building just this service, to do so, run the following commands, from **inside the developer environment repo**:
+
+**docker compose --env-file ./local-variables.env build cyber-report-hub-site**
+**docker compose --env-file ./local-variables.env up -d cyber-report-hub-site**
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
