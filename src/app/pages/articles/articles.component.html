@@ -61,7 +61,7 @@
   </div>
 
   <!-- Show the Favourites section if the user is logged in and has favourites -->
-  <div *ngIf="isLoggedIn() && favouriteArticles.length" class="category-section">
+  <div *ngIf="isLoggedIn() && favouriteArticles?.length" class="category-section">
     <h2>Your Favourites</h2>
     <div class="article-list">
       <div *ngFor="let fav of favouriteArticles" class="article-item">
@@ -89,7 +89,7 @@
 
   <!-- Show the "Articles of Note" section if there are any articles of note -->
   <!-- Better styling will be added after Kaveri send more backend fields -->
-  <div *ngIf="articlesOfNote.length" class="category-section">
+  <div *ngIf="articlesOfNote?.length" class="category-section">
     <h2>Your Articles of Note</h2>
     <div class="article-list">
       <div *ngFor="let article of articlesOfNote" class="article-item">

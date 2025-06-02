@@ -7,7 +7,7 @@
       <h2>{{ 'home.articlesnote' | translate }}</h2>
       <a routerLink="/articles#articles-of-note" class="see-more-button">{{ 'home.seemore' | translate }}</a>
     </div>
-    <ul *ngIf="articlesOfNote.length; else noArticlesOfNote">
+    <ul *ngIf="articlesOfNote?.length; else noArticlesOfNote">
       <li *ngFor="let article of articlesOfNote">
         <!-- Link to the article -->
         <a
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Show message if no articles are available -->
-    <div *ngIf="mostViewedArticles.length === 0; else mostViewedTable">
+    <div *ngIf="mostViewedArticles?.length === 0; else mostViewedTable">
       <p>No articles available yet...</p>
     </div>
 

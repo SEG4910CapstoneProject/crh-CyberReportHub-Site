@@ -12,23 +12,23 @@ export class SettingsComponent implements OnInit {
   // State signals
   protected isDarkMode = signal(false);
   protected isLoggedIn = signal(false);
-  form: FormGroup;
+  form: FormGroup = new FormGroup({});
 
   // Inject dependencies
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private darkModeService = inject(DarkModeService);
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit(): void {
     // Initialize form with default values
     this.form = this.fb.group({
       primaryColor: ['#002D72'],
       accentColor: ['#FF5733'],
       logo: [null],
     });
-  }
 
-  ngOnInit(): void {
     // Subscribe to dark mode and login status
     this.darkModeService.isDarkMode$.subscribe(mode =>
       this.isDarkMode.set(mode)

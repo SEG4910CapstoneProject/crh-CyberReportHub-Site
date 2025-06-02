@@ -50,18 +50,18 @@ export class NavBarComponent {
       breakpoint: 960,
     },
   ];
-  protected isLoggedIn = signal<boolean>(false);
+  protected isLoggedIn = signal<boolean>(false);// TODO, logging is false here, why protected and why signal??
 
   protected responsiveModeSignal = signal<string>(this.DESKTOP_MODE_KEY);
   private menuTriggeredOpen = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.authService.isLoggedIn$.subscribe(loggedIn => {
+    this.authService.isLoggedIn$.subscribe(loggedIn => {//TODO, the dollar sign means the variable is an observable, it is an observable in auth service so that's fine. but acc to stack, the loggedIn should be isLoggedIn. without the $.
       this.isLoggedIn.set(loggedIn);
     });
   }
   protected onAuthButtonClick(): void {
-    this.onClickOutsideExtended();
+    this.onClickOutsideExtended();//TODO, whats the point of this??
 
     if (this.isLoggedIn()) {
       // User is logged in, so this should trigger logout.
