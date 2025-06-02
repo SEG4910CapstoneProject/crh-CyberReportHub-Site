@@ -25,6 +25,10 @@
               queryParamsHandling="merge">
               {{ link.label }}
             </a>
+            <!-- isnt queryParamsHandling redundant?? -->
+
+            <!-- routerLink: When applied to an element in a template, makes that element a link that initiates navigation to a route.
+              Navigation opens one or more routed components in one or more <router-outlet> locations on the page. -->
           </span>
         </ng-container>
       </ng-container>
@@ -57,6 +61,7 @@
                 : loginTranslationSignal()) ?? ''
             "
             (click)="onAuthButtonClick()">
+            <!-- TODO -->
             {{
               isLoggedIn()
                 ? logoutTranslationSignal()

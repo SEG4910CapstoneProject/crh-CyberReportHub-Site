@@ -32,8 +32,8 @@ export class ArticlesComponent implements OnInit {
       this.isLoggedIn.set(status);  // Update the signal with the current login status
     });
 
-    this.articleService.getAllArticleTypesWithArticles(30).subscribe(
-      response => {
+    this.articleService.getAllArticleTypesWithArticles(30).subscribe( {
+      next: (response) => {
         this.articlesByCategory = response;
         this.categories = Object.keys(response);
         this.isLoading = false;
@@ -41,12 +41,13 @@ export class ArticlesComponent implements OnInit {
         // Initialize articlesToShow to show 3 articles initially for each category
         this.categories.forEach(category => {
           this.articlesToShow[category] = 3;
-        });
-      },
-      error => {
-        console.error('Error fetching articles:', error);
+        })},
+      error: (e) => {
+        console.error('Error fetching articles:', e);
         this.isLoading = false;
-      }
+      },
+      complete: () => console.info("30 Articles are fetched successfully",this.articlesByCategory) 
+    }
     );
 
 
@@ -56,14 +57,14 @@ export class ArticlesComponent implements OnInit {
 
   // Check if the article is in the favourites list
   isFavourite(article: Article): boolean {
-    return this.favouriteArticles.some(
+    return this.favouriteArticles?.some(
       fav => fav.articleId === article.articleId
     );
   }
 
   // Check if the article is in the articles of note list
   isArticleOfNote(article: Article): boolean {
-    return this.articlesOfNote.some(
+    return this.articlesOfNote?.some(
       (note: ArticleOfNote) => note.url === article.link
     );
   }
@@ -91,7 +92,7 @@ export class ArticlesComponent implements OnInit {
       this.favouriteArticles.splice(index, 1);
     } else {
       // Otherwise, add it to favourites
-      this.favouriteArticles.push(article);
+      this.favouriteArticles?.push(article);
     }
   }
 
@@ -100,15 +101,15 @@ export class ArticlesComponent implements OnInit {
     if (!this.isLoggedIn()) return; // Prevent non-logged-in users from adding to Articles of Note
 
     const isChecked = event.target.checked;
-    this.articleService.chooseArticleOfNote(article.articleId).subscribe(
-      (response) => {
+    this.articleService.chooseArticleOfNote(article.articleId).subscribe({
+      next: (response)=> {
         console.log('Article of Note status toggled', response);
         article.isArticleOfNote = isChecked;  // Update the status locally
 
         if (isChecked) {
           // If checked, add to Articles of Note
           const articleOfNote: ArticleOfNote = { title: article.title, url: article.link };
-          this.articlesOfNote.push(articleOfNote);
+          this.articlesOfNote?.push(articleOfNote);
         } else {
           // If unchecked, remove from Articles of Note
           const index = this.articlesOfNote.findIndex(
@@ -119,52 +120,56 @@ export class ArticlesComponent implements OnInit {
           }
         }
       },
-      (error) => {
+      error: (error) => {
         console.error('Error toggling article of note:', error);
       }
+    }
     );
   }
 
   // Fetch articles that are marked as "Articles of Note"
   fetchArticlesOfNote() {
-    this.articleService.getArticlesOfNote().subscribe(
-      (articles: ArticleOfNote[]) => {
+    this.articleService.getArticlesOfNote().subscribe({
+      next: (articles: ArticleOfNote[]) => {
         console.log('Articles of Note:', articles);
         this.articlesOfNote = articles;
       },
-      (error: any) => {
-        console.error('Error fetching Articles of Note:', error);
+      error: (error:any) => {
+        console.error('Error fetching Articles of Note:',error);
       }
-    );
+    }
+    )
   }
 
   // Increment view count on article click
   incrementViewCount(articleId: string): void {
-    this.articleService.incrementViewCount(articleId).subscribe(
-      response => {
+    this.articleService.incrementViewCount(articleId).subscribe({
+      next: (response) => {
         console.log('View count incremented', response);
       },
-      error => {
-        console.error('Error incrementing view count', error);
+      error: (error) => {
+        console.error('Error incrementing view count',error);
       }
-    );
+    }
+    )
   }
 
   //Necessary to increment view count from articles of note (since backend only sends URLs)
   //This will be deleted later
   incrementViewCountFromUrl(url: string): void {
-    this.articleService.getArticleByLink(url).subscribe(
-      (article) => {
+    this.articleService.getArticleByLink(url).subscribe({
+      next:(article) => {
         if (article?.articleId) {
           this.incrementViewCount(article.articleId);
         } else {
           console.warn('No articleId found for URL:', url);
         }
       },
-      (error) => {
-        console.error('Error fetching article by URL:', error);
+      error:(error) => {
+          console.error('Error fetching article by URL:', error);
       }
-    );
+    }
+    )
   }
 
 }
