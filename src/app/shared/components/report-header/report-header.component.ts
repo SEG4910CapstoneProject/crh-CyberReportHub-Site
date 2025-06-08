@@ -6,9 +6,10 @@ import { DateTime } from 'luxon';
 import { CrhTranslationService } from '../../services/crh-translation.service';
 
 @Component({
-  selector: 'crh-report-header',
-  templateUrl: './report-header.component.html',
-  styleUrl: './report-header.component.scss',
+    selector: 'crh-report-header',
+    templateUrl: './report-header.component.html',
+    styleUrl: './report-header.component.scss',
+    standalone: false
 })
 export class ReportHeaderComponent {
   private readonly EMAIL_SENT_KEY = 'reportheader.emailSent';

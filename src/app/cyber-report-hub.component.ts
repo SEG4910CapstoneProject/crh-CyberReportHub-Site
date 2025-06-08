@@ -7,9 +7,10 @@ import { Language } from './shared/models/languages.model';
 import { CrhTranslationService } from './shared/services/crh-translation.service';
 
 @Component({
-  selector: 'crh-cyber-report-hub',
-  templateUrl: './cyber-report-hub.component.html',
-  styleUrl: './cyber-report-hub.component.scss',
+    selector: 'crh-cyber-report-hub',
+    templateUrl: './cyber-report-hub.component.html',
+    styleUrl: './cyber-report-hub.component.scss',
+    standalone: false
 })
 export class CyberReportHubComponent {
   title = 'test';

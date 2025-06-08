@@ -4,9 +4,10 @@ import { ArticleService, Article, ArticleOfNote } from '../../shared/services/ar
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
-  selector: 'crh-articles',
-  templateUrl: './articles.component.html',
-  styleUrls: ['./articles.component.scss'],
+    selector: 'crh-articles',
+    templateUrl: './articles.component.html',
+    styleUrls: ['./articles.component.scss'],
+    standalone: false
 })
 export class ArticlesComponent implements OnInit {
   categories: string[] = [];

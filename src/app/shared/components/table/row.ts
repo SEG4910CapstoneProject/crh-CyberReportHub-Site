@@ -74,47 +74,44 @@ export class CrhFooterRowDefDirective extends CdkFooterRowDef {}
 export class CrhRowDefDirective<T> extends CdkRowDef<T> {}
 
 @Component({
-  selector: 'crh-header-row, tr[crh-header-row]',
-  template: ROW_TEMPLATE,
-  host: {
-    class: 'crh-table-header-row',
-    role: 'row',
-  },
-  changeDetection: ChangeDetectionStrategy.Default,
-  encapsulation: ViewEncapsulation.None,
-  providers: [{ provide: CdkHeaderRow, useExisting: CrhHeaderRowComponent }],
-  imports: [CdkCellOutlet],
-  standalone: true,
+    selector: 'crh-header-row, tr[crh-header-row]',
+    template: ROW_TEMPLATE,
+    host: {
+        class: 'crh-table-header-row',
+        role: 'row',
+    },
+    changeDetection: ChangeDetectionStrategy.Default,
+    encapsulation: ViewEncapsulation.None,
+    providers: [{ provide: CdkHeaderRow, useExisting: CrhHeaderRowComponent }],
+    imports: [CdkCellOutlet]
 })
 export class CrhHeaderRowComponent extends CdkHeaderRow {}
 
 @Component({
-  selector: 'crh-footer-row, tr[crh-footer-row]',
-  template: ROW_TEMPLATE,
-  host: {
-    class: 'crh-table-footer-row',
-    role: 'row',
-  },
-  changeDetection: ChangeDetectionStrategy.Default,
-  encapsulation: ViewEncapsulation.None,
-  providers: [{ provide: CdkFooterRow, useExisting: CrhFooterRowComponent }],
-  imports: [CdkCellOutlet],
-  standalone: true,
+    selector: 'crh-footer-row, tr[crh-footer-row]',
+    template: ROW_TEMPLATE,
+    host: {
+        class: 'crh-table-footer-row',
+        role: 'row',
+    },
+    changeDetection: ChangeDetectionStrategy.Default,
+    encapsulation: ViewEncapsulation.None,
+    providers: [{ provide: CdkFooterRow, useExisting: CrhFooterRowComponent }],
+    imports: [CdkCellOutlet]
 })
 export class CrhFooterRowComponent extends CdkFooterRow {}
 
 @Component({
-  selector: 'crh-row, tr[crh-row]',
-  template: ROW_TEMPLATE,
-  host: {
-    class: 'crh-table-row',
-    role: 'row',
-  },
-  changeDetection: ChangeDetectionStrategy.Default,
-  encapsulation: ViewEncapsulation.None,
-  providers: [{ provide: CdkRow, useExisting: CrhRowComponent }],
-  imports: [CdkCellOutlet],
-  standalone: true,
+    selector: 'crh-row, tr[crh-row]',
+    template: ROW_TEMPLATE,
+    host: {
+        class: 'crh-table-row',
+        role: 'row',
+    },
+    changeDetection: ChangeDetectionStrategy.Default,
+    encapsulation: ViewEncapsulation.None,
+    providers: [{ provide: CdkRow, useExisting: CrhRowComponent }],
+    imports: [CdkCellOutlet]
 })
 export class CrhRowComponent extends CdkRow {}
 

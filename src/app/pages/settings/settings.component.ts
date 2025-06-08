@@ -4,9 +4,10 @@ import { AuthService } from '../../shared/services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'crh-settings',
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss',
+    selector: 'crh-settings',
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.scss',
+    standalone: false
 })
 export class SettingsComponent implements OnInit {
   // State signals

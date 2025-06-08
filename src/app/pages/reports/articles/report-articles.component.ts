@@ -20,9 +20,10 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'crh-report-articles',
-  templateUrl: './report-articles.component.html',
-  styleUrls: ['./report-articles.component.scss'],
+    selector: 'crh-report-articles',
+    templateUrl: './report-articles.component.html',
+    styleUrls: ['./report-articles.component.scss'],
+    standalone: false
 })
 export class ReportArticlesComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;

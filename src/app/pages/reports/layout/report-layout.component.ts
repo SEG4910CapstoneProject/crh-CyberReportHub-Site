@@ -5,9 +5,10 @@ import { PageMode } from './report-layout.models';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'crh-report-layout',
-  templateUrl: './report-layout.component.html',
-  styleUrl: './report-layout.component.scss',
+    selector: 'crh-report-layout',
+    templateUrl: './report-layout.component.html',
+    styleUrl: './report-layout.component.scss',
+    standalone: false
 })
 export class ReportLayoutComponent {
   protected readonly MOBILE_BREAKPOINT_KEY = 'mobile';

@@ -6,9 +6,10 @@ import { ArticleService, Article, MostViewedArticle, ArticleOfNote } from '../..
 
 
 @Component({
-  selector: 'crh-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+    selector: 'crh-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: false
 })
 export class HomeComponent implements OnInit {
   private authService = inject(AuthService);

@@ -15,7 +15,8 @@ import {
  * Directive that emits events when horizontal width is changes according to provided breakpoints
  */
 @Directive({
-  selector: '[crhResponsive]',
+    selector: '[crhResponsive]',
+    standalone: false
 })
 export class ResponsiveDirective implements OnDestroy, OnInit {
   private elementRef = inject(ElementRef);

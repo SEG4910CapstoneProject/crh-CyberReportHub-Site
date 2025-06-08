@@ -9,9 +9,10 @@ import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchRepo
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 
 @Component({
-  selector: 'crh-report-search',
-  templateUrl: './report-search.component.html',
-  styleUrls: ['./report-search.component.scss'],
+    selector: 'crh-report-search',
+    templateUrl: './report-search.component.html',
+    styleUrls: ['./report-search.component.scss'],
+    standalone: false
 })
 export class ReportSearchComponent implements OnInit {
   private reportsService = inject(ReportsService);

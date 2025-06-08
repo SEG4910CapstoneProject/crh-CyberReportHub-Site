@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'crh-report-preview',
-  templateUrl: './report-preview.component.html',
-  styleUrls: ['./report-preview.component.scss'],
+    selector: 'crh-report-preview',
+    templateUrl: './report-preview.component.html',
+    styleUrls: ['./report-preview.component.scss'],
+    standalone: false
 })
 export class ReportPreviewComponent {
   articles: any[] = history.state?.articles || [];

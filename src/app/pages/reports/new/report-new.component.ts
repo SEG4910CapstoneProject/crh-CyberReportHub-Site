@@ -8,9 +8,10 @@ import { ReportsService } from '../../../shared/services/reports.service';
 
 
 @Component({
-  selector: 'crh-report-new',
-  templateUrl: './report-new.component.html',
-  styleUrl: './report-new.component.scss',
+    selector: 'crh-report-new',
+    templateUrl: './report-new.component.html',
+    styleUrl: './report-new.component.scss',
+    standalone: false
 })
 export class ReportNewComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;
