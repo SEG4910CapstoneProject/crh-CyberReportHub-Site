@@ -25,9 +25,10 @@ import { Dialog } from '@angular/cdk/dialog';
 import { LoginDialogComponent } from '../../dialogs/login-dialog/login-dialog.component';
 
 @Component({
-  selector: 'crh-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.scss',
+    selector: 'crh-nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrl: './nav-bar.component.scss',
+    standalone: false
 })
 export class NavBarComponent {
   private readonly MOBILE_MODE_KEY: string = 'mobile';

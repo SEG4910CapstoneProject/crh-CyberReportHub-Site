@@ -17,28 +17,29 @@ import { CrhTranslationService } from '../../services/crh-translation.service';
 import { DateUtilsService } from '../../services/date-utils.service';
 
 @Component({
-  selector: 'crh-date-picker',
-  templateUrl: './date-picker.component.html',
-  styleUrl: './date-picker.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: DatePickerComponent,
-    },
-    provideLuxonDateAdapter({
-      parse: {
-        dateInput: 'yyyy-MM-dd',
-      },
-      display: {
-        dateInput: 'yyyy-MM-dd',
-        monthYearLabel: 'yyyy',
-        dateA11yLabel: 'MM',
-        monthYearA11yLabel: 'yyyy',
-      },
-    }),
-  ],
-  hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST],
+    selector: 'crh-date-picker',
+    templateUrl: './date-picker.component.html',
+    styleUrl: './date-picker.component.scss',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: DatePickerComponent,
+        },
+        provideLuxonDateAdapter({
+            parse: {
+                dateInput: 'yyyy-MM-dd',
+            },
+            display: {
+                dateInput: 'yyyy-MM-dd',
+                monthYearLabel: 'yyyy',
+                dateA11yLabel: 'MM',
+                monthYearA11yLabel: 'yyyy',
+            },
+        }),
+    ],
+    hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST],
+    standalone: false
 })
 export class DatePickerComponent implements ControlValueAccessor {
   private readonly DATE_ICON_ARIA_KEY = 'datePicker.iconAria';

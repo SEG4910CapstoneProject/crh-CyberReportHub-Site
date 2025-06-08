@@ -8,17 +8,18 @@ import {
 } from '../../directives/material-input.directive';
 
 @Component({
-  selector: 'crh-select',
-  templateUrl: './select.component.html',
-  styleUrl: './select.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: SelectComponent,
-    },
-  ],
-  hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST],
+    selector: 'crh-select',
+    templateUrl: './select.component.html',
+    styleUrl: './select.component.scss',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: SelectComponent,
+        },
+    ],
+    hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST],
+    standalone: false
 })
 export class SelectComponent implements ControlValueAccessor {
   protected materialInputDirective = inject(MaterialInputDirective);

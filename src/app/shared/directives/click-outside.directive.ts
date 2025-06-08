@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[crhClickOutside]',
+    selector: '[crhClickOutside]',
+    standalone: false
 })
 export class ClickOutsideDirective {
   private elementRef = inject(ElementRef);

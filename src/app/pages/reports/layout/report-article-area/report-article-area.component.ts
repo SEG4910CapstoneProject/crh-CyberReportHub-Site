@@ -11,9 +11,10 @@ import { JsonArticleReportResponse } from '../../../../shared/sdk/rest-api/model
 import { ArticleCategoryGroup } from './report-article-area.models';
 
 @Component({
-  selector: 'crh-report-article-area',
-  templateUrl: './report-article-area.component.html',
-  styleUrl: './report-article-area.component.scss',
+    selector: 'crh-report-article-area',
+    templateUrl: './report-article-area.component.html',
+    styleUrl: './report-article-area.component.scss',
+    standalone: false
 })
 export class ReportArticleAreaComponent {
   @ViewChildren('reportCategories', { read: ElementRef })

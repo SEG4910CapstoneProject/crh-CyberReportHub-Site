@@ -3,9 +3,10 @@ import { InteractMode } from '../../../../shared/components/stats-card/stats-car
 import { JsonStatsResponse } from '../../../../shared/sdk/rest-api/model/jsonStatsResponse';
 
 @Component({
-  selector: 'crh-report-stats-area',
-  templateUrl: './report-stats-area.component.html',
-  styleUrl: './report-stats-area.component.scss',
+    selector: 'crh-report-stats-area',
+    templateUrl: './report-stats-area.component.html',
+    styleUrl: './report-stats-area.component.scss',
+    standalone: false
 })
 export class ReportStatsAreaComponent {
   public stats = input<JsonStatsResponse[]>([]);

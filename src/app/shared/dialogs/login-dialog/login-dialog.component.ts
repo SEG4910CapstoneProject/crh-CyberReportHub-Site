@@ -4,9 +4,10 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'crh-login-dialog',
-  templateUrl: './login-dialog.component.html',
-  styleUrl: './login-dialog.component.scss',
+    selector: 'crh-login-dialog',
+    templateUrl: './login-dialog.component.html',
+    styleUrl: './login-dialog.component.scss',
+    standalone: false
 })
 export class LoginDialogComponent {
   private authService = inject(AuthService);

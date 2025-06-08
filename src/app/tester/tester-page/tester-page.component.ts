@@ -17,9 +17,10 @@ import { ErrorHintConfig } from '../../shared/models/input.model';
 import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
 
 @Component({
-  selector: 'crh-tester-page',
-  templateUrl: './tester-page.component.html',
-  styleUrl: './tester-page.component.scss',
+    selector: 'crh-tester-page',
+    templateUrl: './tester-page.component.html',
+    styleUrl: './tester-page.component.scss',
+    standalone: false
 })
 export class TesterPageComponent {
   private router = inject(Router);

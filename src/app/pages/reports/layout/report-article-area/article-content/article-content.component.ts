@@ -3,9 +3,10 @@ import { JsonArticleReportResponse } from '../../../../../shared/sdk/rest-api/mo
 import { IocTypeService } from '../../../services/ioc-type.service';
 
 @Component({
-  selector: 'crh-article-content',
-  templateUrl: './article-content.component.html',
-  styleUrl: './article-content.component.scss',
+    selector: 'crh-article-content',
+    templateUrl: './article-content.component.html',
+    styleUrl: './article-content.component.scss',
+    standalone: false
 })
 export class ArticleContentComponent {
   public articleDetails = input<JsonArticleReportResponse>();

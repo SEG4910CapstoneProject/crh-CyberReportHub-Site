@@ -15,17 +15,18 @@ import {
 } from '../../directives/material-input.directive';
 
 @Component({
-  selector: 'crh-text-input',
-  templateUrl: './text-input.component.html',
-  styleUrl: './text-input.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: TextInputComponent,
-    },
-  ],
-  hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST],
+    selector: 'crh-text-input',
+    templateUrl: './text-input.component.html',
+    styleUrl: './text-input.component.scss',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: TextInputComponent,
+        },
+    ],
+    hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST],
+    standalone: false
 })
 export class TextInputComponent implements ControlValueAccessor {
   protected materialInputDirective = inject(MaterialInputDirective);

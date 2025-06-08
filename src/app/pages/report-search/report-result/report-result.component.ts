@@ -7,9 +7,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { IocTypeService } from '../../reports/services/ioc-type.service';
 
 @Component({
-  selector: 'crh-report-result',
-  templateUrl: './report-result.component.html',
-  styleUrl: './report-result.component.scss',
+    selector: 'crh-report-result',
+    templateUrl: './report-result.component.html',
+    styleUrl: './report-result.component.scss',
+    standalone: false
 })
 export class ReportResultComponent {
   private router = inject(Router);

@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { ArticleService, Article } from '../../shared/services/article.service';
 
 @Component({
-  selector: 'crh-new-article',
-  templateUrl: './new-article.component.html',
-  styleUrls: ['./new-article.component.scss'],
+    selector: 'crh-new-article',
+    templateUrl: './new-article.component.html',
+    styleUrls: ['./new-article.component.scss'],
+    standalone: false
 })
 export class NewArticleComponent {
   article: Partial<Article> = {
