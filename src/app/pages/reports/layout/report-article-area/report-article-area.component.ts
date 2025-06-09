@@ -11,9 +11,10 @@ import { JsonArticleReportResponse } from '../../../../shared/sdk/rest-api/model
 import { ArticleCategoryGroup } from './report-article-area.models';
 
 @Component({
-  selector: 'crh-report-article-area',
-  templateUrl: './report-article-area.component.html',
-  styleUrl: './report-article-area.component.scss',
+    selector: 'crh-report-article-area',
+    templateUrl: './report-article-area.component.html',
+    styleUrl: './report-article-area.component.scss',
+    standalone: false
 })
 export class ReportArticleAreaComponent {
   @ViewChildren('reportCategories', { read: ElementRef })
@@ -22,8 +23,8 @@ export class ReportArticleAreaComponent {
   public editable = input<boolean>(false);
   public articleCategoryGroups = input<ArticleCategoryGroup[]>([]);
 
-  public onArticleEdit = output<JsonArticleReportResponse>();
-  public onArticleRemove = output<string>();
+  public _onArticleEdit = output<JsonArticleReportResponse>();
+  public _onArticleRemove = output<string>();
 
   private articleCategoryNameGroupIdMap = computed<Map<string, number>>(() => {
     return new Map<string, number>(

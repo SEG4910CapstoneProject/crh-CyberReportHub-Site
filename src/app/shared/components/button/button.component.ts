@@ -2,9 +2,10 @@ import { Component, input } from '@angular/core';
 import { ButtonVariant } from './button.model';
 
 @Component({
-  selector: 'crh-button',
-  templateUrl: './button.component.html',
-  styleUrl: './button.component.scss',
+    selector: 'crh-button',
+    templateUrl: './button.component.html',
+    styleUrl: './button.component.scss',
+    standalone: false
 })
 export class ButtonComponent {
   public type = input<ButtonVariant>('raised');

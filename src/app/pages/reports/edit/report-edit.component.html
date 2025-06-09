@@ -6,13 +6,13 @@
   <crh-report-stats-area
     [editable]="true"
     [stats]="reportStats()"
-    (onRemoveStat)="onStatRemove($event)"
-    (onEditStat)="onStatEdit($event)"></crh-report-stats-area>
+    (_onRemoveStat)="onStatRemove($event)"
+    (_onEditStat)="onStatEdit($event)"></crh-report-stats-area>
   <crh-report-article-area
     [articleCategoryGroups]="articleCategories()"
     [editable]="true"
-    (onArticleRemove)="onArticleRemove($event)"
-    (onArticleEdit)="onArticleEdit($event)"></crh-report-article-area>
+    (_onArticleRemove)="onArticleRemove($event)"
+    (_onArticleEdit)="onArticleEdit($event)"></crh-report-article-area>
   <crh-report-sidebar-area>
     <div class="report-edit-sidebar-area">
       <h2 class="report-edit-sidebar-header">
@@ -31,8 +31,8 @@
               [title]="stat.title"
               [subtitle]="stat.subtitle ?? ''"
               (onAddClick)="onStatAdd(stat.statisticId)"
-              (onDeleteClick)="onStatRemoveFromHotbar(stat.statisticId)"
-              (onEditClick)="onStatEdit(stat)">
+              (_onDeleteClick)="onStatRemoveFromHotbar(stat.statisticId)"
+              (_onEditClick)="onStatEdit(stat)">
               {{ stat.statisticNumber }}
             </crh-stats-card>
             <crh-stats-card

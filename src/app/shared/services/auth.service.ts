@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +9,6 @@ export class AuthService {
   // BehaviorSubject is a variant of Subject that requires an initial value and emits its current value whenever it is subscribed to.
 
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
-
-  constructor() {}
 
   // Check if the user is logged in by checking localStorage
   private checkLoginStatus(): boolean {

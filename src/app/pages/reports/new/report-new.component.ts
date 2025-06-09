@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
@@ -8,9 +8,10 @@ import { ReportsService } from '../../../shared/services/reports.service';
 
 
 @Component({
-  selector: 'crh-report-new',
-  templateUrl: './report-new.component.html',
-  styleUrl: './report-new.component.scss',
+    selector: 'crh-report-new',
+    templateUrl: './report-new.component.html',
+    styleUrl: './report-new.component.scss',
+    standalone: false
 })
 export class ReportNewComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;

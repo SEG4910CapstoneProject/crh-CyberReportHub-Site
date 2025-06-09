@@ -30,7 +30,7 @@ export interface ArticleOfNote  {
   providedIn: 'root',
 })
 export class ArticleService {
-  getArticles() {
+  getArticles():void {
     throw new Error('Method not implemented.');
   }
   private apiUrl = 'http://localhost:8080/api/v1/articles';
@@ -50,8 +50,8 @@ export class ArticleService {
   // Fetch all article types with articles (for the articles page)
   getAllArticleTypesWithArticles(
     days: number
-  ): Observable<{ [key: string]: Article[] }> {
-    return this.http.get<{ [key: string]: Article[] }>(
+  ): Observable<Record<string,Article[]>> {
+    return this.http.get<Record<string,Article[]>>(
       `${this.apiUrl}/article-types-with-articles?days=${days}`
     );
   }

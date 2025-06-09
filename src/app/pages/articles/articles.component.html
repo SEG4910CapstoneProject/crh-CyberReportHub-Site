@@ -12,8 +12,8 @@
 
   <!-- Articles Section -->
   <div *ngIf="!isLoading" class="sections">
-    <!-- Loop through the categories -->
-    <div *ngFor="let category of categories" class="category-section">
+    <!-- Loop through the categories(keys of articlesToShow) -->
+    <div *ngFor="let category of objectKeys(articlesByCategory)" class="category-section">
       <h2>{{ category }}</h2>
       <div *ngIf="articlesByCategory[category]?.length; else emptySection">
         <ul class="article-list">

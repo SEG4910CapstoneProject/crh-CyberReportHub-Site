@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[crhClickOutside]',
+    selector: '[crhClickOutside]',
+    standalone: false
 })
 export class ClickOutsideDirective {
   private elementRef = inject(ElementRef);
 
-  public onClickOutside = output<void>();
+  public _onClickOutside = output<void>();
 
   @HostListener('document:click', ['$event'])
   private onClick(event: MouseEvent): void {
@@ -24,7 +25,7 @@ export class ClickOutsideDirective {
     const hasClickedInside =
       this.elementRef.nativeElement.contains(targetElement);
     if (!hasClickedInside) {
-      this.onClickOutside.emit();
+      this._onClickOutside.emit();
     }
   }
 }

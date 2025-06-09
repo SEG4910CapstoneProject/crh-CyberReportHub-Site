@@ -25,7 +25,7 @@
     crh-dialog-footer
     class="login-dialog-footer"
     [confirmButtonText]="'login.login' | translate"
-    (onCancelPressed)="onCancel()"
-    (onConfirmPressed)="login()">
+    (_onCancelPressed)="onCancel()"
+    (_onConfirmPressed)="login()">
   </crh-confirm-cancel-buttons>
 </crh-dialog>
