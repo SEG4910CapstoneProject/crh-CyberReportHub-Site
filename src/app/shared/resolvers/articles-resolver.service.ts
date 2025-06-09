@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, EMPTY, of } from 'rxjs';
+import { Resolve, Router } from '@angular/router';
+import { Observable, EMPTY } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { ArticleService, Article } from '../services/article.service';
 
@@ -8,7 +8,7 @@ import { ArticleService, Article } from '../services/article.service';
   providedIn: 'root',
 })
 export class ArticlesResolverService
-  implements Resolve<{ [key: string]: Article[] }>
+  implements Resolve<Record<string,Article[]>>
 {
   constructor(
     private articleService: ArticleService,
@@ -16,8 +16,7 @@ export class ArticlesResolverService
   ) {}
 
   resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<{ [key: string]: Article[] }> {
+  ): Observable<Record<string,Article[]>> {
     const days = 30; // Fetch articles from the last 30 days
 
     return this.articleService.getAllArticleTypesWithArticles(days).pipe(

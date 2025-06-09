@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
     'Cloud Security Trends',
   ];
 
-  ngOnInit() {
+  ngOnInit():void {
     // Fetch login status
     this.authService.isLoggedIn$.subscribe(status => {
       console.log('Is Logged In:', status); // Debugging login status
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
   }
 
   // Method to fetch most viewed articles
-  fetchMostViewedArticles() {
+  fetchMostViewedArticles():void {
     this.articleService.getTopMostViewedArticles().subscribe({
       next: (articles: MostViewedArticle[]) => {
         this.mostViewedArticles = articles?.filter(article => article.viewCount > 0) //Only articles with view count >= 1 show up
@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit {
   }
 
   // Fetch Articles of Note
-  fetchArticlesOfNote() {
+  fetchArticlesOfNote():void {
     this.articleService.getArticlesOfNote().subscribe({
       next:(articles: ArticleOfNote[]) => {
         console.log('Articles of Note:', articles);

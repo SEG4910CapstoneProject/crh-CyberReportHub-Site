@@ -4,8 +4,8 @@
     [title]="stat.title"
     [subtitle]="stat.subtitle ?? ''"
     [interactMode]="statCardEditMode()"
-    (onEditClick)="onEditStat.emit(stat)"
-    (onDeleteClick)="onRemoveStat.emit(stat.statisticId)">
+    (onEditClick)="_onEditStat.emit(stat)"
+    (onDeleteClick)="_onRemoveStat.emit(stat.statisticId)">
     {{ stat.statisticNumber }}
   </crh-stats-card>
 </div>

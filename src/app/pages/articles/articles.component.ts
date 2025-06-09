@@ -10,12 +10,12 @@ import { AuthService } from '../../shared/services/auth.service';
     standalone: false
 })
 export class ArticlesComponent implements OnInit {
-  categories: string[] = [];
-  articlesByCategory: { [key: string]: Article[] } = {};
-  articlesToShow: { [key: string]: number } = {}; // To track how many articles to display per category
+  articlesByCategory: Record<string,Article[]>= {};
+  articlesToShow: Record<string,number> = {}; // To track how many articles to display per category
   favouriteArticles: Article[] = []; // To store favourite articles
   articlesOfNote: ArticleOfNote[] = []; // To store articles of note
-  isLoading: boolean = true;
+  isLoading = true;
+  objectKeys = Object.keys;
 
   // Use signal to track logged-in status
   protected isLoggedIn = signal<boolean>(false);
@@ -36,13 +36,16 @@ export class ArticlesComponent implements OnInit {
     this.articleService.getAllArticleTypesWithArticles(30).subscribe( {
       next: (response) => {
         this.articlesByCategory = response;
-        this.categories = Object.keys(response);
+        //this.categories = Object.keys(response);
         this.isLoading = false;
 
         // Initialize articlesToShow to show 3 articles initially for each category
-        this.categories.forEach(category => {
+        Object.keys(response).forEach(category => {
           this.articlesToShow[category] = 3;
-        })},
+        }); 
+        console.log("the article to show are: ",this.articlesToShow);
+        console.log("the articles per category are: ",this.articlesByCategory);
+      },
       error: (e) => {
         console.error('Error fetching articles:', e);
         this.isLoading = false;
@@ -129,7 +132,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   // Fetch articles that are marked as "Articles of Note"
-  fetchArticlesOfNote() {
+  fetchArticlesOfNote():void {
     this.articleService.getArticlesOfNote().subscribe({
       next: (articles: ArticleOfNote[]) => {
         console.log('Articles of Note:', articles);

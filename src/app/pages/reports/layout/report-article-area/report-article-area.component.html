@@ -11,8 +11,8 @@
     class="report-article"
     [articleDetails]="article"
     [editable]="editable()"
-    (onEditClicked)="onArticleEdit.emit(article)"
+    (onEditClicked)="_onArticleEdit.emit(article)"
     (onDeleteClicked)="
-      onArticleRemove.emit(article.articleId)
+      _onArticleRemove.emit(article.articleId)
     "></crh-article-content>
 </div>

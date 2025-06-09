@@ -8,8 +8,6 @@ import { ReportResolverService } from './shared/resolvers/report-resolver.servic
 import { HomeComponent } from './pages/home/home.component';
 import { ReportSuggestionsResolverService } from './shared/resolvers/report-suggestions-resolver.service';
 
-import { ArticlesResolverService } from './shared/resolvers/articles-resolver.service';
-
 import { NewArticleComponent } from './pages/new-article/new-article.component';
 import { ChatbotComponent } from './pages/chatbot/chatbot.component';
 import { ArticlesComponent } from './pages/articles/articles.component';

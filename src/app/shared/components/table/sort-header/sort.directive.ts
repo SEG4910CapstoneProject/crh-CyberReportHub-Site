@@ -6,13 +6,13 @@ import { nextSortDirection, SortResult } from './sort.models';
   standalone: true,
 })
 export class CrhSortDirective {
-  public onSortChange = output<SortResult | undefined>();
+  public _onSortChange = output<SortResult | undefined>();
 
   protected currentSort = signal<SortResult | undefined>(undefined);
 
   constructor() {
     effect(() => {
-      this.onSortChange.emit(this.currentSort());
+      this._onSortChange.emit(this.currentSort());
     });
   }
 
