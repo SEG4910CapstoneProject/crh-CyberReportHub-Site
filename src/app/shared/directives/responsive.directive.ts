@@ -15,7 +15,8 @@ import {
  * Directive that emits events when horizontal width is changes according to provided breakpoints
  */
 @Directive({
-  selector: '[crhResponsive]',
+    selector: '[crhResponsive]',
+    standalone: false
 })
 export class ResponsiveDirective implements OnDestroy, OnInit {
   private elementRef = inject(ElementRef);
@@ -37,7 +38,7 @@ export class ResponsiveDirective implements OnDestroy, OnInit {
   /**
    * Event emitted when detected breakpoints have changed. returns id or undefined if not known.
    */
-  public onBreakpointChange = output<string | undefined>();
+  public _onBreakpointChange = output<string | undefined>();
 
   private sortedBreakpoints = computed(() => {
     return this.breakpoints().sort(
@@ -52,7 +53,7 @@ export class ResponsiveDirective implements OnDestroy, OnInit {
       const currentBreakpoint = this.getCurrentBreakpointSize();
       if (currentBreakpoint.id !== this.previousEmittedBreakpoint?.id) {
         this.previousEmittedBreakpoint = currentBreakpoint;
-        this.onBreakpointChange.emit(currentBreakpoint.id);
+        this._onBreakpointChange.emit(currentBreakpoint.id);
       }
     });
   }

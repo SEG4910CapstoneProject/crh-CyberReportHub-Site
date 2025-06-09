@@ -37,29 +37,28 @@ import { ColorsService } from '../../services/colors.service';
 export class CrhRecycleRowsDirective {}
 
 @Component({
-  selector: 'crh-table, table[crh-table]',
-  exportAs: 'crhTable',
-  templateUrl: './table.component.html',
-  styleUrl: './table.component.scss',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Default,
-  host: {
-    'class': 'crh-table-host',
-    'role': 'table',
-    '[style]': 'customCssStyleVars',
-  },
-  providers: [
-    {
-      provide: _VIEW_REPEATER_STRATEGY,
-      useClass: _DisposeViewRepeaterStrategy,
+    selector: 'crh-table, table[crh-table]',
+    exportAs: 'crhTable',
+    templateUrl: './table.component.html',
+    styleUrl: './table.component.scss',
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Default,
+    host: {
+        'class': 'crh-table-host',
+        'role': 'table',
+        '[style]': 'customCssStyleVars',
     },
-    { provide: _COALESCED_STYLE_SCHEDULER, useClass: _CoalescedStyleScheduler },
-    { provide: CdkTable, useExisting: CrhTableComponent },
-    { provide: CDK_TABLE, useExisting: CrhTableComponent },
-    { provide: STICKY_POSITIONING_LISTENER, useValue: null },
-  ],
-  standalone: true,
-  imports: [HeaderRowOutlet, DataRowOutlet, NoDataRowOutlet, FooterRowOutlet],
+    providers: [
+        {
+            provide: _VIEW_REPEATER_STRATEGY,
+            useClass: _DisposeViewRepeaterStrategy,
+        },
+        { provide: _COALESCED_STYLE_SCHEDULER, useClass: _CoalescedStyleScheduler },
+        { provide: CdkTable, useExisting: CrhTableComponent },
+        { provide: CDK_TABLE, useExisting: CrhTableComponent },
+        { provide: STICKY_POSITIONING_LISTENER, useValue: null },
+    ],
+    imports: [HeaderRowOutlet, DataRowOutlet, NoDataRowOutlet, FooterRowOutlet]
 })
 export class CrhTableComponent<T> extends CdkTable<T> {
   private colorsService = inject(ColorsService);

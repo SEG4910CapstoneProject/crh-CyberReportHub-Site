@@ -103,7 +103,7 @@ export class SortHeaderComponent {
       throw Error('crh-sort-header is not a child of a crhColumnDef');
     }
 
-    this.parentSortDirective.onSortChange.subscribe(value =>
+    this.parentSortDirective._onSortChange.subscribe(value =>
       this.currentSortSignal.set(value)
     );
 

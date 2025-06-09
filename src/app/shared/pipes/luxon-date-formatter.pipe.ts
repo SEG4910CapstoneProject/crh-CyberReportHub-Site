@@ -3,7 +3,8 @@ import { DateFormat, dateFormatMap } from './luxon-date-formatter.models';
 import { DateTime } from 'luxon';
 
 @Pipe({
-  name: 'luxonDateFormatter',
+    name: 'luxonDateFormatter',
+    standalone: false
 })
 export class LuxonDateFormatterPipe implements PipeTransform {
   transform(

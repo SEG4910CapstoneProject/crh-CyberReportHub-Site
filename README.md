@@ -13,6 +13,12 @@ If you have the whole application running with the databases and all other servi
 **docker compose --env-file ./local-variables.env build cyber-report-hub-site**
 **docker compose --env-file ./local-variables.env up -d cyber-report-hub-site**
 
+## Angular version update:
+
+1- ng update @angular/cli @angular/core
+
+(if it is saying that your Node.js version is outdated, go to the official nodejs website and download the latest installer.)
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.

@@ -46,9 +46,10 @@ import { ArticleCategoryGroup } from '../layout/report-article-area/report-artic
 import { CategoriesService } from '../services/categories.service';
 
 @Component({
-  selector: 'crh-report-edit',
-  templateUrl: './report-edit.component.html',
-  styleUrl: './report-edit.component.scss',
+    selector: 'crh-report-edit',
+    templateUrl: './report-edit.component.html',
+    styleUrl: './report-edit.component.scss',
+    standalone: false
 })
 export class ReportEditComponent {
   private activatedRoute = inject(ActivatedRoute);

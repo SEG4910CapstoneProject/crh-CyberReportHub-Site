@@ -15,23 +15,24 @@ import {
 } from '../../directives/material-input.directive';
 
 @Component({
-  selector: 'crh-text-input',
-  templateUrl: './text-input.component.html',
-  styleUrl: './text-input.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: TextInputComponent,
-    },
-  ],
-  hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST],
+    selector: 'crh-text-input',
+    templateUrl: './text-input.component.html',
+    styleUrl: './text-input.component.scss',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: TextInputComponent,
+        },
+    ],
+    hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST],
+    standalone: false
 })
 export class TextInputComponent implements ControlValueAccessor {
   protected materialInputDirective = inject(MaterialInputDirective);
 
   public config = input<TextInputConfig>();
-  public onValueChanged = output<string | undefined>();
+  public _onValueChanged = output<string | undefined>();
 
   @Input()
   set value(value: string | undefined) {
@@ -56,7 +57,7 @@ export class TextInputComponent implements ControlValueAccessor {
   constructor() {
     effect(() => {
       const content = this.materialInputDirective.fieldContent();
-      this.onValueChanged.emit(content);
+      this._onValueChanged.emit(content);
     });
   }
 

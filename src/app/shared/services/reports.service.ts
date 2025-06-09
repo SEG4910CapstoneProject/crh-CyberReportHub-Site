@@ -20,8 +20,8 @@ export class ReportsService {
     type?: 'DAILY' | 'WEEKLY',
     startDate?: string,
     endDate?: string,
-    page: number = 0,
-    limit: number = 10
+    page = 0,
+    limit = 10
   ): Observable<SearchReportResponse> {
     const params: any = {
       type,

@@ -30,45 +30,45 @@
   <crh-text-input
     label="Basic Input"
     placeholder="placeholder"
-    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+    (_onValueChanged)="onTextInputChange($event)"></crh-text-input>
   <span>Affixes Icons</span>
   <crh-text-input
     label="Basic Input"
     [config]="textInputConfigAffixIcons"
-    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+    (_onValueChanged)="onTextInputChange($event)"></crh-text-input>
   <span>Affixes Buttons</span>
   <crh-text-input
     label="Basic Input"
     [config]="textInputConfigAffixIconsClickable"
-    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+    (_onValueChanged)="onTextInputChange($event)"></crh-text-input>
   <span>Affixes text</span>
   <crh-text-input
     label="Basic Input"
     [config]="textInputConfigAffixText"
-    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+    (_onValueChanged)="onTextInputChange($event)"></crh-text-input>
   <span>Hint</span>
   <crh-text-input
     label="Basic Input"
     hint="Some Hint"
-    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+    (_onValueChanged)="onTextInputChange($event)"></crh-text-input>
   <span>Error Hint</span>
   <crh-text-input
     label="Basic Input"
     [errorHints]="textInputConfigErrorHint"
     [formControl]="textInputFormControl"
-    (onValueChanged)="onTextInputChange($event)"
+    (_onValueChanged)="onTextInputChange($event)"
     required="true"></crh-text-input>
   <span>Disabled</span>
   <crh-text-input
     label="Basic Input"
     value="Testing"
     [disabled]="true"
-    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+    (_onValueChanged)="onTextInputChange($event)"></crh-text-input>
   <span>Text Area</span>
   <crh-text-input
     label="Basic Input"
     [config]="textInputConfigTextArea"
-    (onValueChanged)="onTextInputChange($event)"></crh-text-input>
+    (_onValueChanged)="onTextInputChange($event)"></crh-text-input>
 </div>
 
 <div class="comp-container">
@@ -76,30 +76,30 @@
   <span>Basic</span>
   <crh-select
     label="Select"
-    (onSelectChange)="onSelectChoose($event)"
+    (_onSelectChange)="onSelectChoose($event)"
     [config]="selectConfigBasic"></crh-select>
   <span>Multiple</span>
   <crh-select
     label="Select"
-    (onSelectChange)="onSelectChoose($event)"
+    (_onSelectChange)="onSelectChoose($event)"
     [config]="selectConfigMultiple"></crh-select>
   <span>Hint</span>
   <crh-select
     label="Select"
-    (onSelectChange)="onSelectChoose($event)"
+    (_onSelectChange)="onSelectChoose($event)"
     hint="Test hint"
     [config]="selectConfigHint"></crh-select>
   <span>Error Hint</span>
   <crh-select
     label="Select"
-    (onSelectChange)="onSelectChoose($event)"
+    (_onSelectChange)="onSelectChoose($event)"
     [config]="selectConfigErrHintConfig"
     [errorHints]="selectConfigErrHint"
     [formControl]="selectFormControl"></crh-select>
   <span>Disabled</span>
   <crh-select
     label="Select"
-    (onSelectChange)="onSelectChoose($event)"
+    (_onSelectChange)="onSelectChoose($event)"
     [config]="selectConfigDisabled"
     [disabled]="true"
     value="test1"></crh-select>
@@ -111,20 +111,20 @@
   <crh-date-picker
     label="Picker"
     placeholder="Placeholder"
-    (onDateChange)="onDateChoose($event)"></crh-date-picker>
+    (_onDateChange)="onDateChoose($event)"></crh-date-picker>
   <span>Required</span>
   <crh-date-picker
     label="Picker"
     placeholder="Placeholder"
     [formControl]="dateFormControl"
-    (onDateChange)="onDateChoose($event)"></crh-date-picker>
+    (_onDateChange)="onDateChoose($event)"></crh-date-picker>
   <span>Disabled</span>
   <crh-date-picker
     label="Picker"
     placeholder="Placeholder"
     [value]="datePickerDisabledDate"
     [disabled]="true"
-    (onDateChange)="onDateChoose($event)"></crh-date-picker>
+    (_onDateChange)="onDateChoose($event)"></crh-date-picker>
 </div>
 
 <!-- Button Component  -->
@@ -205,7 +205,7 @@
     crh-table
     [dataSource]="tableBasicData"
     crhSort
-    (onSortChange)="onSortTableChange($event)">
+    (_onSortChange)="onSortTableChange($event)">
     <ng-container crhColumnDef="basic">
       <th crhHeaderCell *crhHeaderCellDef crh-sort-header>Basic col</th>
       <td crhCell *crhCellDef="let element">{{ element.basic }}</td>
@@ -250,31 +250,31 @@
     title="Total IOCs"
     subtitle="In the last week"
     interactMode="removeMode"
-    (onDeleteClick)="onStatClick('delete')"
-    (onEditClick)="onStatClick('edit')">
+    (_onDeleteClick)="onStatClick('delete')"
+    (_onEditClick)="onStatClick('edit')">
     10,000
   </crh-stats-card>
   <crh-stats-card
     title="Total IOCs"
     subtitle="In the last week"
     interactMode="addMode"
-    (onDeleteClick)="onStatClick('delete')"
-    (onEditClick)="onStatClick('edit')"
+    (_onDeleteClick)="onStatClick('delete')"
+    (_onEditClick)="onStatClick('edit')"
     (onAddClick)="onStatClick('add')">
     10,000
   </crh-stats-card>
   <crh-stats-card
     contentMode="icon"
     interactMode="removeMode"
-    (onDeleteClick)="onStatClick('delete')"
-    (onEditClick)="onStatClick('edit')">
+    (_onDeleteClick)="onStatClick('delete')"
+    (_onEditClick)="onStatClick('edit')">
     add
   </crh-stats-card>
   <crh-stats-card
     contentMode="icon"
     interactMode="addMode"
-    (onDeleteClick)="onStatClick('delete')"
-    (onEditClick)="onStatClick('edit')"
+    (_onDeleteClick)="onStatClick('delete')"
+    (_onEditClick)="onStatClick('edit')"
     (onAddClick)="onStatClick('add')">
     add
   </crh-stats-card>
