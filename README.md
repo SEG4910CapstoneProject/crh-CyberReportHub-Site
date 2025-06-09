@@ -19,6 +19,14 @@ If you have the whole application running with the databases and all other servi
 
 (if it is saying that your Node.js version is outdated, go to the official nodejs website and download the latest installer.)
 
+2- ng update @angular/cli@19
+
+3- Install preferred migrations.
+
+4- rm -rf node_modules package-lock.json
+
+To see where a dependency is coming from use: **npm ls inflight (for example)**
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
