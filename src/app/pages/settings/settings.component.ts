@@ -20,7 +20,6 @@ export class SettingsComponent implements OnInit {
   private authService = inject(AuthService);
   private darkModeService = inject(DarkModeService);
 
-  constructor() {}
 
   ngOnInit(): void {
     // Initialize form with default values
@@ -63,7 +62,7 @@ export class SettingsComponent implements OnInit {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onload = ():void => {
         this.form.patchValue({ logo: reader.result });
       };
       reader.readAsDataURL(file);

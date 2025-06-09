@@ -23,8 +23,8 @@ export class ReportArticleAreaComponent {
   public editable = input<boolean>(false);
   public articleCategoryGroups = input<ArticleCategoryGroup[]>([]);
 
-  public onArticleEdit = output<JsonArticleReportResponse>();
-  public onArticleRemove = output<string>();
+  public _onArticleEdit = output<JsonArticleReportResponse>();
+  public _onArticleRemove = output<string>();
 
   private articleCategoryNameGroupIdMap = computed<Map<string, number>>(() => {
     return new Map<string, number>(

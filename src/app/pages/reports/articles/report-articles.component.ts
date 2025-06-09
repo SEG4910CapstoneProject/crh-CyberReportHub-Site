@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy, inject, DestroyRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription, EMPTY, Observable, Subject, of } from 'rxjs';
+import { Subscription, EMPTY, Subject } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { ArticleService, Article } from '../../../shared/services/article.service';
+import { ArticleService } from '../../../shared/services/article.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
 import { ReportsService } from '../../../shared/sdk/rest-api/api/reports.service';
-import { map, switchMap, tap, catchError, filter } from 'rxjs/operators';
+import { map, tap, catchError, filter } from 'rxjs/operators';
 import { JsonStatsResponse } from '../../../shared/sdk/rest-api/model/jsonStatsResponse';
 import {
   EditStatDialogData,
@@ -27,8 +27,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class ReportArticlesComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;
-  protected isDarkMode: boolean = false;
-  protected articleSearchTerm: string = '';
+  protected isDarkMode = false;
+  protected articleSearchTerm = '';
   protected suggestedArticles: any[] = []; // Store articles
   protected allSuggestedArticles: any[] = []; // Store ALL articles (original list)
   protected selectedArticleIds: any[] = [];

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ReportsService } from '../../shared/services/reports.service';
 import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 
@@ -22,7 +22,7 @@ export class ReportSearchComponent implements OnInit {
   protected isLoggedIn = false;
 
   // Declare form controls and form group
-  reportNo: string = '';
+  reportNo = '';
   type: 'DAILY' | 'WEEKLY' = 'DAILY'; // Default to 'DAILY'
   startDate: FormControl = new FormControl(null); // Default to null
   endDate: FormControl = new FormControl(null); // Default to null
@@ -39,7 +39,7 @@ export class ReportSearchComponent implements OnInit {
   // This will hold the fetched reports
   filteredReports: SearchReportDetailsResponse[] = [];
 
-  ngOnInit() {
+  ngOnInit():void {
     // Log when ngOnInit is called
     console.log('ReportSearchComponent ngOnInit called.');
 

@@ -14,6 +14,6 @@ export class ConfirmCancelButtonsComponent {
   public cancelButtonText = input<string>();
   public justifyText = input<'right' | 'left'>('right');
 
-  public onConfirmPressed = output();
-  public onCancelPressed = output();
+  public _onConfirmPressed = output();
+  public _onCancelPressed = output();
 }

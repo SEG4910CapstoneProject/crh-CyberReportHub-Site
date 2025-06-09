@@ -12,8 +12,8 @@ export class ReportStatsAreaComponent {
   public stats = input<JsonStatsResponse[]>([]);
   public editable = input<boolean>(false);
 
-  public onEditStat = output<JsonStatsResponse>();
-  public onRemoveStat = output<string>();
+  public _onEditStat = output<JsonStatsResponse>();
+  public _onRemoveStat = output<string>();
 
   protected statCardEditMode = computed<InteractMode>(() => {
     if (this.editable()) {

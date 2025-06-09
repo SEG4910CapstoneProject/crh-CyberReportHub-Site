@@ -13,8 +13,8 @@ export class ArticleContentComponent {
   public editable = input<boolean>(false);
   private iocTypeService = inject(IocTypeService);
 
-  public onEditClicked = output<void>();
-  public onDeleteClicked = output<void>();
+  public _onEditClicked = output<void>();
+  public _onDeleteClicked = output<void>();
 
   protected availableIocs = computed(() => {
     const articleDetails = this.articleDetails();

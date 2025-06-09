@@ -26,13 +26,13 @@ export class SelectComponent implements ControlValueAccessor {
 
   public config = input<SelectConfig>();
   public value = input<string | undefined>(undefined);
-  public onSelectChange = output<string | undefined>();
+  public _onSelectChange = output<string | undefined>();
 
   constructor() {
     effect(() => {
       const value = this.value();
       this.materialInputDirective.childControl.setValue(value);
-      this.onSelectChange.emit(value);
+      this._onSelectChange.emit(value);
     });
   }
 
@@ -53,7 +53,7 @@ export class SelectComponent implements ControlValueAccessor {
   }
 
   protected onSelectChangeEvent(selection: MatSelectChange): void {
-    this.onSelectChange.emit(selection.value);
+    this._onSelectChange.emit(selection.value);
     this.materialInputDirective.fieldContent.set(selection.value);
   }
 }

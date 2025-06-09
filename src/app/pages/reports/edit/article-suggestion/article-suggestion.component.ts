@@ -10,7 +10,7 @@ import { JsonArticleReportResponse } from '../../../../shared/sdk/rest-api/model
 export class ArticleSuggestionComponent {
   public articleDetails = input<JsonArticleReportResponse>();
 
-  public onEditClicked = output<void>();
-  public onDeleteClicked = output<void>();
-  public onAddClicked = output<void>();
+  public _onEditClicked = output<void>();
+  public _onDeleteClicked = output<void>();
+  public _onAddClicked = output<void>();
 }

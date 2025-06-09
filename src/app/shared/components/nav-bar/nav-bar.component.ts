@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnInit, signal } from '@angular/core';
 import { NavBarLink, NavBarSelectedLinkOptions } from './nav-bar.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CrhTranslationService } from '../../services/crh-translation.service';
@@ -30,7 +30,7 @@ import { LoginDialogComponent } from '../../dialogs/login-dialog/login-dialog.co
     styleUrl: './nav-bar.component.scss',
     standalone: false
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
   private readonly MOBILE_MODE_KEY: string = 'mobile';
   private readonly DESKTOP_MODE_KEY: string = 'desktop';
 

@@ -48,7 +48,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   protected materialInputDirective = inject(MaterialInputDirective);
   private translateService = inject(CrhTranslationService);
   private dateUtilsService = inject(DateUtilsService);
-  public onDateChange = output<DateTime>();
+  public _onDateChange = output<DateTime>();
 
   @Input()
   set value(value: DateTime | undefined) {
@@ -58,7 +58,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   constructor() {
     effect(() => {
       const content = this.materialInputDirective.fieldContent();
-      this.onDateChange.emit(content);
+      this._onDateChange.emit(content);
     });
   }
 

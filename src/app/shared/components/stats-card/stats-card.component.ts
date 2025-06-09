@@ -14,7 +14,7 @@ export class StatsCardComponent {
   public subtitle = input<string>('');
   public interactMode = input<InteractMode>('none');
 
-  public onDeleteClick = output<void>();
-  public onAddClick = output<void>();
-  public onEditClick = output<void>();
+  public _onDeleteClick = output<void>();
+  public _onAddClick = output<void>();
+  public _onEditClick = output<void>();
 }

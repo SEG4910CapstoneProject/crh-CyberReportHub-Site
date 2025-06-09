@@ -1,6 +1,14 @@
 import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+
+// Types
+interface Article {
+  category:string,
+  id:string,
+  link:string,
+  title:string,
+  type:string
+}
 
 @Component({
     selector: 'crh-report-preview',
@@ -8,29 +16,39 @@ import { Location } from '@angular/common';
     styleUrls: ['./report-preview.component.scss'],
     standalone: false
 })
+
+
 export class ReportPreviewComponent {
-  articles: any[] = history.state?.articles || [];
+  articles: Article[] = history.state?.articles || [];
   stats: any[] = history.state?.stats || [];
   analystComment: string = history.state?.analystComment || '';
 
   // Group articles by category
-  get articlesByCategory(): { [key: string]: any[] } {
+  get articlesByCategory(): Record<string,Article[]> {
+    //TODO: replace any by a proper type: (Article has category,id,link,title,type and all are strings), and any is actually Article[]
     const categories = this.articles.reduce((acc, article) => {
       if (!acc[article.category]) {
         acc[article.category] = [];
       }
       acc[article.category].push(article);
       return acc;
-    }, {} as { [key: string]: any[] });
+    }, {} as Record<string,Article[]>);
+
+    console.log("the articles are: ",this.articles);
+    console.log("the categories are: ",categories);
 
     // Sort categories by category name
     const sortedCategories = Object.keys(categories).sort();
 
+
     // Return the sorted object
     return sortedCategories.reduce((acc, category) => {
       acc[category] = categories[category];
+      console.log("the acc is: ",acc);
+
       return acc;
-    }, {} as { [key: string]: any[] });
+    }, {} as Record<string,Article[]>);
+
   }
 
   // Get all categories from articles
