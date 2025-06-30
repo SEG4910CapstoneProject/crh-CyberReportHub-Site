@@ -41,6 +41,8 @@ describe('ReportSearchComponent', () => {
           },
         ],
         emailStatus: false,
+        template:"report_template",
+        type:"report_type"
       },
     ],
   };
@@ -71,7 +73,7 @@ describe('ReportSearchComponent', () => {
 
   it('should call api', () => {
     expect(component['reportSearchResultsSignal']()).toBeTruthy();
-    expect(component['reportSearchResultsSignal']()?.length).toBe(1);
+    expect(component['reportSearchResultsSignal']()?.total).toBe(1);
     expect(component['reportSearchTotalSignal']()).toBe(REPORT_RESPONSE.total);
     expect(component['isLoadingSignal']()).toBe(false);
   });

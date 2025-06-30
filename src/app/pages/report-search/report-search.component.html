@@ -7,11 +7,11 @@
       *ngIf="isLoggedIn"
       class="report-search-header-latest"
       (click)="onLatestClick()">
-      {{ 'reportSearch.latest' | translate }}
+      {{ 'reportNew.latest' | translate }}
     </crh-button>
   </div>
 
-  <form class="report-search-control" [formGroup]="searchFormGroup">
+  <form class="report-search-control" [formGroup]="searchFormGroup" id="filtersForm">
     <div class="report-search-control-filters">
       <!-- TEXT INPUT: REPORT NUMBER -->
       <div class="filter-wrapper">
@@ -68,7 +68,7 @@
 
       <!-- SEARCH BUTTON -->
       <div class="filter-wrapper">
-        <button class="search-button" (click)="onSearch()">{{ 'reportSearch.search' | translate }}</button>
+        <button class="search-button" (click)="reportSearchResultsSignal()">{{ 'reportSearch.search' | translate }}</button>
       </div>
     </div>
   </form>
@@ -87,27 +87,30 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngIf="filteredReports.length === 0">
-        <td colspan="6" class="no-data">{{ 'reportSearch.noreports' | translate }}</td>
-      </tr>
-      <tr *ngFor="let report of filteredReports">
-        <td>{{ report?.reportId }}</td>
-        <td>{{ report?.type === 'DAILY' ? 'Daily' : 'Weekly' }}</td>
-        <td>{{ report?.generatedDate | date: 'medium' }}</td>
-        <td>{{ report?.lastModified | date: 'medium' }}</td>
-        <td *ngIf="isLoggedIn">{{ report?.emailStatus ? '✔' : '✘' }}</td>
-        <td class="actions-column">
-          <button class="view-button" (click)="onViewReport(report)">
-            View
-          </button>
-          <button
-            *ngIf="isLoggedIn"
-            class="delete-button"
-            (click)="onDeleteReport(report)">
-            Delete
-          </button>
-        </td>
-      </tr>
+      <ng-container *ngIf="reportSearchResultsSignal() as results">
+        <tr *ngIf="results.total === 0">
+          <td colspan="6" class="no-data">{{ 'reportSearch.noreports' | translate }}</td>
+        </tr>
+
+        <tr *ngFor="let report of results.reports">
+          <td>{{ report?.reportId }}</td>
+          <td>{{ report?.type === 'DAILY' ? 'Daily' : 'Weekly' }}</td>
+          <td>{{ report?.generatedDate | date: 'medium' }}</td>
+          <td>{{ report?.lastModified | date: 'medium' }}</td>
+          <td *ngIf="isLoggedIn">{{ report?.emailStatus ? '✔' : '✘' }}</td>
+          <td class="actions-column">
+            <button class="view-button" (click)="onViewReport(report)">
+              View
+            </button>
+            <button
+              *ngIf="isLoggedIn"
+              class="delete-button"
+              (click)="onDeleteReport(report)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>
