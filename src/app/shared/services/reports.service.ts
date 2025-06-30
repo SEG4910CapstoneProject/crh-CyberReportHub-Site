@@ -17,16 +17,18 @@ export class ReportsService {
 
   // Fetch reports list for search (returns SearchReportResponse)
   searchReports(
-    type?: 'DAILY' | 'WEEKLY',
+    type: 'DAILY' | 'WEEKLY',
     startDate?: string,
     endDate?: string,
-    page = 0,
-    limit = 10
+    reportNo?:string
+    //page = 0,
+    //limit = 10
   ): Observable<SearchReportResponse> {
     const params: any = {
       type,
-      page,
-      limit,
+      reportNo
+      //page,
+      //limit,
     };
 
     // Only add date parameters if they are defined
@@ -36,6 +38,8 @@ export class ReportsService {
     if (endDate) {
       params['date-end'] = endDate;
     }
+
+    console.log("trying to get the all reports");
 
     return this.http.get<SearchReportResponse>(`${this.apiUrl}/search`, {
       params,

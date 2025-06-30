@@ -86,7 +86,7 @@ describe('MaterialInputDirective', () => {
   });
 
   it('should emit value when value is written', () => {
-    const outputSpy = jest.spyOn(directive.onValueChanged, 'emit');
+    const outputSpy = jest.spyOn(directive._onValueChanged, 'emit');
 
     const expectedValue = 'SomeValue';
     directive.onValueWrite(expectedValue);
