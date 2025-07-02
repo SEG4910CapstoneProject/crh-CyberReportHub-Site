@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SearchReportResponse } from '../sdk/rest-api/model/searchReportResponse';
 import { JsonReportResponse } from '../sdk/rest-api/model/jsonReportResponse';
 
+
+type requestParams = {
+  reportNo: string,
+  type: 'DAILY' | 'WEEKLY',
+  'date-start': string | null,
+  'date-end': string | null
+}
+
 @Injectable({
   providedIn: 'root',
 })
+
 export class ReportsService {
   private apiUrl = 'http://localhost:8080/api/v1/reports';
   basePath: any;
@@ -15,21 +24,26 @@ export class ReportsService {
 
   constructor(private http: HttpClient) {}
 
+
+
   // Fetch reports list for search (returns SearchReportResponse)
   searchReports(
     type: 'DAILY' | 'WEEKLY',
+    reportNo:string,
     startDate?: string,
     endDate?: string,
-    reportNo?:string
     //page = 0,
     //limit = 10
   ): Observable<SearchReportResponse> {
-    const params: any = {
-      type,
-      reportNo
+    let params: requestParams = {
+      reportNo:reportNo,
+      'date-start':'',
+      'date-end':'',
+      type:type,
       //page,
       //limit,
     };
+
 
     // Only add date parameters if they are defined
     if (startDate) {
@@ -39,10 +53,21 @@ export class ReportsService {
       params['date-end'] = endDate;
     }
 
-    console.log("trying to get the all reports");
+    console.log("trying to get the all reports: ",`${this.apiUrl}/search`);
+
+    console.log("the params are: ",params);
+
+    let httpParams = new HttpParams();
+    for (const key in params) {
+      const value = params[key as keyof requestParams];
+      if (value !== undefined && value !== null) {
+        httpParams = httpParams.set(key, value);
+      }
+    }
+
 
     return this.http.get<SearchReportResponse>(`${this.apiUrl}/search`, {
-      params,
+      params: httpParams,
     });
   }
 

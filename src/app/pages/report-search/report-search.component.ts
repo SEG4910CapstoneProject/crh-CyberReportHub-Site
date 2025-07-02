@@ -1,13 +1,14 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ReportsService } from '../../shared/services/reports.service';
 import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
-import { catchError, combineLatest, distinctUntilChanged, map, of, pipe, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, distinctUntilChanged, map, Observable, of, pipe, shareReplay, startWith, Subject, switchMap, tap } from 'rxjs';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { DateTime } from 'luxon';
 
 @Component({
     selector: 'crh-report-search',
@@ -23,12 +24,9 @@ export class ReportSearchComponent implements OnInit {
   protected isLoggedIn = false;
 
   // Declare form controls and form group
-  reportNo = '';
   type: 'DAILY' | 'WEEKLY' = 'DAILY'; // Default to 'DAILY'
-  startDate: FormControl = new FormControl(null); // Default to null
-  endDate: FormControl = new FormControl(null); // Default to null
-
-  //searchFormGroup!: FormGroup;
+  startDate: FormControl = new FormControl<DateTime | null>(null); // Default to null
+  endDate: FormControl = new FormControl<DateTime | null>(null); // Default to null
 
   protected paginatorStatus: PaginatorStatus = {
     itemsPerPage: 10,
@@ -45,7 +43,7 @@ export class ReportSearchComponent implements OnInit {
       type: new FormControl(this.type),
       startDate: this.startDate,
       endDate: this.endDate,
-    });
+  });
 
   ngOnInit():void {
     // Log when ngOnInit is called
@@ -56,11 +54,6 @@ export class ReportSearchComponent implements OnInit {
       console.log('Is Logged In:', status); // Debugging login status
       this.isLoggedIn = status;
     });
-
- 
-
-    // Fetch reports initially (no filters applied)
-    //this.onSearch();
   }
 
   // Handle search logic
@@ -104,7 +97,7 @@ export class ReportSearchComponent implements OnInit {
   //         type:
   //           report.type === 'DAILY' || report.type === 'WEEKLY'
   //             ? report.type
-  //             : 'Unknown', // Default to 'Unknown' for invalid types
+  //             : 'Unknown', // Default to 'Unknown' for invalid types //CAP331: Amani should ask Naomi why is this check necessary
   //       }));
 
   //       console.log('Filtered Reports:', this.filteredReports); // Log the filtered reports
@@ -115,32 +108,47 @@ export class ReportSearchComponent implements OnInit {
     startWith(this.searchFormGroup.value),
     map(value => {
       return value;// not being strict about validation, if any field isn't present,just get the whole list. i.e: if start date isnt present, 
-      // get all the reports whose piblication date is before the end date.
+      // get all the reports whose publication date is before the end date.
     })
   )
 
-  private reportSearchResults$ = combineLatest([
-    this.dateFormValue$ ,// TODO, MIGHT add paginator status??
-  ]).pipe(
+    searchPressedEvent$ = new Subject<void>();
+
+  public onSearchClick = () => {
+    console.log("onSearch click clicked");
+    this.searchPressedEvent$.next();
+  }
+
+ // private searchPressed$ = this.searchPressedEvent$.pipe(startWith(void 0));
+  //private triggerSearchSignal = toSignal(this.searchPressed$);
+
+  private reportSearchResults$:Observable<SearchReportResponse> = this.searchPressedEvent$.pipe(
     // The pipe(...) allows to chain RxJS operators to transform the data.
     // map(...) takes the [dateValues] array (and possibly other stuff if we decide to add them in the future) and transforms it 
     // into a single object with selected properties.
-    map(([dateValues]) => ({ // data assembly
+    // map(([dateValues]) => ({ // STEP 2: data assembly
+    //   startDate:dateValues?.startDate,
+    //   endDate:dateValues?.endDate,
+    //   reportNo:dateValues?.reportNo,
+    //   type:dateValues.type
+    // })),
+    map(()=>this.searchFormGroup.value),
+    map((dateValues) => ({ // STEP 2: data assembly
       startDate:dateValues?.startDate,
       endDate:dateValues?.endDate,
       reportNo:dateValues?.reportNo,
-      type:dateValues?.type
+      type:dateValues.type
     })),
-    map(({startDate,endDate,reportNo,type}) => ({
-      // data formatting
-      startDate: startDate?.toISODate() ?? undefined,
-      endDate: endDate?.toISODate() ?? undefined,
+    map(({startDate,endDate,reportNo,type}) => ({// STEP 3: data formatting
+      startDate: startDate?.toISODate() ?? null,
+      endDate: endDate?.toISODate() ?? null,
       reportNo,
       type
     })),
-    distinctUntilChanged(
+    tap(v => console.log('🔍 Emitted before distinct:', v)),
+    distinctUntilChanged( // STEP 4: a small performance gain by preventing repetitive api calls
       // distinctUntilChanged() is an RxJS operator used to prevent emitting the same value twice in a row, 
-      // here we compare the previous value emission to this one, if it's the same no need to make an api request
+      // here we compare the previous value emission to this one, if it's the same no need to make a new api request
       (prev,cur) => 
         prev.startDate === cur.startDate &&
         prev.endDate === cur.endDate &&
@@ -148,16 +156,16 @@ export class ReportSearchComponent implements OnInit {
         prev.type == cur.type
     ),
     tap(() => this.isLoadingSignal.set(true)),
-    // tap is a side effect operator, it does not change the value of the stream
+    // STEP 5: setting the loadign signal. tap is a side effect operator, it does not change the value of the stream
 
-    // switchMap cancels any ongoing API call if a new set 
+    // STEP 6: make the api call. switchMap cancels any ongoing API call if a new set 
     // of search params is emitted 
     switchMap(({startDate,endDate,reportNo,type}) => 
       this.reportsService.searchReports(
         type!,
+        reportNo ?? '',
         startDate,
         endDate,
-        reportNo ?? undefined
       )
     ),
     catchError(err => {
@@ -165,27 +173,31 @@ export class ReportSearchComponent implements OnInit {
       return of({ total: 0, reports: [] } as SearchReportResponse);
     }),
     tap(()=> this.isLoadingSignal.set(false)),
-    tap((respnse)=> {
-      console.log("the response is: ",respnse)
-    }),
-    // pipe(map(response => {
-    //   console.log("the result is: ",response);
-    // })),
-    // It shares the latest emitted result with all subscribers, that way not everyone would go through the same process
+    // STEP 7:  It shares the latest emitted result with all subscribers, that way not everyone would go through the same process of making an api request
     shareReplay()
 
-  )
+  )as Observable<SearchReportResponse>;
 
-  // private reports$ = this.reportSearchResults$.pipe(
-  //   map(result => result.reports)
-  // );
 
-  protected reportSearchResultsSignal = toSignal(this.reportSearchResults$);// Step 1: Getting the current value of reportSearchResultsSignal as a reactive signal
+  private reports$ = this.reportSearchResults$.pipe(
+    map(result => result.reports)
+  );
 
-  // protected resportSearchTotalSignal = computed(()=> {
-  //   const reportTotal = this.reportTotalSignal();
-  //   if (!report)
-  // })
+  protected reportSearchResultsSignal = toSignal(this.reports$);// Step 1: Getting the current value of reportSearchResultsSignal as a reactive signal
+
+  private reportTotalSignal = toSignal(
+    this.reportSearchResults$.pipe(map(result => result.total))
+  );
+
+  protected reportSearchTotalSignal = computed(() => {
+    const reportTotal = this.reportTotalSignal();
+    if (!reportTotal) {
+      return 0;
+    }
+
+    return reportTotal;
+  });
+
   // Handle view report logic
   onViewReport(report: SearchReportDetailsResponse): void {
     this.router.navigate([`/reports/read/${report?.reportId}`]);
