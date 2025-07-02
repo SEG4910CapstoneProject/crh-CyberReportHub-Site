@@ -11,6 +11,28 @@
     </crh-button>
   </div>
 
+  <!-- <form class="report-search-control" [formGroup]="searchFormGroup" id="filtersForm">
+    <div class="report-search-control-dates">
+      <div>{{ 'reportSearch.searchLabel' | translate }}</div>
+      <crh-date-picker
+        formControlName="startDate"
+        label="{{
+          'reportSearch.search.fromLabel' | translate
+        }}"></crh-date-picker>
+      <crh-date-picker
+        formControlName="endDate"
+        label="{{
+          'reportSearch.search.toLabel' | translate
+        }}"></crh-date-picker>
+    </div>
+    <div class="report-search-control-pages">
+      <crh-paginator
+        [options]="[10, 20, 50]"
+        [totalResults]="reportSearchTotalSignal()"
+        (pageStatus)="paginatorStatusSignal.set($event)"></crh-paginator>
+    </div>
+  </form> -->
+  
   <form class="report-search-control" [formGroup]="searchFormGroup" id="filtersForm">
     <div class="report-search-control-filters">
       <!-- TEXT INPUT: REPORT NUMBER -->
@@ -37,7 +59,7 @@
       </div>
 
       <!-- DATE PICKER: START DATE -->
-      <div class="filter-wrapper">
+      <!-- <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
           <mat-label>{{ 'reportSearch.startdate' | translate }}</mat-label>
           <input
@@ -49,10 +71,24 @@
             [for]="pickerFrom"></mat-datepicker-toggle>
           <mat-datepicker #pickerFrom></mat-datepicker>
         </mat-form-field>
-      </div>
+      </div> -->
+
+      <crh-date-picker
+          formControlName="startDate"
+          label="{{
+            'reportSearch.search.fromLabel' | translate
+          }}">
+      </crh-date-picker>
+      
+      <crh-date-picker
+        formControlName="endDate"
+        label="{{
+          'reportSearch.search.toLabel' | translate
+        }}">
+      </crh-date-picker>
 
       <!-- DATE PICKER: END DATE -->
-      <div class="filter-wrapper">
+      <!-- <div class="filter-wrapper">
         <mat-form-field class="date-picker-form-field" appearance="outline">
           <mat-label>{{ 'reportSearch.enddate' | translate }}</mat-label>
           <input
@@ -64,11 +100,11 @@
             [for]="pickerTo"></mat-datepicker-toggle>
           <mat-datepicker #pickerTo></mat-datepicker>
         </mat-form-field>
-      </div>
+      </div> -->
 
       <!-- SEARCH BUTTON -->
       <div class="filter-wrapper">
-        <button class="search-button" (click)="reportSearchResultsSignal()">{{ 'reportSearch.search' | translate }}</button>
+        <button class="search-button" (click)="onSearchClick()">{{ 'reportSearch.search' | translate }}</button>
       </div>
     </div>
   </form>
@@ -88,13 +124,13 @@
     </thead>
     <tbody>
       <ng-container *ngIf="reportSearchResultsSignal() as results">
-        <tr *ngIf="results.total === 0">
+        <tr *ngIf="reportSearchTotalSignal() === 0">
           <td colspan="6" class="no-data">{{ 'reportSearch.noreports' | translate }}</td>
         </tr>
 
-        <tr *ngFor="let report of results.reports">
+        <tr *ngFor="let report of results">
           <td>{{ report?.reportId }}</td>
-          <td>{{ report?.type === 'DAILY' ? 'Daily' : 'Weekly' }}</td>
+          <td>{{ report?.type === 'daily' ? 'Daily' : 'Weekly' }}</td>
           <td>{{ report?.generatedDate | date: 'medium' }}</td>
           <td>{{ report?.lastModified | date: 'medium' }}</td>
           <td *ngIf="isLoggedIn">{{ report?.emailStatus ? '✔' : '✘' }}</td>
