@@ -34,10 +34,10 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   protected selectedArticleIds: any[] = [];
   private subscriptions: Subscription[] = [];
   private articleService = inject(ArticleService);
-  protected isLoading = true; //spinner
+  public isLoading = true; //spinner
 
   private destroyRef = inject(DestroyRef);
-  protected newArticleForm = new FormControl<string | null>(null, [
+  public newArticleForm = new FormControl<string | null>(null, [
     Validators.required,
     Validators.pattern('https?://.+'),
   ]);
@@ -59,10 +59,10 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   }
 
   // Mock data for now - This will be replaced with an API call
-  protected reportId = 1;
+  public reportId = 1;
 
   // Store the added statistics
-  protected addedStats: JsonStatsResponse[] = [];
+  public addedStats: JsonStatsResponse[] = [];
 
   // Store the form values for the new article
   newArticle = {
