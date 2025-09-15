@@ -75,5 +75,12 @@ export class ReportsService {
     return this.http.post<{ reportId: number }>(url, {}, options);
   }
 
+  // Create full report (with request body)
+  createReport(payload: any): Observable<JsonReportResponse> {
+    const url = `${this.apiUrl}`;
+    return this.http.post<JsonReportResponse>(url, payload, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
 }

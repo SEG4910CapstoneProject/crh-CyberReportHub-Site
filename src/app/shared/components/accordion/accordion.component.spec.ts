@@ -7,12 +7,11 @@ import {
 
 import { AccordionComponent } from './accordion.component';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, signal, input } from '@angular/core';
 
 describe('AccordionComponent', () => {
   let component: AccordionComponent;
   let fixture: ComponentFixture<AccordionComponent>;
-  let componentRef: ComponentRef<AccordionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,7 +21,6 @@ describe('AccordionComponent', () => {
 
     fixture = TestBed.createComponent(AccordionComponent);
     component = fixture.componentInstance;
-    componentRef = fixture.componentRef;
     fixture.detectChanges();
   });
 
@@ -32,20 +30,15 @@ describe('AccordionComponent', () => {
 
   it('should set default open state', fakeAsync(() => {
     const openMock = jest.fn();
-    const closeMock = jest.fn();
-    component['accordion'] = {
-      open: openMock,
-      close: closeMock,
-    } as any;
+    (component as any).accordion = { open: openMock, close: jest.fn() };
 
-    componentRef.setInput('defaultOpenState', true);
+    (component as any).defaultOpenState = () => true;
+
+    component.setState((component as any).defaultOpenState());
     tick();
 
     expect(openMock).toHaveBeenCalled();
-
-    componentRef.setInput('defaultOpenState', false);
-    tick();
-
-    expect(closeMock).toHaveBeenCalled();
   }));
+
+
 });

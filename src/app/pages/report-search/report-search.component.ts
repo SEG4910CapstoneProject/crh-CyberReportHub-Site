@@ -19,7 +19,7 @@ export class ReportSearchComponent implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
 
-  protected isLoggedIn = false;
+  public isLoggedIn = false;
 
   // Declare form controls and form group
   reportNo = '';
@@ -29,12 +29,12 @@ export class ReportSearchComponent implements OnInit {
 
   searchFormGroup!: FormGroup;
 
-  protected paginatorStatus: PaginatorStatus = {
+  public paginatorStatus: PaginatorStatus = {
     itemsPerPage: 10,
     page: 0,
   };
 
-  protected isLoading = false;
+  public isLoading = false;
 
   // This will hold the fetched reports
   filteredReports: SearchReportDetailsResponse[] = [];
