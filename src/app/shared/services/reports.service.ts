@@ -7,7 +7,7 @@ import { JsonReportResponse } from '../sdk/rest-api/model/jsonReportResponse';
 
 type requestParams = {
   reportNo: string,
-  type: 'DAILY' | 'WEEKLY',
+  type: 'DAILY' | 'WEEKLY' | 'notSpecified',
   'date-start': string | null,
   'date-end': string | null
 }
@@ -24,11 +24,9 @@ export class ReportsService {
 
   constructor(private http: HttpClient) {}
 
-
-
   // Fetch reports list for search (returns SearchReportResponse)
   searchReports(
-    type: 'DAILY' | 'WEEKLY',
+    type: 'DAILY' | 'WEEKLY' | 'notSpecified',
     reportNo:string,
     startDate?: string,
     endDate?: string,
@@ -36,14 +34,13 @@ export class ReportsService {
     //limit = 10
   ): Observable<SearchReportResponse> {
     let params: requestParams = {
-      reportNo:reportNo,
+      reportNo:"0",
       'date-start':'',
       'date-end':'',
-      type:type,
+      type:'notSpecified',
       //page,
       //limit,
     };
-
 
     // Only add date parameters if they are defined
     if (startDate) {
@@ -52,10 +49,11 @@ export class ReportsService {
     if (endDate) {
       params['date-end'] = endDate;
     }
+    params['reportNo'] = reportNo;
+    params['type'] = type;
 
-    console.log("trying to get the all reports: ",`${this.apiUrl}/search`);
-
-    console.log("the params are: ",params);
+    console.log("trying to get the all reports from: ",`${this.apiUrl}/search`);
+    console.log("using the params : ",params);
 
     let httpParams = new HttpParams();
     for (const key in params) {
@@ -64,7 +62,6 @@ export class ReportsService {
         httpParams = httpParams.set(key, value);
       }
     }
-
 
     return this.http.get<SearchReportResponse>(`${this.apiUrl}/search`, {
       params: httpParams,

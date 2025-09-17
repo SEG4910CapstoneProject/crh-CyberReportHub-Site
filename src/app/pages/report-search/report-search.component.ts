@@ -1,10 +1,10 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReportsService } from '../../shared/services/reports.service';
 import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
-import { catchError, combineLatest, distinctUntilChanged, map, Observable, of, pipe, shareReplay, startWith, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, filter, map, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -21,32 +21,28 @@ export class ReportSearchComponent implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
 
+  private type: 'DAILY' | 'WEEKLY' | 'notSpecified' = 'notSpecified';
+  private startDate: FormControl = new FormControl<DateTime | null>(null);
+  private endDate: FormControl = new FormControl<DateTime | null>(null);
+
   protected isLoggedIn = false;
-
-  // Declare form controls and form group
-  type: 'DAILY' | 'WEEKLY' = 'DAILY'; // Default to 'DAILY'
-  startDate: FormControl = new FormControl<DateTime | null>(null); // Default to null
-  endDate: FormControl = new FormControl<DateTime | null>(null); // Default to null
-
   protected paginatorStatus: PaginatorStatus = {
     itemsPerPage: 10,
     page: 0,
   };
-
   protected isLoadingSignal = signal<boolean>(true);
 
   // This will hold the fetched reports
   filteredReports: SearchReportDetailsResponse[] = [];
 
-  protected searchFormGroup = new FormGroup({ // Initialize form group with controls
-      reportNo: new FormControl(''),
+  protected searchFormGroup = new FormGroup({
+      reportNo: new FormControl('',[Validators.pattern(/^[1-9][0-9]*$/)]),// only strictly positive values are accepted
       type: new FormControl(this.type),
       startDate: this.startDate,
       endDate: this.endDate,
   });
 
   ngOnInit():void {
-    // Log when ngOnInit is called
     console.log('ReportSearchComponent ngOnInit called.');
 
     // Subscribe to login status
@@ -56,82 +52,14 @@ export class ReportSearchComponent implements OnInit {
     });
   }
 
-  // Handle search logic
-  // onSearch(): void {
-  //   const { reportNo, type, startDate, endDate } = this.searchFormGroup.value;
-
-  //   this.isLoading = true;
-
-  //   console.log('Fetching reports with parameters:', {
-  //     reportNo,
-  //     type,
-  //     startDate,
-  //     endDate,
-  //     page: this.paginatorStatus.page,
-  //     limit: this.paginatorStatus.itemsPerPage,
-  //   });
-
-  //   // Fetch reports from the service
-  //   this.reportsService
-  //     .searchReports(
-  //       type,
-  //       startDate,
-  //       endDate,
-  //       this.paginatorStatus.page,
-  //       this.paginatorStatus.itemsPerPage
-  //     )
-  //     .pipe(
-  //       catchError(err => {
-  //         console.error('Error fetching reports:', err); // Log any error
-  //         return of({ total: 0, reports: [] } as SearchReportResponse);
-  //       })
-  //     )
-  //     .subscribe((response: SearchReportResponse) => {
-  //       console.log('Fetched Reports Response:', response); // Log the response
-
-  //       this.isLoading = false;
-  //       this.filteredReports = response.reports ?? [];
-  //       // Ensure that reports have a valid type before displaying
-  //       this.filteredReports = this.filteredReports.map(report => ({
-  //         ...report,
-  //         type:
-  //           report.type === 'DAILY' || report.type === 'WEEKLY'
-  //             ? report.type
-  //             : 'Unknown', // Default to 'Unknown' for invalid types //CAP331: Amani should ask Naomi why is this check necessary
-  //       }));
-
-  //       console.log('Filtered Reports:', this.filteredReports); // Log the filtered reports
-  //     });
-  // }
-
-  private dateFormValue$ = this.searchFormGroup.valueChanges.pipe(
-    startWith(this.searchFormGroup.value),
-    map(value => {
-      return value;// not being strict about validation, if any field isn't present,just get the whole list. i.e: if start date isnt present, 
-      // get all the reports whose publication date is before the end date.
-    })
-  )
-
-    searchPressedEvent$ = new Subject<void>();
+  searchPressedEvent$ = new BehaviorSubject<boolean>(true);
 
   public onSearchClick = () => {
     console.log("onSearch click clicked");
-    this.searchPressedEvent$.next();
+    this.searchPressedEvent$.next(!this.searchPressedEvent$);
   }
 
- // private searchPressed$ = this.searchPressedEvent$.pipe(startWith(void 0));
-  //private triggerSearchSignal = toSignal(this.searchPressed$);
-
   private reportSearchResults$:Observable<SearchReportResponse> = this.searchPressedEvent$.pipe(
-    // The pipe(...) allows to chain RxJS operators to transform the data.
-    // map(...) takes the [dateValues] array (and possibly other stuff if we decide to add them in the future) and transforms it 
-    // into a single object with selected properties.
-    // map(([dateValues]) => ({ // STEP 2: data assembly
-    //   startDate:dateValues?.startDate,
-    //   endDate:dateValues?.endDate,
-    //   reportNo:dateValues?.reportNo,
-    //   type:dateValues.type
-    // })),
     map(()=>this.searchFormGroup.value),
     map((dateValues) => ({ // STEP 2: data assembly
       startDate:dateValues?.startDate,
@@ -155,15 +83,14 @@ export class ReportSearchComponent implements OnInit {
         prev.reportNo === cur.reportNo &&
         prev.type == cur.type
     ),
-    tap(() => this.isLoadingSignal.set(true)),
-    // STEP 5: setting the loadign signal. tap is a side effect operator, it does not change the value of the stream
-
+    filter(()=>this.searchFormGroup.valid),
+    tap(() => this.isLoadingSignal.set(true)),// STEP 5: setting the loading signal. tap is a side effect operator, it does not change the value of the stream
     // STEP 6: make the api call. switchMap cancels any ongoing API call if a new set 
     // of search params is emitted 
     switchMap(({startDate,endDate,reportNo,type}) => 
       this.reportsService.searchReports(
         type!,
-        reportNo ?? '',
+        reportNo!,
         startDate,
         endDate,
       )
@@ -180,6 +107,7 @@ export class ReportSearchComponent implements OnInit {
 
 
   private reports$ = this.reportSearchResults$.pipe(
+    tap(result=>console.log("result is: ",result)),
     map(result => result.reports)
   );
 
@@ -208,16 +136,16 @@ export class ReportSearchComponent implements OnInit {
     const confirmed = confirm(`Are you sure you want to delete report #${report.reportId}?`);
     if (!confirmed) return;
 
-    this.reportsService.deleteReport(report.reportId).subscribe(
-      () => {
-        console.log('Report deleted successfully');
-        // After successful deletion, remove it from the filteredReports array
-        this.filteredReports = this.filteredReports.filter(r => r.reportId !== report.reportId);
-      },
-      error => {
-        console.error('Error deleting report:', error);
-      }
-    );
+    // this.reportsService.deleteReport(report.reportId).subscribe(
+    //   () => {
+    //     console.log('Report deleted successfully');
+    //     // After successful deletion, remove it from the filteredReports array
+    //     this.filteredReports = this.filteredReports.filter(r => r.reportId !== report.reportId);
+    //   },
+    //   error => {
+    //     console.error('Error deleting report:', error);
+    //   }
+    // );
   }
 
 
