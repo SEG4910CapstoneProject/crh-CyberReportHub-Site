@@ -5,7 +5,7 @@ import { SearchReportResponse } from '../sdk/rest-api/model/searchReportResponse
 import { JsonReportResponse } from '../sdk/rest-api/model/jsonReportResponse';
 
 
-type requestParams = {
+interface requestParams {
   reportNo: string,
   type: 'DAILY' | 'WEEKLY' | 'notSpecified',
   'date-start': string | null,
@@ -33,7 +33,7 @@ export class ReportsService {
     //page = 0,
     //limit = 10
   ): Observable<SearchReportResponse> {
-    let params: requestParams = {
+    const params: requestParams = {
       reportNo:"0",
       'date-start':'',
       'date-end':'',

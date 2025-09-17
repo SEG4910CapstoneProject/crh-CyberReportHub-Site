@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReportSearchComponent } from './report-search.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject} from 'rxjs';
 import { DateTime } from 'luxon';
 import { provideHttpClient } from '@angular/common/http';
 import { ReportsService } from '../../shared/services/reports.service';
