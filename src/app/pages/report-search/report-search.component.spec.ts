@@ -71,10 +71,10 @@ describe('ReportSearchComponent', () => {
   });
 
 
-  it('should call api',() => {// on page load an api request should be triggered to get all reports (as for now we just get all the daily ones)
+  it('should call api',() => {// on page load an api request should be triggered to get all reports
     expect(component['reportSearchResultsSignal']()).toBeTruthy();//returns all reports (the array)
     expect(component['reportSearchResultsSignal']()).toBe(REPORT_RESPONSE.reports);
-    expect(component['reportTotalSignal']()).toBe(1);// returns the total of reports (TODO: CAP331 originally the total counted the total number of articles the reports has NOT reports )
+    expect(component['reportTotalSignal']()).toBe(1);// returns the total of reports
     expect(component['isLoadingSignal']()).toBe(false);
   });
 
@@ -87,16 +87,16 @@ describe('ReportSearchComponent', () => {
     //fixture.detectChanges();
 
     expect(mockReportsService.searchReports).toHaveBeenCalledWith(
-      'DAILY',
-      null,
-      null,
+      'notSpecified',
       '',
+      null,
+      null
       //expectedPaginatorStat.page, CAP331: keep the two lines commented out
       //expectedPaginatorStat.itemsPerPage
     );
   });
 
-  it('should call api with dates', () => {
+  it('should call api with dates',()=> {
     const expectedStart = '2023-02-23';
     const expectedEnd = '2024-02-23';
     component['searchFormGroup'].controls.startDate.setValue(
@@ -106,11 +106,14 @@ describe('ReportSearchComponent', () => {
       DateTime.fromISO(expectedEnd)
     );
 
+    component['searchFormGroup'].controls['type'].setValue('DAILY');
+    component.onSearchClick();
+
     expect(mockReportsService.searchReports).toHaveBeenCalledWith(
       'DAILY',
+      '',
       expectedStart,
-      expectedEnd,
-      ''
+      expectedEnd
       // 0,
       // 10
     );
