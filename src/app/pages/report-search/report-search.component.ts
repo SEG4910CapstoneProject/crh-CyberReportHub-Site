@@ -54,7 +54,7 @@ export class ReportSearchComponent implements OnInit {
 
   searchPressedEvent$ = new BehaviorSubject<boolean>(true);
 
-  public onSearchClick = () => {
+  public onSearchClick = ():void => {
     console.log("onSearch click clicked");
     this.searchPressedEvent$.next(!this.searchPressedEvent$);
   }
