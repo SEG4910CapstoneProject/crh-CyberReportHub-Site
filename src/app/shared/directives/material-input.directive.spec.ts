@@ -21,8 +21,7 @@ describe('MaterialInputDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaterialInputDirective],
-      declarations: [HostComponent],
+      imports: [MaterialInputDirective, HostComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
@@ -86,7 +85,7 @@ describe('MaterialInputDirective', () => {
   });
 
   it('should emit value when value is written', () => {
-    const outputSpy = jest.spyOn(directive.onValueChanged, 'emit');
+    const outputSpy = jest.spyOn(directive.valueChanged, 'emit');
 
     const expectedValue = 'SomeValue';
     directive.onValueWrite(expectedValue);

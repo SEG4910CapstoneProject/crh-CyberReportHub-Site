@@ -1,5 +1,17 @@
-import { Component, OnInit, OnDestroy, inject, DestroyRef } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  DestroyRef,
+} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, EMPTY, Subject } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
@@ -20,10 +32,10 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'crh-report-articles',
-    templateUrl: './report-articles.component.html',
-    styleUrls: ['./report-articles.component.scss'],
-    standalone: false
+  selector: 'crh-report-articles',
+  templateUrl: './report-articles.component.html',
+  styleUrls: ['./report-articles.component.scss'],
+  standalone: false,
 })
 export class ReportArticlesComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;
@@ -34,10 +46,10 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   protected selectedArticleIds: any[] = [];
   private subscriptions: Subscription[] = [];
   private articleService = inject(ArticleService);
-  protected isLoading = true; //spinner
+  public isLoading = true; //spinner
 
   private destroyRef = inject(DestroyRef);
-  protected newArticleForm = new FormControl<string | null>(null, [
+  public newArticleForm = new FormControl<string | null>(null, [
     Validators.required,
     Validators.pattern('https?://.+'),
   ]);
@@ -59,17 +71,17 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   }
 
   // Mock data for now - This will be replaced with an API call
-  protected reportId = 1;
+  public reportId = 1;
 
   // Store the added statistics
-  protected addedStats: JsonStatsResponse[] = [];
+  public addedStats: JsonStatsResponse[] = [];
 
   // Store the form values for the new article
   newArticle = {
     title: '',
     type: '',
     category: '',
-    link: ''
+    link: '',
   };
 
   protected articleTypes: string[] = [
@@ -81,7 +93,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     'Cloud',
     'AI & 5G',
     'Canada',
-    'World'
+    'World',
   ];
 
   // Flag to control visibility of the article form
@@ -92,10 +104,10 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.dialog
       .open(EditStatisticDialogComponent)
       .closed.pipe(
-        map((data) => data as EditStatDialogResultObject),
-        filter((data) => !!data),
+        map(data => data as EditStatDialogResultObject),
+        filter(data => !!data)
       )
-      .subscribe((data) => {
+      .subscribe(data => {
         const newStat: JsonStatsResponse = {
           statisticNumber: data.value,
           title: data.title,
@@ -105,7 +117,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
         this.addedStats.push(newStat);
       });
   }
-
 
   // Add a statistic to the report
   onStatAdd(statId: string): void {
@@ -117,7 +128,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.reportsService
       .addSingleStatToReport(reportId, statId)
       .pipe(
-        catchError((err) => {
+        catchError(err => {
           console.error(err);
           return EMPTY;
         }),
@@ -132,9 +143,10 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   // Remove a statistic from the report
   //Add API Call
   onStatRemove(statId: string): void {
-    this.addedStats = this.addedStats.filter(stat => stat.statisticId !== statId);
+    this.addedStats = this.addedStats.filter(
+      stat => stat.statisticId !== statId
+    );
   }
-
 
   // Edit an existing statistic
   onStatEdit(stat: JsonStatsResponse): void {
@@ -146,10 +158,12 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       })
       .closed.pipe(
         map(data => data as EditStatDialogResult),
-        filter((data): data is EditStatDialogResultObject => !!data),
+        filter((data): data is EditStatDialogResultObject => !!data)
       )
-      .subscribe((data) => {
-        const index = this.addedStats.findIndex(s => s.statisticId === stat.statisticId);
+      .subscribe(data => {
+        const index = this.addedStats.findIndex(
+          s => s.statisticId === stat.statisticId
+        );
         if (index !== -1) {
           this.addedStats[index] = {
             ...this.addedStats[index],
@@ -160,7 +174,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
         }
       });
   }
-
 
   // Toggle visibility of the article form (We will remove the form after)
   toggleArticleForm(): void {
@@ -193,12 +206,10 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     }
   }
 
-
   // Generate a unique article ID
   generateArticleId(): string {
-    return 'article-' + Math.random().toString(36).substr(2, 9);  // Random ID
+    return 'article-' + Math.random().toString(36).substr(2, 9); // Random ID
   }
-
 
   // Method to view the report preview
   viewReport(): void {
@@ -267,7 +278,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     );
   }
 
-
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
@@ -278,13 +288,13 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
     const days = 30; // Fetch articles from the last 30 days
     this.articleService.getAllArticleTypesWithArticles(days).subscribe(
-      (response) => {
+      response => {
         console.log('Suggested articles response:', response);
         this.allSuggestedArticles = Object.values(response).flat();
         this.suggestedArticles = [...this.allSuggestedArticles];
         this.isLoading = false;
       },
-      (error) => console.error('Error fetching suggested articles:', error)
+      error => console.error('Error fetching suggested articles:', error)
     );
   }
 
@@ -311,7 +321,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
     this.articles.push(articleForm);
   }
-
 
   removeArticle(index: number): void {
     this.articles.removeAt(index);

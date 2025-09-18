@@ -5,26 +5,22 @@ import { Subscription } from 'rxjs';
 import { DarkModeService } from '../../../shared/services/dark-mode.service';
 import { ReportsService } from '../../../shared/services/reports.service';
 
-
-
 @Component({
-    selector: 'crh-report-new',
-    templateUrl: './report-new.component.html',
-    styleUrl: './report-new.component.scss',
-    standalone: false
+  selector: 'crh-report-new',
+  templateUrl: './report-new.component.html',
+  styleUrl: './report-new.component.scss',
+  standalone: false,
 })
 export class ReportNewComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;
   private subscriptions: Subscription[] = [];
   protected isDarkMode = signal(false);
 
-
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private darkModeService = inject(DarkModeService);
   private reportsService = inject(ReportsService);
   protected isDarkMode$ = this.darkModeService.isDarkMode$;
-
 
   constructor() {
     this.form = this.fb.group({
@@ -38,7 +34,6 @@ export class ReportNewComponent implements OnInit, OnDestroy {
     this.darkModeService.isDarkMode$.subscribe(mode =>
       this.isDarkMode.set(mode)
     );
-
   }
 
   ngOnDestroy(): void {
@@ -60,7 +55,7 @@ export class ReportNewComponent implements OnInit, OnDestroy {
     const reportType = this.form.get('reportType')?.value;
 
     this.reportsService.createBasicReport(reportType).subscribe({
-      next: (response) => {
+      next: response => {
         const reportId = response.reportId;
         console.log('Report created with ID:', reportId);
 
@@ -72,18 +67,11 @@ export class ReportNewComponent implements OnInit, OnDestroy {
       error: (err: any) => {
         console.error('Error creating report:', err);
         alert('Failed to create report');
-      }
+      },
     });
   }
-
-
-
-
-
 
   cancel(): void {
     this.router.navigate(['/reports']);
   }
-
-
 }
