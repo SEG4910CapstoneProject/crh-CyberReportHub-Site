@@ -6,9 +6,7 @@
   <h2 *ngIf="stats.length > 0">Statistics</h2>
   <div *ngIf="stats.length > 0">
     <ul>
-      <li *ngFor="let stat of stats">
-        {{ stat.title }}: {{ stat.value }}
-      </li>
+      <li *ngFor="let stat of stats">{{ stat.title }}: {{ stat.value }}</li>
     </ul>
   </div>
 

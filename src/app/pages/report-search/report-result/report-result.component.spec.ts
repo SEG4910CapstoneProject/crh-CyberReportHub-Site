@@ -64,7 +64,7 @@ describe('ReportResultComponent', () => {
       ],
       emailStatus: false,
       template: 'default', //Might need to change this to correct type
-      type: 'Weekly'
+      type: 'Weekly',
     };
     componentRef.setInput('result', report);
     fixture.detectChanges();

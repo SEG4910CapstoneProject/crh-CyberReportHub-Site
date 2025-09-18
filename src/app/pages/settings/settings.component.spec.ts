@@ -9,7 +9,7 @@ describe('SettingsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SettingsComponent],
-      imports: [TranslateModule.forRoot()]
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SettingsComponent);

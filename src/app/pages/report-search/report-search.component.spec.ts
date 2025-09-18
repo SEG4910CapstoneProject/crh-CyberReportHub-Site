@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { ReportSearchComponent } from './report-search.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReportsService } from '../../shared/services/reports.service';
@@ -7,7 +12,6 @@ import { BehaviorSubject, of, throwError } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
-import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ReportSearchComponent', () => {
@@ -69,13 +73,18 @@ describe('ReportSearchComponent', () => {
     fixture.detectChanges();
 
     expect(component.filteredReports).toBeTruthy();
-    expect(component.filteredReports.length).toBe(REPORT_RESPONSE.reports.length);
+    expect(component.filteredReports.length).toBe(
+      REPORT_RESPONSE.reports.length
+    );
     expect(component.isLoading).toBe(false);
     expect(reportsServiceMock.searchReports).toHaveBeenCalled();
   }));
 
   it('should call api with paginator params', fakeAsync(() => {
-    const expectedPaginatorStat: PaginatorStatus = { itemsPerPage: 20, page: 2 };
+    const expectedPaginatorStat: PaginatorStatus = {
+      itemsPerPage: 20,
+      page: 2,
+    };
     component.paginatorStatus = expectedPaginatorStat;
     component.onSearch();
     tick();

@@ -10,10 +10,10 @@ import { DateTime } from 'luxon';
 import { DateUtilsService } from '../../services/date-utils.service';
 
 @Component({
-    selector: 'crh-edit-article-dialog',
-    templateUrl: './edit-article-dialog.component.html',
-    styleUrl: './edit-article-dialog.component.scss',
-    standalone: false
+  selector: 'crh-edit-article-dialog',
+  templateUrl: './edit-article-dialog.component.html',
+  styleUrl: './edit-article-dialog.component.scss',
+  standalone: false,
 })
 export class EditArticleDialogComponent {
   private dialogRef = inject(DialogRef);

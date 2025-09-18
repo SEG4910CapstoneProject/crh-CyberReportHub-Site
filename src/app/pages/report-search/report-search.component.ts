@@ -9,10 +9,10 @@ import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchRepo
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 
 @Component({
-    selector: 'crh-report-search',
-    templateUrl: './report-search.component.html',
-    styleUrls: ['./report-search.component.scss'],
-    standalone: false
+  selector: 'crh-report-search',
+  templateUrl: './report-search.component.html',
+  styleUrls: ['./report-search.component.scss'],
+  standalone: false,
 })
 export class ReportSearchComponent implements OnInit {
   private reportsService = inject(ReportsService);
@@ -39,7 +39,7 @@ export class ReportSearchComponent implements OnInit {
   // This will hold the fetched reports
   filteredReports: SearchReportDetailsResponse[] = [];
 
-  ngOnInit():void {
+  ngOnInit(): void {
     // Log when ngOnInit is called
     console.log('ReportSearchComponent ngOnInit called.');
 
@@ -116,22 +116,24 @@ export class ReportSearchComponent implements OnInit {
 
   // Handle deleting reports
   onDeleteReport(report: SearchReportDetailsResponse): void {
-    const confirmed = confirm(`Are you sure you want to delete report #${report.reportId}?`);
+    const confirmed = confirm(
+      `Are you sure you want to delete report #${report.reportId}?`
+    );
     if (!confirmed) return;
 
     this.reportsService.deleteReport(report.reportId).subscribe(
       () => {
         console.log('Report deleted successfully');
         // After successful deletion, remove it from the filteredReports array
-        this.filteredReports = this.filteredReports.filter(r => r.reportId !== report.reportId);
+        this.filteredReports = this.filteredReports.filter(
+          r => r.reportId !== report.reportId
+        );
       },
       error => {
         console.error('Error deleting report:', error);
       }
     );
   }
-
-
 
   // Navigate to the "create report" page or other relevant route
   onLatestClick(): void {

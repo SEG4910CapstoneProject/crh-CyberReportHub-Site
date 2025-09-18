@@ -55,7 +55,9 @@ describe('ReportArticlesComponent', () => {
   });
 
   it('should add and remove stats correctly', () => {
-    component.addedStats = [{ statisticId: 'stat-1', statisticNumber: 5, title: 't', subtitle: 's' }];
+    component.addedStats = [
+      { statisticId: 'stat-1', statisticNumber: 5, title: 't', subtitle: 's' },
+    ];
     component.onStatRemove('stat-1');
     expect(component.addedStats.length).toBe(0);
   });
@@ -63,6 +65,9 @@ describe('ReportArticlesComponent', () => {
   it('should call addSingleStatToReport', () => {
     component.reportId = 1;
     component.onStatAdd('stat-123');
-    expect(reportsServiceMock.addSingleStatToReport).toHaveBeenCalledWith(1, 'stat-123');
+    expect(reportsServiceMock.addSingleStatToReport).toHaveBeenCalledWith(
+      1,
+      'stat-123'
+    );
   });
 });

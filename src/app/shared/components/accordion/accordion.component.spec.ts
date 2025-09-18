@@ -7,7 +7,6 @@ import {
 
 import { AccordionComponent } from './accordion.component';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { ComponentRef, signal, input } from '@angular/core';
 
 describe('AccordionComponent', () => {
   let component: AccordionComponent;
@@ -32,13 +31,11 @@ describe('AccordionComponent', () => {
     const openMock = jest.fn();
     (component as any).accordion = { open: openMock, close: jest.fn() };
 
-    (component as any).defaultOpenState = () => true;
+    (component as any).defaultOpenState = (): boolean => true;
 
     component.setState((component as any).defaultOpenState());
     tick();
 
     expect(openMock).toHaveBeenCalled();
   }));
-
-
 });
