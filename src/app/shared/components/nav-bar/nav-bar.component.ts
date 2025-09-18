@@ -1,4 +1,11 @@
-import { Component, computed, ElementRef, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { NavBarLink, NavBarSelectedLinkOptions } from './nav-bar.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CrhTranslationService } from '../../services/crh-translation.service';
@@ -25,10 +32,10 @@ import { Dialog } from '@angular/cdk/dialog';
 import { LoginDialogComponent } from '../../dialogs/login-dialog/login-dialog.component';
 
 @Component({
-    selector: 'crh-nav-bar',
-    templateUrl: './nav-bar.component.html',
-    styleUrl: './nav-bar.component.scss',
-    standalone: false
+  selector: 'crh-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrl: './nav-bar.component.scss',
+  standalone: false,
 })
 export class NavBarComponent implements OnInit {
   private readonly MOBILE_MODE_KEY: string = 'mobile';
@@ -51,18 +58,19 @@ export class NavBarComponent implements OnInit {
       breakpoint: 960,
     },
   ];
-  protected isLoggedIn = signal<boolean>(false);// TODO, logging is false here, why protected and why signal??
+  protected isLoggedIn = signal<boolean>(false); // TODO, logging is false here, why protected and why signal??
 
   protected responsiveModeSignal = signal<string>(this.DESKTOP_MODE_KEY);
   private menuTriggeredOpen = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.authService.isLoggedIn$.subscribe(loggedIn => {//TODO, the dollar sign means the variable is an observable, it is an observable in auth service so that's fine. but acc to stack, the loggedIn should be isLoggedIn. without the $.
+    this.authService.isLoggedIn$.subscribe(loggedIn => {
+      //TODO, the dollar sign means the variable is an observable, it is an observable in auth service so that's fine. but acc to stack, the loggedIn should be isLoggedIn. without the $.
       this.isLoggedIn.set(loggedIn);
     });
   }
   protected onAuthButtonClick(): void {
-    this.onClickOutsideExtended();//TODO, whats the point of this??
+    this.onClickOutsideExtended(); //TODO, whats the point of this??
 
     if (this.isLoggedIn()) {
       // User is logged in, so this should trigger logout.
@@ -90,9 +98,7 @@ export class NavBarComponent implements OnInit {
     this.translateService.getTranslationFromKeyAsStream('navBar.link.home')
   );
   private linkReportsTranslationSignal = toSignal(
-    this.translateService.getTranslationFromKeyAsStream(
-      'navBar.link.reports'
-    )
+    this.translateService.getTranslationFromKeyAsStream('navBar.link.reports')
   );
   private linkReportStatsTranslationSignal = toSignal(
     this.translateService.getTranslationFromKeyAsStream(

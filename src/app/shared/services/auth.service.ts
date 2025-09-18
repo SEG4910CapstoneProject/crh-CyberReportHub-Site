@@ -5,7 +5,9 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.checkLoginStatus());
+  private isLoggedInSubject = new BehaviorSubject<boolean>(
+    this.checkLoginStatus()
+  );
   // BehaviorSubject is a variant of Subject that requires an initial value and emits its current value whenever it is subscribed to.
 
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
@@ -27,7 +29,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('authToken');  // Remove token from localStorage
+    localStorage.removeItem('authToken'); // Remove token from localStorage
     this.isLoggedInSubject.next(false);
   }
 }

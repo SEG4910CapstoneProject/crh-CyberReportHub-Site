@@ -23,8 +23,8 @@ import {
  * input.
  */
 @Component({
-    selector: 'crh-text-column',
-    template: `
+  selector: 'crh-text-column',
+  template: `
     <ng-container crhColumnDef>
       <th crhHeaderCell *crhHeaderCellDef [style.text-align]="justify">
         {{ headerText }}
@@ -34,14 +34,14 @@ import {
       </td>
     </ng-container>
   `,
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [
-        CrhColumnDefDirective,
-        CrhHeaderCellDefDirective,
-        CrhHeaderCellDirective,
-        CrhCellDefDirective,
-        CrhCellDirective,
-    ]
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    CrhColumnDefDirective,
+    CrhHeaderCellDefDirective,
+    CrhHeaderCellDirective,
+    CrhCellDefDirective,
+    CrhCellDirective,
+  ],
 })
 export class CrhTextColumnComponent<T> extends CdkTextColumn<T> {}

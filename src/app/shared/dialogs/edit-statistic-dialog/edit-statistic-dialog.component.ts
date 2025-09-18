@@ -11,10 +11,10 @@ import { CrhTranslationService } from '../../services/crh-translation.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'crh-edit-statistic-dialog',
-    templateUrl: './edit-statistic-dialog.component.html',
-    styleUrl: './edit-statistic-dialog.component.scss',
-    standalone: false
+  selector: 'crh-edit-statistic-dialog',
+  templateUrl: './edit-statistic-dialog.component.html',
+  styleUrl: './edit-statistic-dialog.component.scss',
+  standalone: false,
 })
 export class EditStatisticDialogComponent {
   private dialogRef = inject(DialogRef);

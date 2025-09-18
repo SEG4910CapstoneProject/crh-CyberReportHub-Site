@@ -2,14 +2,18 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { ReportsService } from '../../shared/services/reports.service';
 import { JsonReportResponse } from '../../shared/sdk/rest-api/model/jsonReportResponse';
-import { ArticleService, Article, MostViewedArticle, ArticleOfNote } from '../../shared/services/article.service';
-
+import {
+  ArticleService,
+  Article,
+  MostViewedArticle,
+  ArticleOfNote,
+} from '../../shared/services/article.service';
 
 @Component({
-    selector: 'crh-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
-    standalone: false
+  selector: 'crh-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+  standalone: false,
 })
 export class HomeComponent implements OnInit {
   private authService = inject(AuthService);
@@ -32,7 +36,7 @@ export class HomeComponent implements OnInit {
     'Cloud Security Trends',
   ];
 
-  ngOnInit():void {
+  ngOnInit(): void {
     // Fetch login status
     this.authService.isLoggedIn$.subscribe(status => {
       console.log('Is Logged In:', status); // Debugging login status
@@ -45,12 +49,10 @@ export class HomeComponent implements OnInit {
         console.log('Latest Published Report Data:', data); // Log the fetched data
         this.latestPublishedReport = data;
       },
-      error: (error) => {
+      error: error => {
         console.error('Error fetching latest report:', error); // Debugging error
-      }
-    }
-
-    );
+      },
+    });
 
     // Fetch most viewed articles
     this.fetchMostViewedArticles();
@@ -60,29 +62,29 @@ export class HomeComponent implements OnInit {
   }
 
   // Method to fetch most viewed articles
-  fetchMostViewedArticles():void {
+  fetchMostViewedArticles(): void {
     this.articleService.getTopMostViewedArticles().subscribe({
       next: (articles: MostViewedArticle[]) => {
-        this.mostViewedArticles = articles?.filter(article => article.viewCount > 0) //Only articles with view count >= 1 show up
+        this.mostViewedArticles = articles
+          ?.filter(article => article.viewCount > 0) //Only articles with view count >= 1 show up
           .slice(0, 5);
       },
       error: (error: any) => {
         console.error('Error fetching most viewed articles:', error);
-      }
-    }
-    );
+      },
+    });
   }
 
   // Fetch Articles of Note
-  fetchArticlesOfNote():void {
+  fetchArticlesOfNote(): void {
     this.articleService.getArticlesOfNote().subscribe({
-      next:(articles: ArticleOfNote[]) => {
+      next: (articles: ArticleOfNote[]) => {
         console.log('Articles of Note:', articles);
         this.articlesOfNote = articles;
       },
       error: (error: any) => {
         console.error('Error fetching Articles of Note:', error);
-      }
+      },
     });
   }
 
@@ -91,16 +93,15 @@ export class HomeComponent implements OnInit {
       next: (article: Article) => {
         if (article?.articleId) {
           this.articleService.incrementViewCount(article.articleId).subscribe({
-            next: () => console.log(`View count incremented for ${article.articleId}`),
+            next: () =>
+              console.log(`View count incremented for ${article.articleId}`),
             error: err => console.error('Error incrementing view count:', err),
           });
         }
       },
       error: error => {
         console.error('Article not found for URL:', url, error);
-      }
-    }
-    );
+      },
+    });
   }
-
 }

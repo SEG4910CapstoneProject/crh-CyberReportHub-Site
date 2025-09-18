@@ -7,7 +7,6 @@
 
 // Default Light Theme
 body {
-
   @include theme-generator.setup-theme(base-theme.$theme);
   @include mat.core();
   @include mat.all-component-themes(util.$default-mat-theme);
@@ -24,7 +23,6 @@ body.dark-mode {
   @include theme-generator.setup-theme(base-theme.$dark-theme);
   background-color: #121212; // Dark mode background applied globally
   color: #757474 !important; // Ensure text color is updated
-
 
   .settings-container,
   .report-search-container,

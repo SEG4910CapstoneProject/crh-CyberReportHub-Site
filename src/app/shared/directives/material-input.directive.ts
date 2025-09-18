@@ -155,5 +155,5 @@ export const MATERIAL_INPUT_DIRECTIVE_HOST = {
 export const MATERIAL_INPUT_DIRECTIVE_HOST_FULL = {
   directive: MaterialInputDirective,
   inputs: [...MATERIAL_INPUT_DIRECTIVE_HOST.inputs],
-  outputs: ['onValueChanged'],
+  outputs: ['_onValueChanged'],
 };

@@ -1,5 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 import { ReportSearchComponent } from './report-search.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
@@ -21,23 +23,9 @@ describe('ReportSearchComponent', () => {
         reportType: 'daily',
         articleTitles: ['t1', 't2'],
         generatedDate: '2024-05-05',
-        iocs: [
-          {
-            iocId: 1,
-            iocTypeId: 1,
-            iocTypeName: 'url',
-            value: 'ioc',
-          },
-        ],
+        iocs: [],
         lastModified: '2024-05-05',
-        stats: [
-          {
-            statisticId: 'id1',
-            statisticNumber: 10,
-            title: 'statTitle',
-            subtitle: 'statSubtitle',
-          },
-        ],
+        stats: [],
         emailStatus: false,
         template:"report_template",
         type:"report_type"
@@ -122,7 +110,6 @@ describe('ReportSearchComponent', () => {
   it('should default to no response when error', () => {
     searchReport$.error('test error');
     fixture.detectChanges();
-
     expect(component['reportSearchResultsSignal']()).toBeTruthy();
     expect(component['reportSearchResultsSignal']()?.length).toBe(0);
     expect(component['reportSearchTotalSignal']()).toBe(0);
