@@ -21,8 +21,7 @@ describe('MaterialInputDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaterialInputDirective],
-      declarations: [HostComponent],
+      imports: [MaterialInputDirective, HostComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);

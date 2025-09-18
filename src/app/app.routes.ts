@@ -25,8 +25,8 @@ export const routes: Routes = [
   //Added Headers
   {
     path: 'report-preview',
-    component: ReportPreviewComponent
-    },
+    component: ReportPreviewComponent,
+  },
 
   {
     path: 'settings',

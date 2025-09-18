@@ -20,7 +20,7 @@ describe('SortHeaderComponent', () => {
       imports: [SortHeaderComponent],
       providers: [
         MockProvider(CrhSortDirective, {
-          onSortChange,
+          _onSortChange: onSortChange.asObservable(),
           cycleNextSortOption: jest.fn(),
         } as unknown as CrhSortDirective),
         MockProvider(CrhColumnDefDirective, {

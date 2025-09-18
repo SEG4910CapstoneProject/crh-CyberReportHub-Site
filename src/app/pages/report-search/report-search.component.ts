@@ -11,10 +11,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { DateTime } from 'luxon';
 
 @Component({
-    selector: 'crh-report-search',
-    templateUrl: './report-search.component.html',
-    styleUrls: ['./report-search.component.scss'],
-    standalone: false
+  selector: 'crh-report-search',
+  templateUrl: './report-search.component.html',
+  styleUrls: ['./report-search.component.scss'],
+  standalone: false,
 })
 export class ReportSearchComponent implements OnInit {
   private reportsService = inject(ReportsService);
@@ -133,7 +133,9 @@ export class ReportSearchComponent implements OnInit {
 
   // Handle deleting reports
   onDeleteReport(report: SearchReportDetailsResponse): void {
-    const confirmed = confirm(`Are you sure you want to delete report #${report.reportId}?`);
+    const confirmed = confirm(
+      `Are you sure you want to delete report #${report.reportId}?`
+    );
     if (!confirmed) return;
 
     // this.reportsService.deleteReport(report.reportId).subscribe(
@@ -147,8 +149,6 @@ export class ReportSearchComponent implements OnInit {
     //   }
     // );
   }
-
-
 
   // Navigate to the "create report" page or other relevant route
   onLatestClick(): void {
