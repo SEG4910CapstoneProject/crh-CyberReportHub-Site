@@ -1,24 +1,19 @@
 import {
   ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
+  TestBed
 } from '@angular/core/testing';
 import { ReportSearchComponent } from './report-search.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { ReportsService } from '../../shared/services/reports.service';
-import { AuthService } from '../../shared/services/auth.service';
-import { BehaviorSubject, of, throwError } from 'rxjs';
-import { FormControl, FormGroup } from '@angular/forms';
-import { PaginatorStatus } from '../../shared/components/paginator/paginator.models';
 import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchReportResponse';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BehaviorSubject} from 'rxjs';
+import { DateTime } from 'luxon';
+import { provideHttpClient } from '@angular/common/http';
+import { ReportsService } from '../../shared/services/reports.service';
 
 describe('ReportSearchComponent', () => {
   let component: ReportSearchComponent;
   let fixture: ComponentFixture<ReportSearchComponent>;
-  let reportsServiceMock: any;
-  let authServiceMock: any;
+  let searchReport$: BehaviorSubject<SearchReportResponse>;
 
   const REPORT_RESPONSE: SearchReportResponse = {
     total: 1,
@@ -32,30 +27,26 @@ describe('ReportSearchComponent', () => {
         lastModified: '2024-05-05',
         stats: [],
         emailStatus: false,
-        template: '',
-        type: 'DAILY',
+        template:"report_template",
+        type:"report_type"
       },
     ],
   };
 
-  beforeEach(async () => {
-    reportsServiceMock = {
-      searchReports: jest.fn(() => of(REPORT_RESPONSE)),
-      deleteReport: jest.fn(() => of({})),
-    };
+  const mockReportsService =  {
+    searchReports: jest.fn(() => searchReport$)
+  }
 
-    authServiceMock = {
-      isLoggedIn$: new BehaviorSubject(true),
-      logout: jest.fn(),
-    };
+  beforeEach(async () => {
+    searchReport$ = new BehaviorSubject<SearchReportResponse>(REPORT_RESPONSE);
+ 
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), HttpClientTestingModule],
+      imports: [TranslateModule.forRoot()],
       declarations: [ReportSearchComponent],
-      providers: [
-        { provide: ReportsService, useValue: reportsServiceMock },
-        { provide: AuthService, useValue: authServiceMock },
-      ],
+      providers:[
+        {provide: ReportsService, useValue: mockReportsService},provideHttpClient()
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportSearchComponent);
@@ -67,71 +58,61 @@ describe('ReportSearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call api and set filteredReports', fakeAsync(() => {
-    component.onSearch();
-    tick(); // wait for observable
-    fixture.detectChanges();
 
-    expect(component.filteredReports).toBeTruthy();
-    expect(component.filteredReports.length).toBe(
-      REPORT_RESPONSE.reports.length
+  it('should call api',() => {// on page load an api request should be triggered to get all reports
+    expect(component['reportSearchResultsSignal']()).toBeTruthy();//returns all reports (the array)
+    expect(component['reportSearchResultsSignal']()).toBe(REPORT_RESPONSE.reports);
+    expect(component['reportTotalSignal']()).toBe(1);// returns the total of reports
+    expect(component['isLoadingSignal']()).toBe(false);
+  });
+
+  it('should call api with params', () => {
+    // const expectedPaginatorStat: PaginatorStatus = {
+    //   itemsPerPage: 20,
+    //   page: 2,
+    // };
+    //component['paginatorStatusSignal'].set(expectedPaginatorStat); CAP331: no pagination as for now
+    //fixture.detectChanges();
+
+    expect(mockReportsService.searchReports).toHaveBeenCalledWith(
+      'notSpecified',
+      '',
+      null,
+      null
+      //expectedPaginatorStat.page, CAP331: keep the two lines commented out
+      //expectedPaginatorStat.itemsPerPage
     );
-    expect(component.isLoading).toBe(false);
-    expect(reportsServiceMock.searchReports).toHaveBeenCalled();
-  }));
+  });
 
-  it('should call api with paginator params', fakeAsync(() => {
-    const expectedPaginatorStat: PaginatorStatus = {
-      itemsPerPage: 20,
-      page: 2,
-    };
-    component.paginatorStatus = expectedPaginatorStat;
-    component.onSearch();
-    tick();
-    fixture.detectChanges();
-
-    expect(reportsServiceMock.searchReports).toHaveBeenCalledWith(
-      component.searchFormGroup.value.type,
-      component.searchFormGroup.value.startDate,
-      component.searchFormGroup.value.endDate,
-      expectedPaginatorStat.page,
-      expectedPaginatorStat.itemsPerPage
+  it('should call api with dates',()=> {
+    const expectedStart = '2023-02-23';
+    const expectedEnd = '2024-02-23';
+    component['searchFormGroup'].controls.startDate.setValue(
+      DateTime.fromISO(expectedStart)
     );
-  }));
+    component['searchFormGroup'].controls.endDate.setValue(
+      DateTime.fromISO(expectedEnd)
+    );
 
-  it('should call api with dates', fakeAsync(() => {
-    const expectedStart = new Date('2023-02-23');
-    const expectedEnd = new Date('2024-02-23');
+    component['searchFormGroup'].controls['type'].setValue('DAILY');
+    component.onSearchClick();
 
-    component.searchFormGroup = new FormGroup({
-      reportNo: new FormControl(''),
-      type: new FormControl('DAILY'),
-      startDate: new FormControl(expectedStart),
-      endDate: new FormControl(expectedEnd),
-    });
-
-    component.onSearch();
-    tick();
-    fixture.detectChanges();
-
-    expect(reportsServiceMock.searchReports).toHaveBeenCalledWith(
+    expect(mockReportsService.searchReports).toHaveBeenCalledWith(
       'DAILY',
+      '',
       expectedStart,
-      expectedEnd,
-      component.paginatorStatus.page,
-      component.paginatorStatus.itemsPerPage
+      expectedEnd
+      // 0,
+      // 10
     );
-  }));
+  });
 
-  it('should handle errors gracefully', fakeAsync(() => {
-    reportsServiceMock.searchReports.mockImplementationOnce(() =>
-      throwError(() => new Error('test error'))
-    );
-
-    component.onSearch();
-    tick();
+  it('should default to no response when error', () => {
+    searchReport$.error('test error');
     fixture.detectChanges();
-
-    expect(component.isLoading).toBe(false);
-  }));
+    expect(component['reportSearchResultsSignal']()).toBeTruthy();
+    expect(component['reportSearchResultsSignal']()?.length).toBe(0);
+    expect(component['reportSearchTotalSignal']()).toBe(0);
+    expect(component['isLoadingSignal']()).toBe(false);
+  });
 });
