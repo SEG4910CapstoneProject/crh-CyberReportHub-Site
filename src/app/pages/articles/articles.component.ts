@@ -1,17 +1,21 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ArticleService, Article, ArticleOfNote } from '../../shared/services/article.service';
+import {
+  ArticleService,
+  Article,
+  ArticleOfNote,
+} from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
-    selector: 'crh-articles',
-    templateUrl: './articles.component.html',
-    styleUrls: ['./articles.component.scss'],
-    standalone: false
+  selector: 'crh-articles',
+  templateUrl: './articles.component.html',
+  styleUrls: ['./articles.component.scss'],
+  standalone: false,
 })
 export class ArticlesComponent implements OnInit {
-  articlesByCategory: Record<string,Article[]>= {};
-  articlesToShow: Record<string,number> = {}; // To track how many articles to display per category
+  articlesByCategory: Record<string, Article[]> = {};
+  articlesToShow: Record<string, number> = {}; // To track how many articles to display per category
   favouriteArticles: Article[] = []; // To store favourite articles
   articlesOfNote: ArticleOfNote[] = []; // To store articles of note
   isLoading = true;
@@ -30,11 +34,11 @@ export class ArticlesComponent implements OnInit {
     // Track logged-in status using signal
     this.authService.isLoggedIn$.subscribe(status => {
       console.log('Is Logged In:', status); // Debugging login status
-      this.isLoggedIn.set(status);  // Update the signal with the current login status
+      this.isLoggedIn.set(status); // Update the signal with the current login status
     });
 
-    this.articleService.getAllArticleTypesWithArticles(30).subscribe( {
-      next: (response) => {
+    this.articleService.getAllArticleTypesWithArticles(30).subscribe({
+      next: response => {
         this.articlesByCategory = response;
         //this.categories = Object.keys(response);
         this.isLoading = false;
@@ -42,18 +46,20 @@ export class ArticlesComponent implements OnInit {
         // Initialize articlesToShow to show 3 articles initially for each category
         Object.keys(response).forEach(category => {
           this.articlesToShow[category] = 3;
-        }); 
-        console.log("the article to show are: ",this.articlesToShow);
-        console.log("the articles per category are: ",this.articlesByCategory);
+        });
+        console.log('the article to show are: ', this.articlesToShow);
+        console.log('the articles per category are: ', this.articlesByCategory);
       },
-      error: (e) => {
+      error: e => {
         console.error('Error fetching articles:', e);
         this.isLoading = false;
       },
-      complete: () => console.info("30 Articles are fetched successfully",this.articlesByCategory) 
-    }
-    );
-
+      complete: () =>
+        console.info(
+          '30 Articles are fetched successfully',
+          this.articlesByCategory
+        ),
+    });
 
     // Fetch Articles of Note
     this.fetchArticlesOfNote();
@@ -106,13 +112,16 @@ export class ArticlesComponent implements OnInit {
 
     const isChecked = event.target.checked;
     this.articleService.chooseArticleOfNote(article.articleId).subscribe({
-      next: (response)=> {
+      next: response => {
         console.log('Article of Note status toggled', response);
-        article.isArticleOfNote = isChecked;  // Update the status locally
+        article.isArticleOfNote = isChecked; // Update the status locally
 
         if (isChecked) {
           // If checked, add to Articles of Note
-          const articleOfNote: ArticleOfNote = { title: article.title, url: article.link };
+          const articleOfNote: ArticleOfNote = {
+            title: article.title,
+            url: article.link,
+          };
           this.articlesOfNote?.push(articleOfNote);
         } else {
           // If unchecked, remove from Articles of Note
@@ -124,56 +133,51 @@ export class ArticlesComponent implements OnInit {
           }
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error toggling article of note:', error);
-      }
-    }
-    );
+      },
+    });
   }
 
   // Fetch articles that are marked as "Articles of Note"
-  fetchArticlesOfNote():void {
+  fetchArticlesOfNote(): void {
     this.articleService.getArticlesOfNote().subscribe({
       next: (articles: ArticleOfNote[]) => {
         console.log('Articles of Note:', articles);
         this.articlesOfNote = articles;
       },
-      error: (error:any) => {
-        console.error('Error fetching Articles of Note:',error);
-      }
-    }
-    )
+      error: (error: any) => {
+        console.error('Error fetching Articles of Note:', error);
+      },
+    });
   }
 
   // Increment view count on article click
   incrementViewCount(articleId: string): void {
     this.articleService.incrementViewCount(articleId).subscribe({
-      next: (response) => {
+      next: response => {
         console.log('View count incremented', response);
       },
-      error: (error) => {
-        console.error('Error incrementing view count',error);
-      }
-    }
-    )
+      error: error => {
+        console.error('Error incrementing view count', error);
+      },
+    });
   }
 
   //Necessary to increment view count from articles of note (since backend only sends URLs)
   //This will be deleted later
   incrementViewCountFromUrl(url: string): void {
     this.articleService.getArticleByLink(url).subscribe({
-      next:(article) => {
+      next: article => {
         if (article?.articleId) {
           this.incrementViewCount(article.articleId);
         } else {
           console.warn('No articleId found for URL:', url);
         }
       },
-      error:(error) => {
-          console.error('Error fetching article by URL:', error);
-      }
-    }
-    )
+      error: error => {
+        console.error('Error fetching article by URL:', error);
+      },
+    });
   }
-
 }

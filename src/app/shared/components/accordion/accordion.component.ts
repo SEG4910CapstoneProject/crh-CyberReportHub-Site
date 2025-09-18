@@ -1,13 +1,13 @@
 import { CdkAccordionItem } from '@angular/cdk/accordion';
-import { Component, OnInit, effect, input, ViewChild } from '@angular/core';
+import { Component, effect, input, ViewChild } from '@angular/core';
 
 @Component({
-    selector: 'crh-accordion',
-    templateUrl: './accordion.component.html',
-    styleUrl: './accordion.component.scss',
-    standalone: false
+  selector: 'crh-accordion',
+  templateUrl: './accordion.component.html',
+  styleUrl: './accordion.component.scss',
+  standalone: false,
 })
-export class AccordionComponent implements OnInit {
+export class AccordionComponent {
   @ViewChild(CdkAccordionItem, {
     static: true,
   })
@@ -22,7 +22,6 @@ export class AccordionComponent implements OnInit {
       this.setState(openState);
     });
   }
-  ngOnInit(): void {}
 
   public setState(open: boolean): void {
     if (!this.accordion) {

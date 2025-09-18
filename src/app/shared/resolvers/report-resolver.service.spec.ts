@@ -12,8 +12,12 @@ describe('ReportResolverService', () => {
 
   beforeEach(() => {
     reportsServiceMock = {
-      getLatestReport: jest.fn(() => of({ reportId: 123 } as JsonReportResponse)),
-      getReportByID: jest.fn((id: number) => of({ reportId: id } as JsonReportResponse)),
+      getLatestReport: jest.fn(() =>
+        of({ reportId: 123 } as JsonReportResponse)
+      ),
+      getReportByID: jest.fn((id: number) =>
+        of({ reportId: id } as JsonReportResponse)
+      ),
     };
 
     routerMock = {

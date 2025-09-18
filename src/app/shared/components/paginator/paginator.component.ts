@@ -10,10 +10,10 @@ import { PaginatorStatus, PaginatorVariant } from './paginator.models';
 import { SelectConfig, SelectOption } from '../select/select.model';
 
 @Component({
-    selector: 'crh-paginator',
-    templateUrl: './paginator.component.html',
-    styleUrl: './paginator.component.scss',
-    standalone: false
+  selector: 'crh-paginator',
+  templateUrl: './paginator.component.html',
+  styleUrl: './paginator.component.scss',
+  standalone: false,
 })
 export class PaginatorComponent {
   public options = input<number[]>([5, 10, 25]);

@@ -12,10 +12,10 @@ import { ArticleCategoryGroup } from '../layout/report-article-area/report-artic
 import { CategoriesService } from '../services/categories.service';
 
 @Component({
-    selector: 'crh-report-view',
-    templateUrl: './report-view.component.html',
-    styleUrl: './report-view.component.scss',
-    standalone: false
+  selector: 'crh-report-view',
+  templateUrl: './report-view.component.html',
+  styleUrl: './report-view.component.scss',
+  standalone: false,
 })
 export class ReportViewComponent {
   @ViewChild(ReportArticleAreaComponent)

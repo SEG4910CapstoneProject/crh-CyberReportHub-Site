@@ -2,10 +2,10 @@ import { Component, ElementRef, inject, input } from '@angular/core';
 import { ColorsService } from '../../services/colors.service';
 
 @Component({
-    selector: 'crh-stats-card-diagram',
-    templateUrl: './stats-card-diagram.component.html',
-    styleUrl: './stats-card-diagram.component.scss',
-    standalone: false
+  selector: 'crh-stats-card-diagram',
+  templateUrl: './stats-card-diagram.component.html',
+  styleUrl: './stats-card-diagram.component.scss',
+  standalone: false,
 })
 export class StatsCardDiagramComponent {
   private elementRef: ElementRef = inject(ElementRef);

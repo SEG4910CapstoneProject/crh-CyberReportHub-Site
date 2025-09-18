@@ -1,10 +1,10 @@
 import { Component, computed, input } from '@angular/core';
 
 @Component({
-    selector: 'crh-chip',
-    template: '{{ formattedText() }}',
-    styleUrl: './chip.component.scss',
-    standalone: false
+  selector: 'crh-chip',
+  template: '{{ formattedText() }}',
+  styleUrl: './chip.component.scss',
+  standalone: false,
 })
 export class ChipComponent {
   public maxIocChipCharacters = input<number>(50);

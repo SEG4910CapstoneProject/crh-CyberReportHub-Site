@@ -10,10 +10,7 @@ describe('ReportNewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ReportNewComponent],
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot()
-      ],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportNewComponent);

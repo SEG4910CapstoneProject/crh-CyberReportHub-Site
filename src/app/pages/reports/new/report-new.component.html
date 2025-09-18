@@ -15,14 +15,19 @@
       <label>{{ 'reportNew.template' | translate }}:</label>
       <select formControlName="templateType">
         <option value="byType">{{ 'reportNew.bytype' | translate }}</option>
-        <option value="chatbotSummaries">{{ 'reportNew.chatbot' | translate }}</option>
+        <option value="chatbotSummaries">
+          {{ 'reportNew.chatbot' | translate }}
+        </option>
       </select>
     </div>
 
     <div class="form-actions">
-      <button type="button" (click)="cancel()">{{ 'common.cancel' | translate }}</button>
-      <button type="submit" (click)="next()">{{ 'common.next' | translate }}</button>
+      <button type="button" (click)="cancel()">
+        {{ 'common.cancel' | translate }}
+      </button>
+      <button type="submit" (click)="next()">
+        {{ 'common.next' | translate }}
+      </button>
     </div>
   </form>
 </div>
-

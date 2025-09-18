@@ -68,8 +68,8 @@ export class ReportsService {
     const options = {
       params: { reportType },
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
 
     return this.http.post<{ reportId: number }>(url, {}, options);
@@ -82,5 +82,4 @@ export class ReportsService {
       headers: { 'Content-Type': 'application/json' },
     });
   }
-
 }

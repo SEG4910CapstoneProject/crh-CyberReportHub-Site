@@ -30,8 +30,12 @@
         <mat-form-field class="dropdown-form-field" appearance="outline">
           <mat-label>Type</mat-label>
           <mat-select formControlName="type">
-            <mat-option value="DAILY">{{ 'reportSearch.daily' | translate }}</mat-option>
-            <mat-option value="WEEKLY">{{ 'reportSearch.weekly' | translate }}</mat-option>
+            <mat-option value="DAILY">{{
+              'reportSearch.daily' | translate
+            }}</mat-option>
+            <mat-option value="WEEKLY">{{
+              'reportSearch.weekly' | translate
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -68,7 +72,9 @@
 
       <!-- SEARCH BUTTON -->
       <div class="filter-wrapper">
-        <button class="search-button" (click)="onSearch()">{{ 'reportSearch.search' | translate }}</button>
+        <button class="search-button" (click)="onSearch()">
+          {{ 'reportSearch.search' | translate }}
+        </button>
       </div>
     </div>
   </form>
@@ -88,7 +94,9 @@
     </thead>
     <tbody>
       <tr *ngIf="filteredReports.length === 0">
-        <td colspan="6" class="no-data">{{ 'reportSearch.noreports' | translate }}</td>
+        <td colspan="6" class="no-data">
+          {{ 'reportSearch.noreports' | translate }}
+        </td>
       </tr>
       <tr *ngFor="let report of filteredReports">
         <td>{{ report?.reportId }}</td>

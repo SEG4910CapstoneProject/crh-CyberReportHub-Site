@@ -13,7 +13,8 @@ describe('ArticlesComponent', () => {
       imports: [HttpClientTestingModule],
       declarations: [ArticlesComponent],
       providers: [
-            { provide: ActivatedRoute, useValue: { params: of({ id: 1 }) } }]
+        { provide: ActivatedRoute, useValue: { params: of({ id: 1 }) } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ArticlesComponent);
