@@ -39,7 +39,7 @@ export class MaterialInputDirective
     this.setDisabledState(value);
   }
 
-  public _onValueChanged = output<any>();
+  public valueChanged = output<any>();
 
   public fieldContent = signal<any>(undefined);
 
@@ -95,7 +95,7 @@ export class MaterialInputDirective
 
   public onValueWrite(value: any): void {
     this.fieldContent.set(value);
-    this._onValueChanged.emit(value);
+    this.valueChanged.emit(value);
   }
 
   public onTouched(): void {
@@ -155,5 +155,5 @@ export const MATERIAL_INPUT_DIRECTIVE_HOST = {
 export const MATERIAL_INPUT_DIRECTIVE_HOST_FULL = {
   directive: MaterialInputDirective,
   inputs: [...MATERIAL_INPUT_DIRECTIVE_HOST.inputs],
-  outputs: ['onValueChanged'],
+  outputs: ['valueChanged'],
 };

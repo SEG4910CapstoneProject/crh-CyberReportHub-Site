@@ -2,10 +2,10 @@ import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { Component, effect, input, ViewChild } from '@angular/core';
 
 @Component({
-    selector: 'crh-accordion',
-    templateUrl: './accordion.component.html',
-    styleUrl: './accordion.component.scss',
-    standalone: false
+  selector: 'crh-accordion',
+  templateUrl: './accordion.component.html',
+  styleUrl: './accordion.component.scss',
+  standalone: false,
 })
 export class AccordionComponent {
   @ViewChild(CdkAccordionItem, {
