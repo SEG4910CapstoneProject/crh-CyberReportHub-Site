@@ -7,6 +7,11 @@
   padding: size(32);
 }
 
+.reports {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 /* Header */
 .report-search-top {
   display: flex;
@@ -59,13 +64,11 @@
 
   /* Filter Wrapper */
   .filter-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-width: 220px; /* Ensure consistent spacing */
+    padding: 5px;
   }
 
   /* Ensure search button stays inline */
-  .filter-wrapper:last-child {
+  .searchButton {
     margin-right: 0;
     width: auto;
   }
@@ -94,7 +97,7 @@
     transition:
       border-color 0.2s,
       border-width 0.1s;
-    height: 32px; /* match the date picker’s height */
+    height: 35px; /* match the date picker’s height */
     margin-bottom: 20px;
   }
 
@@ -125,39 +128,8 @@
   }
 }
 
-/* Angular Material date picker override */
-.date-picker-form-field.mat-form-field-appearance-outline {
-  width: 220px; /* Increased width */
-  margin: 0 !important;
-
-  .mat-form-field-outline {
-    border-color: black !important;
-    border-radius: 8px !important;
-    border-width: 2px !important;
-  }
-
-  .mat-form-field-flex {
-    min-height: 44px !important;
-    background-color: #fff !important;
-    border-radius: 8px !important;
-    align-items: center;
-  }
-
-  .mat-form-field-infix {
-    font-size: 16px !important;
-    color: #333 !important;
-    text-align: center;
-  }
-
-  &.mat-focused .mat-form-field-outline-thick {
-    border-color: #002d72 !important;
-    border-width: 2.5px !important;
-  }
-}
-
 /* Search Button */
 button.search-button {
-  display: inline-block;
   background-color: #002d72;
   color: #fff;
   padding: 10px 20px;

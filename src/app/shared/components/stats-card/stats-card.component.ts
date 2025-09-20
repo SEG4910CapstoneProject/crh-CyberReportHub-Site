@@ -2,10 +2,10 @@ import { Component, input, output } from '@angular/core';
 import { ContentMode, InteractMode } from './stats-card.models';
 
 @Component({
-    selector: 'crh-stats-card',
-    templateUrl: './stats-card.component.html',
-    styleUrl: './stats-card.component.scss',
-    standalone: false
+  selector: 'crh-stats-card',
+  templateUrl: './stats-card.component.html',
+  styleUrl: './stats-card.component.scss',
+  standalone: false,
 })
 export class StatsCardComponent {
   public contentMode = input<ContentMode>('text');

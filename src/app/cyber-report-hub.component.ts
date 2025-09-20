@@ -7,15 +7,15 @@ import { Language } from './shared/models/languages.model';
 import { CrhTranslationService } from './shared/services/crh-translation.service';
 
 @Component({
-    selector: 'crh-cyber-report-hub',
-    templateUrl: './cyber-report-hub.component.html',
-    styleUrl: './cyber-report-hub.component.scss',
-    standalone: false
+  selector: 'crh-cyber-report-hub',
+  templateUrl: './cyber-report-hub.component.html',
+  styleUrl: './cyber-report-hub.component.scss',
+  standalone: false,
 })
 export class CyberReportHubComponent {
   title = 'test';
 
-  private translateService = inject(TranslateService);// TODO differences between this line and the one after??
+  private translateService = inject(TranslateService); // TODO differences between this line and the one after??
   private crhTranslationService = inject(CrhTranslationService);
   private activatedRoute = inject(ActivatedRoute);
 

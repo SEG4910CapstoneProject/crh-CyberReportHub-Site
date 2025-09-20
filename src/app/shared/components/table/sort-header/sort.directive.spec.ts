@@ -32,7 +32,7 @@ describe('SortComponent', () => {
     directive = component.hostDirective;
     fixture.detectChanges();
 
-    currentSortSpy = jest.spyOn(directive.onSortChange, 'emit');
+    currentSortSpy = jest.spyOn(directive._onSortChange, 'emit');
   });
 
   it('should create', () => {

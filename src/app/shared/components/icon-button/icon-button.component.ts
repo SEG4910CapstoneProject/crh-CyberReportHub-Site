@@ -2,10 +2,10 @@ import { Component, ElementRef, inject, input } from '@angular/core';
 import { ColorsService } from '../../services/colors.service';
 
 @Component({
-    selector: 'crh-icon-button',
-    templateUrl: './icon-button.component.html',
-    styleUrl: './icon-button.component.scss',
-    standalone: false
+  selector: 'crh-icon-button',
+  templateUrl: './icon-button.component.html',
+  styleUrl: './icon-button.component.scss',
+  standalone: false,
 })
 export class IconButtonComponent {
   private colorService = inject(ColorsService);
