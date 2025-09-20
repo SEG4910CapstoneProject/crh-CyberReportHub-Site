@@ -21,7 +21,7 @@ export interface MostViewedArticle {
   title: string;
 }
 
-export interface ArticleOfNote  {
+export interface ArticleOfNote {
   url: string;
   title: string;
 }
@@ -30,7 +30,7 @@ export interface ArticleOfNote  {
   providedIn: 'root',
 })
 export class ArticleService {
-  getArticles():void {
+  getArticles(): void {
     throw new Error('Method not implemented.');
   }
   private apiUrl = 'http://localhost:8080/api/v1/articles';
@@ -50,8 +50,8 @@ export class ArticleService {
   // Fetch all article types with articles (for the articles page)
   getAllArticleTypesWithArticles(
     days: number
-  ): Observable<Record<string,Article[]>> {
-    return this.http.get<Record<string,Article[]>>(
+  ): Observable<Record<string, Article[]>> {
+    return this.http.get<Record<string, Article[]>>(
       `${this.apiUrl}/article-types-with-articles?days=${days}`
     );
   }
@@ -68,7 +68,10 @@ export class ArticleService {
 
   // Choose the "article of note" status
   chooseArticleOfNote(articleId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/toggle-article-of-note/${articleId}`, {});
+    return this.http.post(
+      `${this.apiUrl}/toggle-article-of-note/${articleId}`,
+      {}
+    );
   }
 
   // Fetch articles that are marked as "Articles of Note"
@@ -79,5 +82,4 @@ export class ArticleService {
   getArticleByLink(link: string): Observable<any> {
     return this.http.get<any>(`/api/articles?link=${link}`);
   }
-
 }

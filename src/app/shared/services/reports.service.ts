@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SearchReportResponse } from '../sdk/rest-api/model/searchReportResponse';
 import { JsonReportResponse } from '../sdk/rest-api/model/jsonReportResponse';
 
+
+interface requestParams {
+  reportNo: string,
+  type: 'DAILY' | 'WEEKLY' | 'notSpecified',
+  'date-start': string | null,
+  'date-end': string | null
+}
+
 @Injectable({
   providedIn: 'root',
 })
+
 export class ReportsService {
   private apiUrl = 'http://localhost:8080/api/v1/reports';
   basePath: any;
@@ -17,16 +26,20 @@ export class ReportsService {
 
   // Fetch reports list for search (returns SearchReportResponse)
   searchReports(
-    type?: 'DAILY' | 'WEEKLY',
+    type: 'DAILY' | 'WEEKLY' | 'notSpecified',
+    reportNo:string,
     startDate?: string,
     endDate?: string,
-    page = 0,
-    limit = 10
+    //page = 0,
+    //limit = 10
   ): Observable<SearchReportResponse> {
-    const params: any = {
-      type,
-      page,
-      limit,
+    const params: requestParams = {
+      reportNo:"0",
+      'date-start':'',
+      'date-end':'',
+      type:'notSpecified',
+      //page,
+      //limit,
     };
 
     // Only add date parameters if they are defined
@@ -36,9 +49,22 @@ export class ReportsService {
     if (endDate) {
       params['date-end'] = endDate;
     }
+    params['reportNo'] = reportNo;
+    params['type'] = type;
+
+    console.log("trying to get the all reports from: ",`${this.apiUrl}/search`);
+    console.log("using the params : ",params);
+
+    let httpParams = new HttpParams();
+    for (const key in params) {
+      const value = params[key as keyof requestParams];
+      if (value !== undefined && value !== null) {
+        httpParams = httpParams.set(key, value);
+      }
+    }
 
     return this.http.get<SearchReportResponse>(`${this.apiUrl}/search`, {
-      params,
+      params: httpParams,
     });
   }
 
@@ -68,12 +94,18 @@ export class ReportsService {
     const options = {
       params: { reportType },
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
 
     return this.http.post<{ reportId: number }>(url, {}, options);
   }
 
-
+  // Create full report (with request body)
+  createReport(payload: any): Observable<JsonReportResponse> {
+    const url = `${this.apiUrl}`;
+    return this.http.post<JsonReportResponse>(url, payload, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }

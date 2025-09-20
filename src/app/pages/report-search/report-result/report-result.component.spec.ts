@@ -63,6 +63,8 @@ describe('ReportResultComponent', () => {
         },
       ],
       emailStatus: false,
+      template: "report_template",
+      type: "report_type"
     };
     componentRef.setInput('result', report);
     fixture.detectChanges();

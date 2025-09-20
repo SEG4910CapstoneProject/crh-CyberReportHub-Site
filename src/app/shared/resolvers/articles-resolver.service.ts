@@ -8,15 +8,14 @@ import { ArticleService, Article } from '../services/article.service';
   providedIn: 'root',
 })
 export class ArticlesResolverService
-  implements Resolve<Record<string,Article[]>>
+  implements Resolve<Record<string, Article[]>>
 {
   constructor(
     private articleService: ArticleService,
     private router: Router
   ) {}
 
-  resolve(
-  ): Observable<Record<string,Article[]>> {
+  resolve(): Observable<Record<string, Article[]>> {
     const days = 30; // Fetch articles from the last 30 days
 
     return this.articleService.getAllArticleTypesWithArticles(days).pipe(

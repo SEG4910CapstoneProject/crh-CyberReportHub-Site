@@ -63,7 +63,7 @@
   "paginator.prevPage.aria": "Previous page",
 
   "reportSearch.header": "Report Search",
-  "reportSearch.latest": "New Report",
+  "reportNew.latest": "New Report",
   "reportSearch.searchLabel": "Date Search",
   "reportSearch.search.fromLabel": "From",
   "reportSearch.search.toLabel": "To",
@@ -100,7 +100,6 @@
   "reportNew.globalnews": "Global Information and News Watch",
   "reportNew.customerthreats": "Customer threats",
   "reportNew.preview": "Report Preview",
-
 
   "report.layout.edit": "Edit Article",
   "report.layout.view": "View Article",
