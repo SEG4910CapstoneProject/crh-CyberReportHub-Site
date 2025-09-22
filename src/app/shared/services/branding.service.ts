@@ -14,7 +14,7 @@ export class BrandingService {
       try {
         const parsed = JSON.parse(saved) as Partial<Branding>;
         this.logo.set(parsed.logo ?? null);
-        this.updateFavicon(parsed.logo ?? null); // restore favicon on load
+        this.updateFavicon(parsed.logo ?? null); 
       } catch {}
     }
   }
@@ -40,6 +40,6 @@ export class BrandingService {
       document.head.appendChild(link);
     }
 
-    // fallback to your default when no custom logo
-    link.href = dataUrlOrUrl ?? 'favicon.ico'; // or 'assets/logo.svg' if you prefer
+
+    link.href = dataUrlOrUrl ?? 'favicon.ico';
   }}
