@@ -1,3 +1,5 @@
+import { APP_INITIALIZER } from '@angular/core';
+import { BrandingService } from './shared/services/branding.service';
 import { NgModule } from '@angular/core';
 import { routes } from './app.routes';
 import { provideRouter, RouterModule } from '@angular/router';
@@ -76,6 +78,10 @@ import { ReportArticlesComponent } from './pages/reports/articles/report-article
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
+
+export function initBrandingFactory(branding: BrandingService) {
+  return () => branding.init();
+}
 
 @NgModule({
   declarations: [
@@ -160,6 +166,12 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimationsAsync(),
     LuxonDateFormatterPipe,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initBrandingFactory,
+      deps: [BrandingService],
+      multi: true,
+    },
     { provide: BASE_PATH, useValue: 'http://localhost:8080' }, // TODO REPLACE ME WHEN SERVED INTO PRODUCTION
   ],
   bootstrap: [CyberReportHubComponent],
