@@ -79,7 +79,7 @@ import { ReportArticlesComponent } from './pages/reports/articles/report-article
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
 
-export function initBrandingFactory(branding: BrandingService) {
+export function initBrandingFactory(branding: BrandingService): () => void {
   return () => branding.init();
 }
 

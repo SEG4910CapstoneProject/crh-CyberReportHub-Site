@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -15,6 +15,7 @@ import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/sea
     standalone: false
 })
 export class ReportSearchComponent implements OnInit {
+  [x: string]: any;
   private reportsService = inject(ReportsService);
   private router = inject(Router);
   private authService = inject(AuthService);
@@ -34,10 +35,19 @@ export class ReportSearchComponent implements OnInit {
     page: 0,
   };
 
+  public isLoadingSignal = signal<boolean>(false);
+  public paginatorStatusSignal = signal<PaginatorStatus>({
+    itemsPerPage: 10,
+    page: 0,
+  });
+  public reportSearchResultsSignal = signal<SearchReportDetailsResponse[]>([]);
+  public reportSearchTotalSignal = signal<number>(0);
   protected isLoading = false;
+
 
   // This will hold the fetched reports
   filteredReports: SearchReportDetailsResponse[] = [];
+  public dateFormGroup!: FormGroup;
 
   ngOnInit():void {
     // Log when ngOnInit is called
@@ -57,6 +67,8 @@ export class ReportSearchComponent implements OnInit {
       endDate: this.endDate,
     });
 
+    this.dateFormGroup = this.searchFormGroup;
+
     // Fetch reports initially (no filters applied)
     this.onSearch();
   }
@@ -66,6 +78,7 @@ export class ReportSearchComponent implements OnInit {
     const { reportNo, type, startDate, endDate } = this.searchFormGroup.value;
 
     this.isLoading = true;
+    this.isLoadingSignal.set(true);
 
     console.log('Fetching reports with parameters:', {
       reportNo,
@@ -75,6 +88,9 @@ export class ReportSearchComponent implements OnInit {
       page: this.paginatorStatus.page,
       limit: this.paginatorStatus.itemsPerPage,
     });
+
+    const page = this.paginatorStatusSignal().page;
+    const limit = this.paginatorStatusSignal().itemsPerPage;
 
     // Fetch reports from the service
     this.reportsService
@@ -92,10 +108,20 @@ export class ReportSearchComponent implements OnInit {
         })
       )
       .subscribe((response: SearchReportResponse) => {
-        console.log('Fetched Reports Response:', response); // Log the response
+        this.isLoading = false;
+        this.isLoadingSignal.set(false);
+
+      const reports = (response.reports ?? []).map(r => ({
+          ...r,
+          type:
+            r.type === 'DAILY' || r.type === 'WEEKLY' ? r.type : 'Unknown',
+        }));
 
         this.isLoading = false;
         this.filteredReports = response.reports ?? [];
+        this.filteredReports = reports;
+        this.reportSearchResultsSignal.set(reports);             
+        this.reportSearchTotalSignal.set(response.total ?? 0);
         // Ensure that reports have a valid type before displaying
         this.filteredReports = this.filteredReports.map(report => ({
           ...report,

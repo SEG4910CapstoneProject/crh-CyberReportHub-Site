@@ -49,7 +49,9 @@ export class SettingsComponent implements OnInit {
        });
        // live preview starts with saved logo
        this.preview.set(parsed.logo ?? this.branding.logo());
-     } catch {}
+     } catch (e) {
+      console.warn('brandingSettings JSON parse failed', e);
+    }
    }
 
     // Subscribe to dark mode and login status
@@ -63,7 +65,7 @@ export class SettingsComponent implements OnInit {
     // Load saved branding settings
     this.loadBrandingSettings();
   }
-  private updateFavicon(dataUrlOrUrl: string | null) {
+  private updateFavicon(dataUrlOrUrl: string | null): void {
     const link: HTMLLinkElement | null =
       document.querySelector('link[rel="icon"]') ||
       document.querySelector('link[rel="shortcut icon"]');
@@ -89,11 +91,13 @@ export class SettingsComponent implements OnInit {
     this.darkModeService.setDarkMode(isChecked);
   }
 
-  handleLogoUpload(ev: Event) {
+  handleLogoUpload(ev: Event): void {
     const file = (ev.target as HTMLInputElement)?.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => this.preview.set(reader.result as string);
+    reader.onload = (): void => {
+      this.preview.set(reader.result as string);
+    };
     reader.readAsDataURL(file);
   }
 
