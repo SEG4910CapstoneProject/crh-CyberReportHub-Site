@@ -1,7 +1,10 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { DarkModeService } from '../../shared/services/dark-mode.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { BrandingService } from '../../shared/services/branding.service';
+
+const STORAGE_KEY = 'brandingSettings';
 
 @Component({
   selector: 'crh-settings',
@@ -19,14 +22,36 @@ export class SettingsComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private darkModeService = inject(DarkModeService);
+  private branding = inject(BrandingService);
+
+  // live preview (falls back to saved logo)
+  preview = signal<string | null>(null);
+  logoToSave = computed(() => this.preview() ?? this.branding.logo());
 
   ngOnInit(): void {
     // Initialize form with default values
     this.form = this.fb.group({
       primaryColor: ['#002D72'],
       accentColor: ['#FF5733'],
-      logo: [null],
     });
+
+       // hydrate logo + colors
+   this.branding.init();
+   const saved = localStorage.getItem(STORAGE_KEY);
+   if (saved) {
+     try {
+       const parsed = JSON.parse(saved);
+       this.form.patchValue({
+         primaryColor: parsed.primaryColor ?? '#002D72',
+         accentColor: parsed.accentColor ?? '#FF5733',
+       });
+       // live preview starts with saved logo
+       this.preview.set(parsed.logo ?? this.branding.logo());
+      } catch (e) {
+        console.warn('brandingSettings JSON parse failed', e);
+      }
+   }
+
 
     // Subscribe to dark mode and login status
     this.darkModeService.isDarkMode$.subscribe(mode =>
@@ -38,6 +63,14 @@ export class SettingsComponent implements OnInit {
 
     // Load saved branding settings
     this.loadBrandingSettings();
+  }
+  private updateFavicon(dataUrlOrUrl: string | null): void {
+    const link: HTMLLinkElement | null =
+      document.querySelector('link[rel="icon"]') ||
+      document.querySelector('link[rel="shortcut icon"]');
+    if (link && dataUrlOrUrl) {
+      link.href = dataUrlOrUrl;
+    }
   }
 
   private loadBrandingSettings(): void {
@@ -57,20 +90,30 @@ export class SettingsComponent implements OnInit {
     this.darkModeService.setDarkMode(isChecked);
   }
 
-  handleLogoUpload(event: Event): void {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (): void => {
-        this.form.patchValue({ logo: reader.result });
-      };
-      reader.readAsDataURL(file);
-    }
+
+  handleLogoUpload(ev: Event): void {
+    const file = (ev.target as HTMLInputElement)?.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (): void => {
+      this.preview.set(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   }
 
   saveSettings(): void {
-    const brandingSettings = this.form.value;
-    localStorage.setItem('brandingSettings', JSON.stringify(brandingSettings));
+    this.branding.saveLogo(this.logoToSave());
+
+    // merge colors
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const current = saved ? JSON.parse(saved) : {};
+    const next = {
+      ...current,
+      primaryColor: this.form.value.primaryColor,
+      accentColor: this.form.value.accentColor,
+      logo: this.logoToSave(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     alert('Settings saved!');
   }
 }
