@@ -88,20 +88,16 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  incrementViewCountByUrl(url: string): void {
-    this.articleService.getArticleByLink(url).subscribe({
-      next: (article: Article) => {
-        if (article?.articleId) {
-          this.articleService.incrementViewCount(article.articleId).subscribe({
-            next: () =>
-              console.log(`View count incremented for ${article.articleId}`),
-            error: err => console.error('Error incrementing view count:', err),
-          });
-        }
+  // Increment view count by articleId
+  incrementViewCount(articleId: string): void {
+    this.articleService.incrementViewCount(articleId).subscribe({
+      next: (response) => {
+        console.log('View count incremented', response);
       },
-      error: error => {
-        console.error('Article not found for URL:', url, error);
-      },
+      error: (error) => {
+        console.error('Error incrementing view count', error);
+      }
     });
   }
+
 }

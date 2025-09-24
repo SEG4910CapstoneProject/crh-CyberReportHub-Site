@@ -121,6 +121,7 @@ export class ArticlesComponent implements OnInit {
           const articleOfNote: ArticleOfNote = {
             title: article.title,
             url: article.link,
+            articleId: article.articleId
           };
           this.articlesOfNote?.push(articleOfNote);
         } else {
@@ -164,20 +165,4 @@ export class ArticlesComponent implements OnInit {
     });
   }
 
-  //Necessary to increment view count from articles of note (since backend only sends URLs)
-  //This will be deleted later
-  incrementViewCountFromUrl(url: string): void {
-    this.articleService.getArticleByLink(url).subscribe({
-      next: article => {
-        if (article?.articleId) {
-          this.incrementViewCount(article.articleId);
-        } else {
-          console.warn('No articleId found for URL:', url);
-        }
-      },
-      error: error => {
-        console.error('Error fetching article by URL:', error);
-      },
-    });
-  }
 }
