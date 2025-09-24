@@ -4,7 +4,6 @@ import { ReportsService } from '../../shared/services/reports.service';
 import { JsonReportResponse } from '../../shared/sdk/rest-api/model/jsonReportResponse';
 import {
   ArticleService,
-  Article,
   MostViewedArticle,
   ArticleOfNote,
 } from '../../shared/services/article.service';
@@ -91,13 +90,12 @@ export class HomeComponent implements OnInit {
   // Increment view count by articleId
   incrementViewCount(articleId: string): void {
     this.articleService.incrementViewCount(articleId).subscribe({
-      next: (response) => {
+      next: response => {
         console.log('View count incremented', response);
       },
-      error: (error) => {
+      error: error => {
         console.error('Error incrementing view count', error);
-      }
+      },
     });
   }
-
 }

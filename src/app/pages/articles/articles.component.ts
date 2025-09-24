@@ -121,7 +121,7 @@ export class ArticlesComponent implements OnInit {
           const articleOfNote: ArticleOfNote = {
             title: article.title,
             url: article.link,
-            articleId: article.articleId
+            articleId: article.articleId,
           };
           this.articlesOfNote?.push(articleOfNote);
         } else {
@@ -164,5 +164,4 @@ export class ArticlesComponent implements OnInit {
       },
     });
   }
-
 }
