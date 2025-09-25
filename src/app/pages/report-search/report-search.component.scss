@@ -152,92 +152,6 @@ button.search-button:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Divider */
-.report-search-divider {
-  height: 1px;
-  background-color: var(--crh-divider-color);
-  border: none;
-  margin: size(8) 0;
-}
-
-/* Results Table */
-.report-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 12px;
-  background-color: #002d72;
-  color: #e0e0e0;
-}
-
-.report-table th {
-  text-align: left;
-  font-size: 18px;
-  padding: 16px 32px;
-  border-bottom: 2px solid black;
-  color: white;
-  background-color: #001f54;
-}
-
-.report-table td {
-  font-size: 18px;
-  padding: 14px 32px;
-  border-bottom: 1px solid #ddd;
-  color: #e0e0e0;
-}
-
-.report-table tr:nth-child(even) {
-  background-color: #002d72;
-}
-
-.no-data {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 20px;
-  color: white;
-}
-
-/* Actions Column */
-.actions-column {
-  text-align: center;
-  white-space: nowrap;
-  padding: 10px;
-}
-
-/* View Button */
-.view-button {
-  background-color: #4f80b4;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-right: 16px;
-  transition: 0.3s;
-}
-
-.view-button:hover {
-  background-color: #0056b3;
-}
-
-/* Delete Button */
-.delete-button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: 0.3s;
-  margin-left: 15px;
-}
-
-.delete-button:hover {
-  background-color: #a71d2a;
-}
-
 /* Results Content */
 .report-search-content {
   display: flex;
@@ -245,10 +159,6 @@ button.search-button:hover {
   gap: size(16);
   align-items: center;
   width: 100%;
-
-  .report-search-result {
-    width: 100%;
-  }
 
   .report-search-no-results {
     width: fit-content;
@@ -271,4 +181,13 @@ button.search-button:hover {
       @include text('heading-3');
     }
   }
+}
+
+.reports-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
 }

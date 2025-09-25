@@ -126,15 +126,10 @@ export class ReportSearchComponent implements OnInit {
     return reportTotal;
   });
 
-  // Handle view report logic
-  onViewReport(report: SearchReportDetailsResponse): void {
-    this.router.navigate([`/reports/read/${report?.reportId}`]);
-  }
-
   // Handle deleting reports
-  onDeleteReport(report: SearchReportDetailsResponse): void {
+  onDeleteReport(reportId: number): void {
     const confirmed = confirm(
-      `Are you sure you want to delete report #${report.reportId}?`
+      `Are you sure you want to delete report #${reportId}?`
     );
     if (!confirmed) return;
 

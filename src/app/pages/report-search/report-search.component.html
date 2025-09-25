@@ -67,44 +67,23 @@
   </div>
 
   <div class="report-search-content">
-    <table class="report-table">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Type</th>
-          <th>{{ 'reportSearch.date' | translate }}</th>
-          <th>{{ 'reportSearch.modified' | translate }}</th>
-          <th *ngIf="isLoggedIn">{{ 'reportSearch.email' | translate }}</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngIf="reportSearchResultsSignal() as results">
-          <tr *ngIf="reportSearchTotalSignal() === 0">
-            <td colspan="6" class="no-data">{{ 'reportSearch.noreports' | translate }}</td>
-          </tr>
-
-          <tr *ngFor="let report of results">
-            <td>{{ report?.reportId }}</td>
-            <td>{{ report?.reportType === 'daily' ? 'Daily' : 'Weekly' }}</td>
-            <td>{{ report?.generatedDate | date: 'medium' }}</td>
-            <td>{{ report?.lastModified | date: 'medium' }}</td>
-            <td *ngIf="isLoggedIn">{{ report?.emailStatus ? '✔' : '✘' }}</td>
-            <td class="actions-column">
-              <button class="view-button" (click)="onViewReport(report)">
-                View
-              </button>
-              <button
-                *ngIf="isLoggedIn"
-                class="delete-button"
-                (click)="onDeleteReport(report)">
-                Delete
-              </button>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
+    <ng-container *ngIf="reportSearchResultsSignal() as results">
+      <ng-container *ngIf="reportSearchTotalSignal() === 0">
+        <div class="report-search-no-results">
+          <h3>{{ 'reportSearch.search.noResults.title' | translate }}</h3>
+          <p>{{ 'reportSearch.search.noResults.subtitle' | translate }}</p>
+        </div>
+      </ng-container>
+      <div class="reports-container">
+        <crh-report-result
+          class="report-search-result"
+          *ngFor="let result of results"
+          [result]="result"
+          [isLoggedInSignal]="isLoggedIn"
+          (_onDelete)="onDeleteReport($event)">
+        </crh-report-result>
+      </div>
+    </ng-container>
     <!-- LOADING SPINNER -->
     <ng-container *ngIf="isLoadingSignal()">
       <crh-progress-spinner></crh-progress-spinner>
