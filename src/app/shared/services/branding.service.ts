@@ -26,9 +26,18 @@ export class BrandingService {
 
     const saved = localStorage.getItem(STORAGE_KEY);
     const current = saved ? JSON.parse(saved) : {};
+    if (dataUrlOrUrl == null){
+      delete current.logo;
+    } else {
+      current.logo = dataUrlOrUrl;
+    }
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, logo: dataUrlOrUrl }));
 
     this.updateFavicon(dataUrlOrUrl); // update favicon immediately
+  }
+
+  clearLogo(): void {
+    this.saveLogo(null);
   }
 
   updateFavicon(dataUrlOrUrl: string | null): void {

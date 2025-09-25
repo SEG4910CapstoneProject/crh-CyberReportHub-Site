@@ -90,6 +90,16 @@ export class SettingsComponent implements OnInit {
     this.darkModeService.setDarkMode(isChecked);
   }
 
+  onClearlogo(): void {
+    this.preview.set(null);
+    this.branding.clearLogo();
+
+    const saved = localStorage.getItem('brandingSettings');
+    const current = saved ? JSON.parse(saved) : {};
+    delete current.logo;
+    localStorage.setItem('brandingSettings', JSON.stringify(current));
+  }
+
 
   handleLogoUpload(ev: Event): void {
     const file = (ev.target as HTMLInputElement)?.files?.[0];
