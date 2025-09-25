@@ -50,7 +50,7 @@ export class NavBarComponent implements OnInit {
   private dialog = inject(Dialog);
   private authService = inject(AuthService);
   private branding = inject(BrandingService);
-  protected logoSrc = computed(() => this.branding.logo() ?? 'assets/logo.svg');
+  protected logoSrc = computed(() => this.branding.logo() || null);
 
   protected responiveBreakpointsConfig: ResponiveBreakpoint[] = [
     {
