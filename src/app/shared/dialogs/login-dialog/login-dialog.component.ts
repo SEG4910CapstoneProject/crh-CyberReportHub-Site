@@ -15,7 +15,13 @@ export class LoginDialogComponent {
   protected username = '';
   protected password = '';
 
-  protected login(): void {
+  //covered password
+  public showPassword = false;
+  public togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  public login(): void {
     if (this.authService.login(this.username, this.password)) {
       this.dialogRef.close(true);
     } else {
@@ -23,7 +29,7 @@ export class LoginDialogComponent {
     }
   }
 
-  protected onCancel(): void {
+  public onCancel(): void {
     this.dialogRef.close(false);
   }
 }
