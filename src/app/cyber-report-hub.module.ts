@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -138,6 +139,7 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     MatFormFieldModule,
     MatNativeDateModule,
     MatIconModule,
+    MatCardModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
