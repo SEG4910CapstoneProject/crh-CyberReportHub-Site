@@ -1,10 +1,11 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, ElementRef, inject, input, output } from '@angular/core';
 import { SearchReportDetailsResponse } from '../../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 import { DateTime } from 'luxon';
 import { Router } from '@angular/router';
 import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { IocTypeService } from '../../reports/services/ioc-type.service';
+import { ColorsService } from '../../../shared/services/colors.service';
 
 @Component({
   selector: 'crh-report-result',
@@ -16,8 +17,12 @@ export class ReportResultComponent {
   private router = inject(Router);
   private crhTranslationService = inject(CrhTranslationService);
   private iocTypeService = inject(IocTypeService);
+  private colorService = inject(ColorsService);
+  private elementRef: ElementRef = inject(ElementRef);
 
   public result = input<SearchReportDetailsResponse>();
+  public _onDelete = output<number>();
+  public isLoggedInSignal = input<boolean>(false);
 
   private emailSent = computed(() => {
     const result = this.result();
@@ -31,6 +36,17 @@ export class ReportResultComponent {
   private currentLanguage = toSignal(
     this.crhTranslationService.getLanguageAsStream()
   );
+
+  protected get customCssStyleVars(): string {
+    const computedColorStyle = this.colorService.getComputedStyle(
+      '--crh-background-contrast-color',
+      this.elementRef
+    );
+    if (!computedColorStyle) {
+      return '';
+    }
+    return `--crh-card-color-shadow: ${this.colorService.setAlpha(computedColorStyle, 0.25)}`;
+  }
 
   protected reportGeneratedDate = computed(() => {
     const result = this.result();
@@ -79,6 +95,13 @@ export class ReportResultComponent {
     const result = this.result();
     if (result) {
       this.router.navigate([`/reports/read/${result.reportId}`]);
+    }
+  }
+  
+  protected onDeleteCard():void {
+    const result = this.result();
+    if (result) {
+      this._onDelete.emit(result.reportId);
     }
   }
 }
