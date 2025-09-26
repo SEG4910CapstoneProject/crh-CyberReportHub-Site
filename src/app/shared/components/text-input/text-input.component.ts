@@ -34,6 +34,10 @@ export class TextInputComponent implements ControlValueAccessor {
   public config = input<TextInputConfig>();
   public _onValueChanged = output<string | undefined>();
 
+  @Input() type: 'text' | 'password' | 'email' | 'number' | 'search' | 'tel' | 'url' = 'text';
+
+  @Input() autocomplete?: string;
+
   @Input()
   set value(value: string | undefined) {
     this.materialInputDirective.writeValue(value);

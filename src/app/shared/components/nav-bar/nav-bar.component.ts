@@ -30,6 +30,7 @@ import {
 import { ResponiveBreakpoint } from '../../directives/responsive.directive';
 import { Dialog } from '@angular/cdk/dialog';
 import { LoginDialogComponent } from '../../dialogs/login-dialog/login-dialog.component';
+import { BrandingService } from '../../services/branding.service';
 
 @Component({
   selector: 'crh-nav-bar',
@@ -48,6 +49,8 @@ export class NavBarComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(Dialog);
   private authService = inject(AuthService);
+  private branding = inject(BrandingService);
+  protected logoSrc = computed(() => this.branding.logo() || null);
 
   protected responiveBreakpointsConfig: ResponiveBreakpoint[] = [
     {
