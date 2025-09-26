@@ -15,7 +15,9 @@
       [formControl]="materialInputDirective.childControl"
       [placeholder]="materialInputDirective.placeholderText()"
       (ngModelChange)="materialInputDirective.onValueWrite($event)"
-      [errorStateMatcher]="materialInputDirective.getErrorMatcher()" />
+      [errorStateMatcher]="materialInputDirective.getErrorMatcher()"
+      [type]="type"
+      [attr.autocomplete]="autocomplete || null" />
   </ng-container>
   <ng-template #textAreaTemplate>
     <textarea

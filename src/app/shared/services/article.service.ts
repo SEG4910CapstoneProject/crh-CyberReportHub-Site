@@ -17,12 +17,14 @@ export interface Article {
 
 export interface MostViewedArticle {
   url: string;
+  articleId: string;
   viewCount: number;
   title: string;
 }
 
 export interface ArticleOfNote {
   url: string;
+  articleId: string;
   title: string;
 }
 

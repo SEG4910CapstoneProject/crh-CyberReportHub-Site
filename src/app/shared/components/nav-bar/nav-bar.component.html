@@ -6,11 +6,15 @@
   (_onBreakpointChange)="onBreakpointReached($event)">
   <div class="crh-nav-bar-main-content">
     <div class="crh-nav-bar-item crh-nav-bar-left">
-      <a
-        class="crh-nav-bar-logo"
-        ariaLabel="Cyber Report Hub"
-        (click)="onLogoClick()">
-        CyberReport Hub
+      <a class="crh-nav-bar-logo" (click)="onLogoClick()">
+        <img
+          *ngIf="logoSrc()"
+          [src]="logoSrc()!"
+
+          height="50"
+          style="margin-right: 8px"
+        />
+        <span>Cyber Report Hub</span>
       </a>
       <ng-container *ngIf="responsiveModeSignal() === 'desktop'">
         <ng-container *ngFor="let link of navLinksSignal()">
