@@ -10,10 +10,8 @@
         <img
           *ngIf="logoSrc()"
           [src]="logoSrc()!"
-
           height="50"
-          style="margin-right: 8px"
-        />
+          style="margin-right: 8px" />
         <span>Cyber Report Hub</span>
       </a>
       <ng-container *ngIf="responsiveModeSignal() === 'desktop'">

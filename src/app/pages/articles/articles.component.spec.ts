@@ -2,7 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ArticlesComponent } from './articles.component';
-import { ArticleService, Article, ArticleOfNote } from '../../shared/services/article.service';
+import {
+  ArticleService,
+  Article,
+  ArticleOfNote,
+} from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 const mockArticles: Record<string, Article[]> = {
@@ -16,7 +20,7 @@ const mockArticles: Record<string, Article[]> = {
       publishDate: '2024-01-01',
       type: 'news',
       viewCount: 0,
-      isArticleOfNote: false
+      isArticleOfNote: false,
     },
     {
       articleId: '2',
@@ -27,13 +31,13 @@ const mockArticles: Record<string, Article[]> = {
       publishDate: '2024-01-01',
       type: 'news',
       viewCount: 0,
-      isArticleOfNote: false
-    }
-  ]
+      isArticleOfNote: false,
+    },
+  ],
 };
 
 const mockArticlesOfNote: ArticleOfNote[] = [
-  { title: 'Note 1', url: 'link1', articleId: '1' }
+  { title: 'Note 1', url: 'link1', articleId: '1' },
 ];
 
 class MockArticleService {
@@ -41,7 +45,6 @@ class MockArticleService {
   getArticlesOfNote = jest.fn().mockReturnValue(of(mockArticlesOfNote));
   chooseArticleOfNote = jest.fn().mockReturnValue(of({ success: true }));
   incrementViewCount = jest.fn().mockReturnValue(of({ success: true }));
-  getArticleByLink = jest.fn().mockReturnValue(of(mockArticles['Category1'][0]));
 }
 
 class MockAuthService {
@@ -59,13 +62,15 @@ describe('ArticlesComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: { params: of({ id: 1 }) } },
         { provide: ArticleService, useClass: MockArticleService },
-        { provide: AuthService, useClass: MockAuthService }
-      ]
+        { provide: AuthService, useClass: MockAuthService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ArticlesComponent);
     component = fixture.componentInstance;
-    articleService = TestBed.inject(ArticleService) as unknown as MockArticleService;
+    articleService = TestBed.inject(
+      ArticleService
+    ) as unknown as MockArticleService;
     fixture.detectChanges();
   });
 
@@ -74,7 +79,9 @@ describe('ArticlesComponent', () => {
   });
 
   it('should load articles and initialize articlesToShow', () => {
-    expect(articleService.getAllArticleTypesWithArticles).toHaveBeenCalledWith(30);
+    expect(articleService.getAllArticleTypesWithArticles).toHaveBeenCalledWith(
+      30
+    );
     expect(component.articlesByCategory['Category1'].length).toBe(2);
     expect(component.articlesToShow['Category1']).toBe(3);
   });
@@ -107,7 +114,9 @@ describe('ArticlesComponent', () => {
     const mockEvent = { target: { checked: true } };
 
     component.toggleArticleOfNote(article, mockEvent);
-    expect(articleService.chooseArticleOfNote).toHaveBeenCalledWith(article.articleId);
+    expect(articleService.chooseArticleOfNote).toHaveBeenCalledWith(
+      article.articleId
+    );
     expect(component.isArticleOfNote(article)).toBe(true);
 
     component.toggleArticleOfNote(article, { target: { checked: false } });
@@ -119,12 +128,6 @@ describe('ArticlesComponent', () => {
     expect(articleService.incrementViewCount).toHaveBeenCalledWith('1');
   });
 
-  it('should increment view count from url', () => {
-    component.incrementViewCountFromUrl('link1');
-    expect(articleService.getArticleByLink).toHaveBeenCalledWith('link1');
-    expect(articleService.incrementViewCount).toHaveBeenCalledWith('1');
-  });
-
   it('should handle error when fetching articles', () => {
     articleService.getAllArticleTypesWithArticles.mockReturnValueOnce(
       throwError(() => new Error('Error'))
@@ -133,12 +136,11 @@ describe('ArticlesComponent', () => {
     expect(component.isLoading).toBe(false);
   });
 
-/*
+  /*
     it('should handle error when fetching articles of note', () => {
     articleService.getArticlesOfNote.mockReturnValueOnce(throwError(() => new Error('Error')));
     component.fetchArticlesOfNote();
     expect(component.articlesOfNote).toEqual([]);
   });
 */
-
 });

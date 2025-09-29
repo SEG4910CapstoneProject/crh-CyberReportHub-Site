@@ -35,23 +35,22 @@ export class SettingsComponent implements OnInit {
       accentColor: ['#FF5733'],
     });
 
-       // hydrate logo + colors
-   this.branding.init();
-   const saved = localStorage.getItem(STORAGE_KEY);
-   if (saved) {
-     try {
-       const parsed = JSON.parse(saved);
-       this.form.patchValue({
-         primaryColor: parsed.primaryColor ?? '#002D72',
-         accentColor: parsed.accentColor ?? '#FF5733',
-       });
-       // live preview starts with saved logo
-       this.preview.set(parsed.logo ?? this.branding.logo());
+    // hydrate logo + colors
+    this.branding.init();
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        this.form.patchValue({
+          primaryColor: parsed.primaryColor ?? '#002D72',
+          accentColor: parsed.accentColor ?? '#FF5733',
+        });
+        // live preview starts with saved logo
+        this.preview.set(parsed.logo ?? this.branding.logo());
       } catch (e) {
         console.warn('brandingSettings JSON parse failed', e);
       }
-   }
-
+    }
 
     // Subscribe to dark mode and login status
     this.darkModeService.isDarkMode$.subscribe(mode =>
@@ -99,7 +98,6 @@ export class SettingsComponent implements OnInit {
     delete current.logo;
     localStorage.setItem('brandingSettings', JSON.stringify(current));
   }
-
 
   handleLogoUpload(ev: Event): void {
     const file = (ev.target as HTMLInputElement)?.files?.[0];
