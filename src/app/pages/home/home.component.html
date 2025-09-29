@@ -15,7 +15,7 @@
         <a
           href="{{ article.url }}"
           target="_blank"
-          (click)="incrementViewCountByUrl(article.url)">
+          (click)="incrementViewCount(article.articleId)">
           {{ article.title }}
         </a>
       </li>
@@ -49,7 +49,7 @@
             <a
               href="{{ article.url }}"
               target="_blank"
-              (click)="incrementViewCountByUrl(article.url)">
+              (click)="incrementViewCount(article.articleId)">
               {{ article.title }}
             </a>
           </div>

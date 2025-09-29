@@ -12,22 +12,27 @@
       </crh-button>
     </div>
 
-    <form class="report-search-control" [formGroup]="searchFormGroup" id="filtersForm" (ngSubmit)="onSearchClick()">
+    <form
+      class="report-search-control"
+      [formGroup]="searchFormGroup"
+      id="filtersForm"
+      (ngSubmit)="onSearchClick()">
       <div class="report-search-control-filters">
         <!-- TEXT INPUT: REPORT NUMBER -->
         <div class="filter-wrapper">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'reportSearch.no' | translate }}</mat-label>
-              <input
-                type="number"
-                matInput
-                formControlName="reportNo"
-                placeholder=" "
-                class="search-box"
-                min="1"/>
-                <mat-error *ngIf="searchFormGroup.get('reportNo')?.hasError('pattern')">
-                  A report id can't be negative or null.
-                </mat-error>
+            <input
+              type="number"
+              matInput
+              formControlName="reportNo"
+              placeholder=" "
+              class="search-box"
+              min="1" />
+            <mat-error
+              *ngIf="searchFormGroup.get('reportNo')?.hasError('pattern')">
+              A report id can't be negative or null.
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -37,74 +42,55 @@
             <mat-label>Type</mat-label>
             <mat-select formControlName="type">
               <mat-option value=""></mat-option>
-              <mat-option value="DAILY">{{ 'reportSearch.daily' | translate }}</mat-option>
-              <mat-option value="WEEKLY">{{ 'reportSearch.weekly' | translate }}</mat-option>
+              <mat-option value="DAILY">{{
+                'reportSearch.daily' | translate
+              }}</mat-option>
+              <mat-option value="WEEKLY">{{
+                'reportSearch.weekly' | translate
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
 
         <!-- DROPDOWN FOR TYPE SELECTION -->
         <crh-date-picker
-            formControlName="startDate"
-            label="{{
-              'reportSearch.search.fromLabel' | translate
-            }}">
+          formControlName="startDate"
+          label="{{ 'reportSearch.search.fromLabel' | translate }}">
         </crh-date-picker>
-        
+
         <crh-date-picker
           formControlName="endDate"
-          label="{{
-            'reportSearch.search.toLabel' | translate
-          }}">
+          label="{{ 'reportSearch.search.toLabel' | translate }}">
         </crh-date-picker>
 
         <!-- SEARCH BUTTON -->
         <div class="searchButton">
-          <button class="search-button" (click)="onSearchClick()">{{ 'reportSearch.search' | translate }}</button>
+          <button class="search-button" (click)="onSearchClick()">
+            {{ 'reportSearch.search' | translate }}
+          </button>
         </div>
       </div>
     </form>
   </div>
 
   <div class="report-search-content">
-    <table class="report-table">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Type</th>
-          <th>{{ 'reportSearch.date' | translate }}</th>
-          <th>{{ 'reportSearch.modified' | translate }}</th>
-          <th *ngIf="isLoggedIn">{{ 'reportSearch.email' | translate }}</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngIf="reportSearchResultsSignal() as results">
-          <tr *ngIf="reportSearchTotalSignal() === 0">
-            <td colspan="6" class="no-data">{{ 'reportSearch.noreports' | translate }}</td>
-          </tr>
-
-          <tr *ngFor="let report of results">
-            <td>{{ report?.reportId }}</td>
-            <td>{{ report?.reportType === 'daily' ? 'Daily' : 'Weekly' }}</td>
-            <td>{{ report?.generatedDate | date: 'medium' }}</td>
-            <td>{{ report?.lastModified | date: 'medium' }}</td>
-            <td *ngIf="isLoggedIn">{{ report?.emailStatus ? '✔' : '✘' }}</td>
-            <td class="actions-column">
-              <button class="view-button" (click)="onViewReport(report)">
-                View
-              </button>
-              <button
-                *ngIf="isLoggedIn"
-                class="delete-button"
-                (click)="onDeleteReport(report)">
-                Delete
-              </button>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
+    <ng-container *ngIf="reportSearchResultsSignal() as results">
+      <ng-container *ngIf="reportSearchTotalSignal() === 0">
+        <div class="report-search-no-results">
+          <h3>{{ 'reportSearch.search.noResults.title' | translate }}</h3>
+          <p>{{ 'reportSearch.search.noResults.subtitle' | translate }}</p>
+        </div>
+      </ng-container>
+      <div class="reports-container">
+        <crh-report-result
+          class="report-search-result"
+          *ngFor="let result of results"
+          [result]="result"
+          [isLoggedInSignal]="isLoggedIn"
+          (_onDelete)="onDeleteReport($event)">
+        </crh-report-result>
+      </div>
+    </ng-container>
     <!-- LOADING SPINNER -->
     <ng-container *ngIf="isLoadingSignal()">
       <crh-progress-spinner></crh-progress-spinner>

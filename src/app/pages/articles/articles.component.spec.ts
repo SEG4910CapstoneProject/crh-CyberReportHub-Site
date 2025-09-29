@@ -2,12 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ArticlesComponent } from './articles.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ArticleService, Article, ArticleOfNote } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 const mockArticles: Record<string, Article[]> = {
-  'Category1': [
+  Category1: [
     {
       articleId: '1',
       title: 'Article 1',
@@ -34,7 +33,7 @@ const mockArticles: Record<string, Article[]> = {
 };
 
 const mockArticlesOfNote: ArticleOfNote[] = [
-  { title: 'Note 1', url: 'link1' }
+  { title: 'Note 1', url: 'link1', articleId: '1' }
 ];
 
 class MockArticleService {
@@ -56,7 +55,6 @@ describe('ArticlesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       declarations: [ArticlesComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { params: of({ id: 1 }) } },
@@ -128,7 +126,9 @@ describe('ArticlesComponent', () => {
   });
 
   it('should handle error when fetching articles', () => {
-    articleService.getAllArticleTypesWithArticles.mockReturnValueOnce(throwError(() => new Error('Error')));
+    articleService.getAllArticleTypesWithArticles.mockReturnValueOnce(
+      throwError(() => new Error('Error'))
+    );
     component.ngOnInit();
     expect(component.isLoading).toBe(false);
   });

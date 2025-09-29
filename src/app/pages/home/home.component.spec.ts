@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthService } from '../../shared/services/auth.service';
 import { ReportsService } from '../../shared/services/reports.service';
 import { ArticleService, MostViewedArticle, ArticleOfNote, Article } from '../../shared/services/article.service';
@@ -28,7 +27,7 @@ describe('HomeComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [HomeComponent],
-      imports: [TranslateModule.forRoot(), HttpClientTestingModule],
+      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: AuthService, useValue: mockAuthService },
         { provide: ReportsService, useValue: mockReportsService },
@@ -66,8 +65,8 @@ describe('HomeComponent', () => {
 
   it('should fetch most viewed articles', () => {
     const mockArticles: MostViewedArticle[] = [
-      { url: 'url1', title: 'Article 1', viewCount: 5 },
-      { url: 'url2', title: 'Article 2', viewCount: 10 }
+      { url: 'url1', title: 'Article 1', viewCount: 5, articleId: 'a1' },
+      { url: 'url2', title: 'Article 2', viewCount: 10, articleId: 'a2' }
     ];
     mockArticleService.getTopMostViewedArticles.mockReturnValue(of(mockArticles));
 
@@ -80,8 +79,8 @@ describe('HomeComponent', () => {
 
   it('should fetch articles of note', () => {
     const mockNotes: ArticleOfNote[] = [
-      { url: 'note1', title: 'Note 1' },
-      { url: 'note2', title: 'Note 2' }
+      { url: 'note1', title: 'Note 1', articleId: 'n1' },
+      { url: 'note2', title: 'Note 2', articleId: 'n2' }
     ];
     mockArticleService.getArticlesOfNote.mockReturnValue(of(mockNotes));
 

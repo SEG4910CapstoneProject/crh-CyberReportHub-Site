@@ -1,3 +1,5 @@
+import { APP_INITIALIZER } from '@angular/core';
+import { BrandingService } from './shared/services/branding.service';
 import { NgModule } from '@angular/core';
 import { routes } from './app.routes';
 import { provideRouter, RouterModule } from '@angular/router';
@@ -8,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -75,6 +78,9 @@ import { ReportArticlesComponent } from './pages/reports/articles/report-article
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
+export function initBrandingFactory(branding: BrandingService): () => void {
+  return () => branding.init();
+}
 
 @NgModule({
   declarations: [
@@ -138,6 +144,7 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     MatFormFieldModule,
     MatNativeDateModule,
     MatIconModule,
+    MatCardModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -159,6 +166,12 @@ const TRANSLATION_FILES_FILE_EXT = '.json';
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimationsAsync(),
     LuxonDateFormatterPipe,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initBrandingFactory,
+      deps: [BrandingService],
+      multi: true,
+    },
     { provide: BASE_PATH, useValue: 'http://localhost:8080' }, // TODO REPLACE ME WHEN SERVED INTO PRODUCTION
   ],
   bootstrap: [CyberReportHubComponent],
