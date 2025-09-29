@@ -2,7 +2,9 @@ import { Injectable, signal } from '@angular/core';
 
 const STORAGE_KEY = 'brandingSettings'; //to save logo in settings
 
-interface Branding { logo: string | null };
+interface Branding {
+  logo: string | null;
+}
 
 @Injectable({ providedIn: 'root' })
 export class BrandingService {
@@ -26,12 +28,15 @@ export class BrandingService {
 
     const saved = localStorage.getItem(STORAGE_KEY);
     const current = saved ? JSON.parse(saved) : {};
-    if (dataUrlOrUrl == null){
+    if (dataUrlOrUrl == null) {
       delete current.logo;
     } else {
       current.logo = dataUrlOrUrl;
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, logo: dataUrlOrUrl }));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ ...current, logo: dataUrlOrUrl })
+    );
 
     this.updateFavicon(dataUrlOrUrl); // update favicon immediately
   }
@@ -51,6 +56,6 @@ export class BrandingService {
       document.head.appendChild(link);
     }
 
-
     link.href = dataUrlOrUrl ?? 'favicon.ico';
-  }}
+  }
+}

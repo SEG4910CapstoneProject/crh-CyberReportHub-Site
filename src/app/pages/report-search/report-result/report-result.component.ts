@@ -1,4 +1,11 @@
-import { Component, computed, ElementRef, inject, input, output } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { SearchReportDetailsResponse } from '../../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 import { DateTime } from 'luxon';
 import { Router } from '@angular/router';
@@ -97,8 +104,8 @@ export class ReportResultComponent {
       this.router.navigate([`/reports/read/${result.reportId}`]);
     }
   }
-  
-  protected onDeleteCard():void {
+
+  protected onDeleteCard(): void {
     const result = this.result();
     if (result) {
       this._onDelete.emit(result.reportId);
