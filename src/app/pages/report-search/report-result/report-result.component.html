@@ -1,17 +1,37 @@
-<h3 (click)="onLinkClick()">
-  {{
-    'reportSearch.result.title'
-      | translate: { id: result()?.reportId, date: reportGeneratedDate() }
-  }}
-</h3>
-<crh-chip-container [chipTexts]="availableIocs()"></crh-chip-container>
-<div class="report-result-email-status">
-  <div class="report-status-text">
-    {{ emailSentTranslationKey() | translate }}
-  </div>
-  <span
-    [ngClass]="emailSentClass()"
-    class="material-symbols-outlined report-result-icon">
-    {{ emailSentIcon() }}
-  </span>
-</div>
+<mat-card class="report-card" [style]="customCssStyleVars" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>
+      <h3>
+      {{
+        'reportSearch.result.title' 
+          | translate: { id: result()?.reportId }
+      }}
+      </h3>
+    </mat-card-title>
+
+    <mat-card-subtitle>
+      {{
+        result()?.reportType | titlecase 
+      }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="report-content">
+    <div class="content-item">{{ 'reportSearch.date' | translate: {date: result()?.generatedDate | date: 'medium'} }}</div>
+    <div class="content-item">{{ 'reportSearch.modified' | translate: {date: result()?.lastModified | date: 'medium'} }}</div>
+    <div *ngIf="isLoggedInSignal()" class="report-result-email-status">
+      {{ 'reportSearch.email' | translate}} :
+      <span
+        [ngClass]="emailSentClass()"
+        class="material-symbols-outlined report-result-icon">
+        {{ emailSentIcon() }}
+      </span>
+    </div>
+
+    <mat-card-actions class="btn-actions">
+      <button mat-raised-button class="action-btn view-btn" (click)="onLinkClick()">View</button>
+      <button mat-raised-button class="action-btn delete-btn" (click)="onDeleteCard()" *ngIf="isLoggedInSignal()">Delete</button>
+    </mat-card-actions>
+
+  </mat-card-content>
+</mat-card>
