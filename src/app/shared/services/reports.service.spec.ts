@@ -8,7 +8,7 @@ describe('ReportsService (placeholder)', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ReportsService]
+      providers: [ReportsService],
     });
     service = TestBed.inject(ReportsService);
   });

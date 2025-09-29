@@ -3,9 +3,12 @@ import { HomeComponent } from './home.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { ReportsService } from '../../shared/services/reports.service';
-import { ArticleService, MostViewedArticle, ArticleOfNote, Article } from '../../shared/services/article.service';
-import { JsonReportResponse } from '../../shared/sdk/rest-api/model/jsonReportResponse';
-import { of, throwError } from 'rxjs';
+import {
+  ArticleService,
+  MostViewedArticle,
+  ArticleOfNote,
+} from '../../shared/services/article.service';
+import { of } from 'rxjs';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -21,8 +24,7 @@ describe('HomeComponent', () => {
     mockArticleService = {
       getTopMostViewedArticles: jest.fn(),
       getArticlesOfNote: jest.fn(),
-      getArticleByLink: jest.fn(),
-      incrementViewCount: jest.fn()
+      incrementViewCount: jest.fn(),
     };
 
     await TestBed.configureTestingModule({
@@ -31,8 +33,8 @@ describe('HomeComponent', () => {
       providers: [
         { provide: AuthService, useValue: mockAuthService },
         { provide: ReportsService, useValue: mockReportsService },
-        { provide: ArticleService, useValue: mockArticleService }
-      ]
+        { provide: ArticleService, useValue: mockArticleService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
@@ -43,16 +45,16 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-// To be implemented when login functionality bug is fixed
-/*
+  // To be implemented when login functionality bug is fixed
+  /*
   it('should update login status on init', () => {
     fixture.detectChanges();
     expect(component['isLoggedIn']()).toBe(true);
    });
 */
 
-// To be implemented when latest published report bug is fixed
-/*  it('should fetch latest published report', () => {
+  // To be implemented when latest published report bug is fixed
+  /*  it('should fetch latest published report', () => {
     const mockReport: JsonReportResponse = { reportId: 1 } as any;
     mockReportsService.getLatestReport.mockReturnValue(of(mockReport));
 
@@ -66,9 +68,11 @@ describe('HomeComponent', () => {
   it('should fetch most viewed articles', () => {
     const mockArticles: MostViewedArticle[] = [
       { url: 'url1', title: 'Article 1', viewCount: 5, articleId: 'a1' },
-      { url: 'url2', title: 'Article 2', viewCount: 10, articleId: 'a2' }
+      { url: 'url2', title: 'Article 2', viewCount: 10, articleId: 'a2' },
     ];
-    mockArticleService.getTopMostViewedArticles.mockReturnValue(of(mockArticles));
+    mockArticleService.getTopMostViewedArticles.mockReturnValue(
+      of(mockArticles)
+    );
 
     component.fetchMostViewedArticles();
 
@@ -80,7 +84,7 @@ describe('HomeComponent', () => {
   it('should fetch articles of note', () => {
     const mockNotes: ArticleOfNote[] = [
       { url: 'note1', title: 'Note 1', articleId: 'n1' },
-      { url: 'note2', title: 'Note 2', articleId: 'n2' }
+      { url: 'note2', title: 'Note 2', articleId: 'n2' },
     ];
     mockArticleService.getArticlesOfNote.mockReturnValue(of(mockNotes));
 
@@ -90,34 +94,11 @@ describe('HomeComponent', () => {
     expect(component.articlesOfNote.length).toBe(2);
   });
 
-  it('should increment view count by url', () => {
-    const mockArticle: Article = {
-      articleId: '123',
-      title: 'Test Article',
-      description: 'desc',
-      category: 'cat',
-      link: 'test-url',
-      publishDate: '2024-01-01',
-      type: 'news',
-      viewCount: 0,
-      isArticleOfNote: false,
-      url: 'test-url'
-    };
-
-    mockArticleService.getArticleByLink.mockReturnValue(of(mockArticle));
+  it('should increment view count by articleId', () => {
     mockArticleService.incrementViewCount.mockReturnValue(of({}));
 
-    component.incrementViewCountByUrl('test-url');
+    component.incrementViewCount('123');
 
-    expect(mockArticleService.getArticleByLink).toHaveBeenCalledWith('test-url');
     expect(mockArticleService.incrementViewCount).toHaveBeenCalledWith('123');
-  });
-
-  it('should handle error when article not found for URL', () => {
-    mockArticleService.getArticleByLink.mockReturnValue(throwError(() => new Error('Not found')));
-
-    component.incrementViewCountByUrl('bad-url');
-
-    expect(mockArticleService.getArticleByLink).toHaveBeenCalledWith('bad-url');
   });
 });

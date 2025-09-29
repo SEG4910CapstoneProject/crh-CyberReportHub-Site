@@ -15,11 +15,11 @@ describe('NavBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-              TranslateModule.forRoot(),
-              RouterTestingModule,
-              MatIconModule,
-              MatToolbarModule,
-            ],
+        TranslateModule.forRoot(),
+        RouterTestingModule,
+        MatIconModule,
+        MatToolbarModule,
+      ],
       declarations: [NavBarComponent],
       providers: [TranslateService, MockProvider(ActivatedRoute)],
     }).compileComponents();
