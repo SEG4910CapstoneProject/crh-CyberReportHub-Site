@@ -26,6 +26,8 @@ export interface ArticleOfNote {
   url: string;
   articleId: string;
   title: string;
+  publishDate?: string;
+  description?: string;
 }
 
 @Injectable({
