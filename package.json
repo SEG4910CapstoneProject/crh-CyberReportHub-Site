@@ -30,6 +30,7 @@
     "@ngx-translate/http-loader": "^8.0.0",
     "@types/node": "^20.14.7",
     "colord": "^2.9.3",
+    "jwt-decode": "^4.0.0",
     "luxon": "^3.4.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
