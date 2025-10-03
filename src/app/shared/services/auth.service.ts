@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { jwtDecode } from 'jwt-decode'; // installed the library: `npm install jwt-decode`
 
 export interface User {
-  username: string;
+  userId: string;
+  email: string;
   role: string;
 }
 
@@ -10,55 +12,100 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  private isLoggedInSubject = new BehaviorSubject<boolean>(
-    this.checkLoginStatus()
-  );
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.checkLoginStatus());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  private currentUserSubject = new BehaviorSubject<User | null>(
-    this.getStoredUser()
-  );
+  private currentUserSubject = new BehaviorSubject<User | null>(this.getStoredUser());
   currentUser$ = this.currentUserSubject.asObservable();
 
-  // --- Helpers to handle storage ---
+  private API_URL = 'http://localhost:8080/api/v1/auth';
+  private API_BASE_URL = 'http://localhost:8080/api/v1';
+
+/**
+   * Helper function to perform authenticated API calls.
+   * @param endpoint The API endpoint (e.g., 'reports').
+   * @param options The standard fetch options.
+   * @returns A promise that resolves to the API response.
+   */
+  public async authenticatedFetch(endpoint: string, options: RequestInit = {}): Promise<Response> {
+    const token = localStorage.getItem('authToken');
+
+    const headers: Record<string, string> = {
+      ...(options.headers as Record<string, string> ?? {}),
+      'Content-Type': 'application/json',
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return fetch(`${this.API_BASE_URL}/${endpoint}`, { ...options, headers });
+  }
+
+
   private getStoredUser(): User | null {
-    const userJson = localStorage.getItem('authUser');
-    return userJson ? JSON.parse(userJson) : null;
+    const token = localStorage.getItem('authToken');
+    if (!token || token.split('.').length !== 3) {
+      return null;
+    }
+    try {
+      const decoded: any = jwtDecode(token);
+      return {
+        userId: decoded.userId,
+        email: decoded.sub,
+        role: decoded.role,
+      };
+    } catch (e) {
+      console.error('Invalid token', e);
+      return null;
+    }
   }
 
   private checkLoginStatus(): boolean {
-    return this.getStoredUser() !== null;
+    const token = localStorage.getItem('authToken');
+    return !!token && !this.isTokenExpired(token);
   }
 
-  // --- Login logic with separate accounts ---
-  login(username: string, password: string): boolean {
-    let user: User | null = null;
-
-    if (username === 'admin' && password === 'password') {
-      user = { username: 'admin', role: 'admin' };
-    } else if (username === 'analyst' && password === 'password') {
-      user = { username: 'analyst', role: 'analyst' };
-    } else if (username === 'restricted_analyst' && password === 'password') {
-      user = { username: 'restricted_analyst', role: 'restricted_analyst' };
-    }
-
-    if (user) {
-      localStorage.setItem('authUser', JSON.stringify(user));
-      this.currentUserSubject.next(user);
-      this.isLoggedInSubject.next(true);
+  private isTokenExpired(token: string): boolean {
+    try {
+      const decoded: any = jwtDecode(token);
+      const expirationDate = new Date(decoded.exp * 1000);
+      return expirationDate.getTime() < new Date().getTime();
+    } catch (e) {
       return true;
     }
+  }
 
-    return false;
+  async login(email: string, password: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.API_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) return false;
+
+      const { token } = await response.json();
+      localStorage.setItem('authToken', token);
+
+      const user = this.getStoredUser();
+      this.currentUserSubject.next(user);
+      this.isLoggedInSubject.next(true);
+
+      return true;
+    } catch (error) {
+      console.error('Login failed', error);
+      return false;
+    }
   }
 
   logout(): void {
-    localStorage.removeItem('authUser');
+    localStorage.removeItem('authToken');
     this.currentUserSubject.next(null);
     this.isLoggedInSubject.next(false);
   }
 
-  // --- Keep old style helper functions ---
   isLoggedIn(): boolean {
     return this.isLoggedInSubject.value;
   }

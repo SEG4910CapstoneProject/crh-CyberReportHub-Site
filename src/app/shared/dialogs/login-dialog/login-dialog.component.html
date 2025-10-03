@@ -8,8 +8,8 @@
       [dynamicHintSection]="true"
       [label]="'login.account' | translate"
       [ariaLabel]="'login.account' | translate"
-      [(ngModel)]="username"
-      name="username">
+      [(ngModel)]="email"
+      name="email">
     </crh-text-input>
 
     <crh-text-input
@@ -28,6 +28,6 @@
     class="login-dialog-footer"
     [confirmButtonText]="'login.login' | translate"
     (_onCancelPressed)="onCancel()"
-    (_onConfirmPressed)="login()">
+    (_onConfirmPressed)="onLogin()">
   </crh-confirm-cancel-buttons>
 </crh-dialog>
