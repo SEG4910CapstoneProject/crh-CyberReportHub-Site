@@ -72,6 +72,7 @@ export class AuthService {
       const expirationDate = new Date(decoded.exp * 1000);
       return expirationDate.getTime() < new Date().getTime();
     } catch (e) {
+      console.error('Error decoding token', e);
       return true;
     }
   }
