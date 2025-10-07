@@ -97,14 +97,14 @@ export class ArticleService {
     return headers;
   }
 
-  getMyFavourites() {
+  getMyFavourites(): Observable<Article[]> {
     return this.http.get<Article[]>(
       `http://localhost:8080/api/v1/favourites`,
       { headers: this.getAuthHeaders() }
     );
   }
 
-  addFavourite(articleId: string) {
+  addFavourite(articleId: string): Observable<any> {
     return this.http.post(
       `http://localhost:8080/api/v1/favourites/${articleId}`,
       {},
@@ -112,7 +112,7 @@ export class ArticleService {
     );
   }
 
-  removeFavourite(articleId: string) {
+  removeFavourite(articleId: string): Observable<any> {
     return this.http.delete(
       `http://localhost:8080/api/v1/favourites/${articleId}`,
       { headers: this.getAuthHeaders() }
