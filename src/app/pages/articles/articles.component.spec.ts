@@ -45,6 +45,10 @@ class MockArticleService {
   getArticlesOfNote = jest.fn().mockReturnValue(of(mockArticlesOfNote));
   chooseArticleOfNote = jest.fn().mockReturnValue(of({ success: true }));
   incrementViewCount = jest.fn().mockReturnValue(of({ success: true }));
+
+  addFavourite = jest.fn().mockReturnValue(of({ success: true }));
+  removeFavourite = jest.fn().mockReturnValue(of({ success: true }));
+  getMyFavourites = jest.fn().mockReturnValue(of([]));
 }
 
 class MockAuthService {
