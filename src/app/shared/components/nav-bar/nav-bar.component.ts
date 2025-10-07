@@ -103,11 +103,6 @@ export class NavBarComponent implements OnInit {
   private linkReportsTranslationSignal = toSignal(
     this.translateService.getTranslationFromKeyAsStream('navBar.link.reports')
   );
-  private linkReportStatsTranslationSignal = toSignal(
-    this.translateService.getTranslationFromKeyAsStream(
-      'navBar.link.reportStats'
-    )
-  );
   protected langSelectTranslationSignal = toSignal(
     this.translateService.getTranslationFromKeyAsStream('navBar.langChange')
   );
@@ -133,12 +128,6 @@ export class NavBarComponent implements OnInit {
         label: this.linkReportsTranslationSignal(),
         path: '/reports',
       },
-      {
-        id: 'reportStats',
-        label: this.linkReportStatsTranslationSignal(),
-        path: '/reports/statistics',
-      },
-
       {
         id: 'articles',
         label: 'Articles',

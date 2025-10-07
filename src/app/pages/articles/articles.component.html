@@ -59,7 +59,7 @@
 
         <!-- Show 'See More' or 'See Less' button depending on whether the full list is visible -->
         <button
-          *ngIf="articlesToShow[category] === 3"
+          *ngIf="articlesToShow[category] === 3 && (articlesByCategory[category]?.length ?? 0) > 3"
           (click)="toggleArticles(category)"
           class="see-more-btn">
           See More
