@@ -17,8 +17,8 @@
     </div>
   </div>
 
-  <!-- Logo, Colors - Only Visible if Logged In -->
-  <div *ngIf="isLoggedIn()" class="settings-section">
+  <!-- Logo, Colors - Only Visible if Admin is logged In -->
+  <div *ngIf="userRole() === 'admin'" class="settings-section">
     <h2>{{ 'settings.report' | translate }}</h2>
 
     <form [formGroup]="form" (ngSubmit)="saveSettings()">
