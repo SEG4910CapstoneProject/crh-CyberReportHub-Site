@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 export interface Article {
   articleId: string;
@@ -26,6 +27,8 @@ export interface ArticleOfNote {
   url: string;
   articleId: string;
   title: string;
+  publishDate?: string;
+  description?: string;
 }
 
 @Injectable({
@@ -84,4 +87,37 @@ export class ArticleService {
   getArticleByLink(link: string): Observable<any> {
     return this.http.get<any>(`/api/articles?link=${link}`);
   }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('authToken');
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
+  }
+
+  getMyFavourites(): Observable<Article[]> {
+    return this.http.get<Article[]>(
+      `http://localhost:8080/api/v1/favourites`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  addFavourite(articleId: string): Observable<any> {
+    return this.http.post(
+      `http://localhost:8080/api/v1/favourites/${articleId}`,
+      {},
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  removeFavourite(articleId: string): Observable<any> {
+    return this.http.delete(
+      `http://localhost:8080/api/v1/favourites/${articleId}`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+
 }

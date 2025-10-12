@@ -13,11 +13,7 @@ h3 {
   margin: 0;
   color: var(--crh-accent-links-color);
   width: fit-content;
-
-  &:hover {
-    color: var(--crh-primary-highlight-color);
-    cursor: pointer;
-  }
+  padding: size(8);
 }
 
 .report-result-email-status {
@@ -25,6 +21,7 @@ h3 {
   flex-direction: row;
   gap: size(4);
   color: var(--crh-base-text-color);
+  padding: size(4);
 
   .report-status-text {
     @include text('paragraph-emphasized');
@@ -42,5 +39,46 @@ h3 {
 
   .report-result-not-sent {
     color: var(--crh-error-color);
+  }
+}
+
+.report-card {
+  max-width: size(400);
+  box-shadow: 0px 4px 8px 0px var(--crh-card-color-shadow);
+}
+
+.report-content {
+  padding: size(8);
+}
+
+.content-item {
+  padding: size(4);
+}
+
+.btn-actions {
+  display: flex;
+  gap: size(16);
+}
+
+.action-btn {
+  z-index: 0;
+}
+
+button.delete-btn {
+  color: var(--crh-primary-contrast-color);
+  background-color: var(--crh-error-color);
+  &:hover {
+    background-color: var(--crh-primary-contrast-color);
+    color: var(--crh-error-color);
+  }
+}
+
+button.view-btn {
+  color: var(--crh-success-color);
+  background-color: var(--crh-primary-contrast-color);
+  &:hover {
+    // inverting the logic
+    background-color: var(--crh-success-color);
+    color: var(--crh-primary-contrast-color);
   }
 }
