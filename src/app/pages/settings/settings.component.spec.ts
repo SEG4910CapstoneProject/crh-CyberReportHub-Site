@@ -33,10 +33,7 @@ describe('SettingsComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [SettingsComponent],
-      imports: [
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: DarkModeService, useValue: mockDarkMode },
@@ -64,7 +61,7 @@ describe('SettingsComponent', () => {
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
 
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    jest.spyOn(console, 'warn').mockImplementation(jest.fn());
     component.ngOnInit();
     expect(component.form.value.primaryColor).toBe('#000000');
     expect(component.preview()).toBe('logo.png');
@@ -72,9 +69,10 @@ describe('SettingsComponent', () => {
 
   it('should handle corrupted JSON gracefully', () => {
     localStorage.setItem(STORAGE_KEY, '{badjson');
-    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-    jest.spyOn(component as any, 'loadBrandingSettings').mockImplementation(() => {});
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
+    jest
+      .spyOn(component as any, 'loadBrandingSettings')
+      .mockImplementation(jest.fn());
     component.ngOnInit();
     expect(warnSpy).toHaveBeenCalled();
     warnSpy.mockRestore();
@@ -129,7 +127,7 @@ describe('SettingsComponent', () => {
       accentColor: '#abc',
     });
     component.preview.set('logo123');
-    jest.spyOn(window, 'alert').mockImplementation(() => {});
+    jest.spyOn(window, 'alert').mockImplementation(jest.fn());
 
     component.saveSettings();
 

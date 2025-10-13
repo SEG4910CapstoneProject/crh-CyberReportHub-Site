@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule, FormBuilder } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ReportArticlesComponent } from './report-articles.component';
 import { ArticleService } from '../../../shared/services/article.service';
@@ -10,7 +10,6 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { ReportsService } from '../../../shared/sdk/rest-api/api/reports.service';
 import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
 import { Dialog } from '@angular/cdk/dialog';
-import { EditStatisticDialogComponent } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.component';
 
 describe('ReportArticlesComponent', () => {
   let fixture: ComponentFixture<ReportArticlesComponent>;

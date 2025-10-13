@@ -13,14 +13,14 @@ describe('BrandingService', () => {
     setItemSpy = jest.spyOn(localStorage['__proto__'], 'setItem');
     getItemSpy = jest.spyOn(localStorage['__proto__'], 'getItem');
     removeItemSpy = jest.spyOn(localStorage['__proto__'], 'removeItem');
-    setItemSpy.mockImplementation(() => {});
+    setItemSpy.mockImplementation(jest.fn());
     getItemSpy.mockImplementation(() => null);
-    removeItemSpy.mockImplementation(() => {});
+    removeItemSpy.mockImplementation(jest.fn());
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
-    document.head.innerHTML = ''; 
+    document.head.innerHTML = '';
   });
 
   it('should be created', () => {
@@ -41,7 +41,7 @@ describe('BrandingService', () => {
 
     it('should handle JSON parse error gracefully', () => {
       getItemSpy.mockReturnValue('invalid-json');
-      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
 
       service.init();
 
