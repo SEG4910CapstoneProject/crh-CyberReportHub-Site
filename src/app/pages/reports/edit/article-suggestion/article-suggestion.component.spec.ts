@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ArticleSuggestionComponent } from './article-suggestion.component';
+import { IconButtonComponent } from '../../../../shared/components/icon-button/icon-button.component';
 
 describe('ArticleSuggestionComponent', () => {
   let component: ArticleSuggestionComponent;
@@ -8,7 +8,7 @@ describe('ArticleSuggestionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArticleSuggestionComponent],
+      declarations: [ArticleSuggestionComponent, IconButtonComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ArticleSuggestionComponent);
