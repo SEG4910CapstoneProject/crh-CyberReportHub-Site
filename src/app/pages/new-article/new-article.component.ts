@@ -19,6 +19,7 @@ export class NewArticleComponent {
     viewCount: 0,
     isArticleOfNote: false,
   };
+  articleForm: any;
 
   constructor(private articleService: ArticleService) {}
 
