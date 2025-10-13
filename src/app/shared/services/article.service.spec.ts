@@ -4,7 +4,6 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { ArticleService, Article } from './article.service';
-import { HttpHeaders } from '@angular/common/http';
 
 describe('ArticleService', () => {
   let service: ArticleService;
