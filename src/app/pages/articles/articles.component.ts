@@ -140,7 +140,7 @@ export class ArticlesComponent implements OnInit {
             url: article.link,
             articleId: article.articleId,
           };
-          this.articlesOfNote.push(articleOfNote);
+          this.articlesOfNote?.push(articleOfNote);
         } else {
           // Remove from Articles of Note
           const index = this.articlesOfNote.findIndex(
