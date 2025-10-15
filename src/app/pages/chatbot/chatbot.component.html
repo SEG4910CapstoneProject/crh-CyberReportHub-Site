@@ -1,1 +1,29 @@
-<p>chatbot works!</p>
+<div class="home-container">
+  <div class="box chatbot">
+    <div class="box-header">
+      <h2>Cyber Report Chatbot</h2>
+    </div>
+
+    <!-- Chat window -->
+    <div class="chat-window">
+      <div *ngFor="let msg of messages()"
+           [ngClass]="msg.sender === 'user' ? 'user' : 'bot'">
+        <div class="message-bubble">
+          {{ msg.text }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Text input area -->
+    <div class="chat-input">
+      <input
+        type="text"
+        [ngModel]="userMessage()"
+        (ngModelChange)="userMessage.set($event)"
+        (keydown.enter)="sendMessage()"
+        placeholder="Type your message..."
+      />
+      <button (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>

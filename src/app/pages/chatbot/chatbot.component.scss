@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  background: #f4f4f4;
+}
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+}
+
+/* Chatbot box */
+.box.chatbot {
+  width: 80%;
+  height: 80vh;
+  max-width: 1000px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Chatbot header */
+.box-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+  background-color: #007bff;
+  color: #fff;
+  border-bottom: 1px solid #ddd;
+
+  h2 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+}
+
+/* Chat window scrolls if messages overflow */
+.chat-window {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .user,
+  .bot {
+    display: flex;
+  }
+
+  .user {
+    justify-content: flex-end;
+  }
+
+  .bot {
+    justify-content: flex-start;
+  }
+
+  .message-bubble {
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    line-height: 1.4;
+    font-size: 0.95rem;
+  }
+
+  .user .message-bubble {
+    background-color: #007bff;
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  .bot .message-bubble {
+    background-color: #e9ecef;
+    color: #333;
+    border-bottom-left-radius: 4px;
+  }
+}
+
+/* Text input box stays visible, no need to scroll */
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ddd;
+  background-color: #fafafa;
+  padding: 10px;
+
+  input {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 0.95rem;
+    margin-right: 8px;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
