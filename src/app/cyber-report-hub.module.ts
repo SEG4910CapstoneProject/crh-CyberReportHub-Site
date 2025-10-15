@@ -126,7 +126,6 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     ConfirmCancelButtonsComponent,
     ArticleSuggestionComponent,
     NewArticleComponent,
-    ChatbotComponent,
     ArticlesComponent,
     ReportPreviewComponent,
     ReportNewComponent,
@@ -151,6 +150,7 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     MatNativeDateModule,
     MatIconModule,
     MatCardModule,
+    ChatbotComponent,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
