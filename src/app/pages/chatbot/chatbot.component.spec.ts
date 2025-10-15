@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChatbotComponent } from './chatbot.component';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 describe('ChatbotComponent', () => {
