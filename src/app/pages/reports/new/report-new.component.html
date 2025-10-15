@@ -4,21 +4,26 @@
   <form *ngIf="form" [formGroup]="form">
     <div class="form-section">
       <label>{{ 'reportNew.type' | translate }}:</label>
-      <select formControlName="reportType">
-        <option value="DAILY">{{ 'reportNew.daily' | translate }}</option>
-        <option value="WEEKLY">{{ 'reportNew.weekly' | translate }}</option>
-        <option value="MONTHLY">{{ 'reportNew.monthly' | translate }}</option>
-      </select>
+      <mat-form-field>
+        <mat-select formControlName="reportType" placeholder="Report Type">
+          <mat-option value=""></mat-option>
+          <mat-option value="DAILY">{{ 'reportNew.daily' | translate }}</mat-option>
+          <mat-option value="WEEKLY">{{ 'reportNew.weekly' | translate }}</mat-option>
+          <mat-option value="MONTHLY">{{ 'reportNew.monthly' | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div class="form-section">
-      <label>{{ 'reportNew.template' | translate }}:</label>
-      <select formControlName="templateType">
-        <option value="byType">{{ 'reportNew.bytype' | translate }}</option>
-        <option value="chatbotSummaries">
-          {{ 'reportNew.chatbot' | translate }}
-        </option>
-      </select>
+      <h4>{{ 'reportNew.template' | translate }}:</h4>
+      <div class="form-email-container">
+        <crh-crh-email-template-card 
+          *ngFor="let template of email_templates" 
+          template_type={{template}} 
+          (choosen_template)="set_email_template($event)" 
+          selected_email_template="{{choosen_email_template}}">
+        </crh-crh-email-template-card>
+      </div>
     </div>
 
     <div class="form-actions">

@@ -1,0 +1,68 @@
+@use 'style-utils' as *;
+
+// Non confidential template and common styling
+.email-template-card {
+    width: size(200);
+    height: size(200);
+    .template-card {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        .overlay-container {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            background: linear-gradient(to bottom, var(--crh-primary-color),var(--crh-primary-highlight-color));
+            width: 100%;
+            height: 100%;
+            transition: opacity 200ms ease-in-out;
+            border-radius: size(10) ;
+        }
+
+        .overlay-text {
+            color: var(--crh-primary-contrast-color);
+            line-height: size(25);
+            padding: size(4);
+        }
+    }
+
+    .template-card:hover .overlay-container {
+        opacity: 1;
+        cursor: pointer;
+    }
+}
+
+.template-card.selected {
+    border: size(4) solid var(--crh-primary-highlight-color);
+}
+
+.article-item {
+    padding: size(8);
+}
+
+.article-title {
+    @include text('heading-3');
+    color: var(--crh-primary-color);
+}
+
+// Confidential template
+
+.template-card-restricted {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lock-logo {
+    display: flex;
+    justify-content: center;
+    font-size: size(64);
+}
+
+.confidential-message {
+    @include text('heading-3');
+    color: var(--crh-error-color);
+}
+
