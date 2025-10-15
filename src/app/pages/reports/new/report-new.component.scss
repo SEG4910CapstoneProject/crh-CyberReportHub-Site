@@ -1,3 +1,5 @@
+@use 'style-utils' as *;
+
 .report-new {
   font-family: Arial, sans-serif;
   padding: 24px;
@@ -253,4 +255,11 @@ body.dark-mode .add-button {
 
 body.dark-mode .add-button:hover {
   background-color: #388e3c;
+}
+
+.form-email-container {
+  display: flex;
+  flex-direction: row;
+  gap: size(32);
+  flex-wrap: wrap;
 }

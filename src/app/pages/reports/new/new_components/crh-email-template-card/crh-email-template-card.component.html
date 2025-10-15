@@ -1,0 +1,57 @@
+<div *ngIf="this.template_type() === 'non_restricted'" 
+    class="email-template-card" 
+    (click)="chooseTemplate(this.template_type())" 
+    > 
+    <!-- the ngClass below controls when we select a certain option, if a card is selected then the border becomes different. -->
+    <mat-card
+        class="template-card"
+        appearance="outlined"
+        [ngClass]="{'selected':this.selected_email_template() === 'non_restricted'}">
+        <mat-card-content>
+            <div class="email_example">
+                <div class="article-item">
+                    <div class="article-title">
+                        article-title-1
+                    </div>
+
+                    <div class="article-summary">
+                        article-summary-1
+                    </div>
+                </div>
+
+                <div class="article-item">
+                    <div class="article-title">
+                        article-title-2
+                    </div>
+
+                    <div class="article-summary">
+                        article-summary-2
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <div class="overlay-container">
+            <div class="overlay-text">A non restricted template that lists articles and their AI generated summaries</div>
+        </div>
+    </mat-card>
+</div>
+
+
+<div *ngIf="this.template_type() === 'restricted'" 
+    class="email-template-card" 
+    (click)="chooseTemplate(this.template_type())">
+    <mat-card
+        class="template-card template-card-restricted"
+        appearance="outlined"
+        [ngClass]="{'selected':this.selected_email_template() === 'restricted'}">
+        <mat-card-content class="confidential_template_content">
+            <span class="lock-logo material-symbols-outlined">
+                visibility_lock
+            </span>
+            <div class="confidential-message">CONFIDENTIAL</div>
+        </mat-card-content>
+        <div class="overlay-container">
+            <div class="overlay-text">A restricted domain specific template only for those who have access.</div>
+        </div>
+    </mat-card>
+</div>

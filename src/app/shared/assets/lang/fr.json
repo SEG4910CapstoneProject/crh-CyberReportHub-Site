@@ -83,7 +83,7 @@
 
   "reportNew.header": "Créer un Nouveau Rapport",
   "reportNew.type": "Type de Rapport",
-  "reportNew.template": "Type de Modèle",
+  "reportNew.template": "Type de Modèle d'Email",
   "reportNew.daily": "Quotidien",
   "reportNew.weekly": "Hebdomadaire",
   "reportNew.monthly": "Mensuel",
@@ -123,5 +123,8 @@
   "dialog.editStat.field.statistic": "Statistiques",
   "dialog.editStat.field.statistic.numericHint": "Le champ doit être un nombre",
   "dialog.editStat.field.title": "Titre",
-  "dialog.editStat.field.subtitle": "Sous-titre"
+  "dialog.editStat.field.subtitle": "Sous-titre",
+
+  "dialog.error_message_incomplete_fields":"Vous devez compléter tous les champs requis.",
+  "dialog.error_message_ok":"D'accord"
 }

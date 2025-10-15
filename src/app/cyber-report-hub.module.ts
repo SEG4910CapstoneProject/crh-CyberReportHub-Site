@@ -1,4 +1,4 @@
-import { APP_INITIALIZER } from '@angular/core';
+import { APP_INITIALIZER } from '@angular/core'; // DEPRECATED
 import { BrandingService } from './shared/services/branding.service';
 import { NgModule } from '@angular/core';
 import { routes } from './app.routes';
@@ -76,6 +76,8 @@ import { SettingsComponent } from './pages/settings/settings.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
 import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
+import { CrhEmailTemplateCardComponent } from './pages/reports/new/new_components/crh-email-template-card/crh-email-template-card.component';
+import { ErrorDialogComponent } from './shared/dialogs/error-dialog/error-dialog.component';
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
@@ -131,6 +133,8 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     ReportArticlesComponent,
     SettingsComponent,
     ProgressSpinnerComponent,
+    CrhEmailTemplateCardComponent,
+    ErrorDialogComponent,
   ],
   imports: [
     RouterModule,
@@ -170,7 +174,7 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     provideAnimationsAsync(),
     LuxonDateFormatterPipe,
     {
-      provide: APP_INITIALIZER,
+      provide: APP_INITIALIZER,// DEPRECATED
       useFactory: initBrandingFactory,
       deps: [BrandingService],
       multi: true,

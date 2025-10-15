@@ -83,7 +83,7 @@
 
   "reportNew.header": "Create New Report",
   "reportNew.type": "Report Type",
-  "reportNew.template": "Template Type",
+  "reportNew.template": "Email Template Type",
   "reportNew.daily": "Daily",
   "reportNew.weekly": "Weekly",
   "reportNew.monthly": "Monthly",
@@ -123,5 +123,9 @@
   "dialog.editStat.field.statistic": "Statistic",
   "dialog.editStat.field.statistic.numericHint": "Field must be a number",
   "dialog.editStat.field.title": "Title",
-  "dialog.editStat.field.subtitle": "Subtitle"
+  "dialog.editStat.field.subtitle": "Subtitle",
+
+  "dialog.error_message_incomplete_fields":"You must complete all the required fields.",
+  "dialog.error_message_ok":"ok"
+
 }
