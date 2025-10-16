@@ -4,7 +4,7 @@ import { ColorsService } from '../../services/colors.service';
 @Component({
   selector: 'crh-icon-button',
   templateUrl: './icon-button.component.html',
-  styleUrl: './icon-button.component.scss',
+  styleUrls: ['./icon-button.component.scss'],
   standalone: false,
 })
 export class IconButtonComponent {

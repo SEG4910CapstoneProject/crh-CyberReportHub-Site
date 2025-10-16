@@ -17,38 +17,37 @@
     </div>
   </div>
 
-  <!-- Logo, Colors - Only Visible if Logged In -->
-  <div *ngIf="isLoggedIn()" class="settings-section">
+  <div *ngIf="userRole() === 'admin'" class="settings-section">
     <h2>{{ 'settings.report' | translate }}</h2>
 
-    <div class="form-section">
-      <label>{{ 'settings.primary' | translate }}:</label>
-      <input type="color" formControlName="primaryColor" />
-    </div>
+    <form [formGroup]="form" (ngSubmit)="saveSettings()">
+      <div class="form-section">
+        <label>{{ 'settings.primary' | translate }}:</label>
+        <input type="color" formControlName="primaryColor" />
+      </div>
 
-    <div class="form-section">
-      <label>Logo:</label>
-      <input type="file" accept="image/*" (change)="handleLogoUpload($event)" />
+      <div class="form-section">
+        <label>{{ 'settings.accent' | translate }}:</label>
+        <input type="color" formControlName="accentColor" />
+      </div>
 
-      <div *ngIf="logoToSave()" style="margin-top: 8px">
-        <span>Preview:</span><br />
-        <img [src]="logoToSave()!" alt="Logo preview" class="logo-preview" />
-
-        <button
-          *ngIf="logoToSave()"
-          type="button"
-          class="remove-logo-button"
-          (click)="onClearlogo()">
+      <div class="form-section">
+        <label>Logo:</label>
+        <input type="file" accept="image/*" (change)="handleLogoUpload($event)" />
+        <div *ngIf="logoToSave()" style="margin-top: 8px;">
+          <span>Preview:</span><br />
+          <img [src]="logoToSave()!" alt="Logo preview" style="max-height:60px" />
+        </div>
+        <button type="button" class="secondary" (click)="onClearlogo()" style="margin-top:8px">
           Remove logo
         </button>
       </div>
-    </div>
 
-
-    <div class="form-actions">
-      <button class="save-button" (click)="saveSettings()">
-        {{ 'settings.save' | translate }}
-      </button>
-    </div>
+      <div class="form-actions">
+        <button class="save-button" type="submit">
+          {{ 'settings.save' | translate }}
+        </button>
+      </div>
+    </form>
   </div>
 </div>

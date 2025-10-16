@@ -121,32 +121,5 @@
         text-align: center;
       }
     }
-
-    .favourites-list,
-    .articles-of-note-list {
-      list-style: none;
-      padding-left: 0;
-
-      .favourite-item,
-      .article-of-note-item {
-        padding: 10px;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-      }
-
-      .favourite-link,
-      .article-of-note-link {
-        font-size: 16px;
-        color: #007bff;
-        text-decoration: none;
-
-        &:hover {
-          color: #0056b3;
-        }
-      }
-    }
   }
 }

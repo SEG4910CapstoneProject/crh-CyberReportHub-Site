@@ -15,7 +15,6 @@ const STORAGE_KEY = 'brandingSettings';
 export class SettingsComponent implements OnInit {
   // State signals
   protected isDarkMode = signal(false);
-  protected isLoggedIn = signal(false);
   form: FormGroup = new FormGroup({});
 
   // Inject dependencies
@@ -23,6 +22,7 @@ export class SettingsComponent implements OnInit {
   private authService = inject(AuthService);
   private darkModeService = inject(DarkModeService);
   private branding = inject(BrandingService);
+  protected userRole = signal<string | null>(null);
 
   // live preview (falls back to saved logo)
   preview = signal<string | null>(null);
@@ -56,9 +56,9 @@ export class SettingsComponent implements OnInit {
     this.darkModeService.isDarkMode$.subscribe(mode =>
       this.isDarkMode.set(mode)
     );
-    this.authService.isLoggedIn$.subscribe(status =>
-      this.isLoggedIn.set(status)
-    );
+    this.authService.currentUser$.subscribe(user => {
+        this.userRole.set(user?.role ?? null);
+      });
 
     // Load saved branding settings
     this.loadBrandingSettings();

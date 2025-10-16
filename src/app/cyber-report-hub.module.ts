@@ -48,6 +48,7 @@ import { StatsCardDiagramComponent } from './shared/components/stats-card-diagra
 import { ReportSearchComponent } from './pages/report-search/report-search.component';
 import { ReportResultComponent } from './pages/report-search/report-result/report-result.component';
 import { ProgressSpinnerComponent } from './shared/components/progress-spinner/progress-spinner.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReportLayoutComponent } from './pages/reports/layout/report-layout.component';
 import { ReportViewComponent } from './pages/reports/view/report-view.component';
 import { ReportEditComponent } from './pages/reports/edit/report-edit.component';
@@ -123,12 +124,12 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     ConfirmCancelButtonsComponent,
     ArticleSuggestionComponent,
     NewArticleComponent,
-    ChatbotComponent,
     ArticlesComponent,
     ReportPreviewComponent,
     ReportNewComponent,
     ReportArticlesComponent,
     SettingsComponent,
+    ProgressSpinnerComponent,
   ],
   imports: [
     RouterModule,
@@ -145,6 +146,7 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     MatNativeDateModule,
     MatIconModule,
     MatCardModule,
+    ChatbotComponent,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -160,6 +162,7 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     MaterialModule,
     CdkModule,
     CrhTableModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     provideRouter(routes),

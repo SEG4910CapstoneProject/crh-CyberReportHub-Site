@@ -12,7 +12,7 @@ export class LoginDialogComponent {
   private authService = inject(AuthService);
   private dialogRef = inject(DialogRef<unknown, boolean>);
 
-  protected username = '';
+  protected email = '';
   protected password = '';
 
   //covered password
@@ -21,11 +21,14 @@ export class LoginDialogComponent {
     this.showPassword = !this.showPassword;
   }
 
-  public login(): void {
-    if (this.authService.login(this.username, this.password)) {
+  async onLogin(): Promise<void> {
+    const success = await this.authService.login(this.email, this.password);
+
+    if (success) {
       this.dialogRef.close(true);
+      console.log('Login successful!');
     } else {
-      alert('Invalid credentials');
+      console.error('Login failed');
     }
   }
 

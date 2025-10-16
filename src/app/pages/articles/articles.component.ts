@@ -31,12 +31,18 @@ export class ArticlesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Track logged-in status using signal
+    // Track login status
     this.authService.isLoggedIn$.subscribe(status => {
-      console.log('Is Logged In:', status); // Debugging login status
-      this.isLoggedIn.set(status); // Update the signal with the current login status
+      console.log('Is Logged In:', status);
+      this.isLoggedIn.set(status);
+      if (status) {
+        this.fetchFavourites();
+      } else {
+        this.favouriteArticles = [];
+      }
     });
 
+    // Load all articles
     this.articleService.getAllArticleTypesWithArticles(30).subscribe({
       next: response => {
         this.articlesByCategory = response;
@@ -92,32 +98,43 @@ export class ArticlesComponent implements OnInit {
 
   // Add or remove article from favourites
   toggleFavourite(article: Article): void {
-    if (!this.isLoggedIn()) return; // Prevent non-logged-in users from adding to favourites
+    if (!this.isLoggedIn()) return;
 
-    const index = this.favouriteArticles.findIndex(
-      fav => fav.articleId === article.articleId
-    );
-    if (index !== -1) {
-      // If the article is already a favourite, remove it
-      this.favouriteArticles.splice(index, 1);
+    const isFav = this.isFavourite(article);
+
+    if (isFav) {
+      this.articleService.removeFavourite(article.articleId).subscribe({
+        next: () => {
+          this.favouriteArticles = this.favouriteArticles.filter(
+            fav => fav.articleId !== article.articleId
+          );
+          console.log('Removed from favourites:', article.title);
+        },
+        error: err => console.error('Error removing favourite:', err),
+      });
     } else {
-      // Otherwise, add it to favourites
-      this.favouriteArticles?.push(article);
+      this.articleService.addFavourite(article.articleId).subscribe({
+        next: () => {
+          this.favouriteArticles.push(article);
+          console.log('Added to favourites:', article.title);
+        },
+        error: err => console.error('Error adding favourite:', err),
+      });
     }
   }
 
   // Add or remove article from Articles of Note
   toggleArticleOfNote(article: Article, event: any): void {
-    if (!this.isLoggedIn()) return; // Prevent non-logged-in users from adding to Articles of Note
+    if (!this.isLoggedIn()) return; // Prevent non-logged-in users from changing it
 
     const isChecked = event.target.checked;
     this.articleService.chooseArticleOfNote(article.articleId).subscribe({
       next: response => {
         console.log('Article of Note status toggled', response);
-        article.isArticleOfNote = isChecked; // Update the status locally
+        article.isArticleOfNote = isChecked;
 
         if (isChecked) {
-          // If checked, add to Articles of Note
+          // Add to Articles of Note
           const articleOfNote: ArticleOfNote = {
             title: article.title,
             url: article.link,
@@ -125,14 +142,25 @@ export class ArticlesComponent implements OnInit {
           };
           this.articlesOfNote?.push(articleOfNote);
         } else {
-          // If unchecked, remove from Articles of Note
+          // Remove from Articles of Note
           const index = this.articlesOfNote.findIndex(
-            (note: ArticleOfNote) => note.url === article.link
+            note => note.url === article.link
           );
-          if (index !== -1) {
-            this.articlesOfNote.splice(index, 1);
-          }
+          if (index !== -1) this.articlesOfNote.splice(index, 1);
         }
+      },
+      error: error => {
+        console.error('Error toggling article of note:', error);
+      },
+    });
+  }
+
+  // Fetch favourites for the current user
+  fetchFavourites(): void {
+    this.articleService.getMyFavourites().subscribe({
+      next: (articles: Article[]) => {
+        console.log('Fetched favourites:', articles);
+        this.favouriteArticles = articles;
       },
       error: error => {
         console.error('Error toggling article of note:', error);

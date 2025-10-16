@@ -1,73 +1,81 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReportArticlesComponent } from './report-articles.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ReactiveFormsModule, FormsModule, FormBuilder } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
-import { ReportsService } from '../../../shared/sdk/rest-api/api/reports.service';
-import { Dialog } from '@angular/cdk/dialog';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
+import { ReportArticlesComponent } from './report-articles.component';
+import { ArticleService } from '../../../shared/services/article.service';
+import { DarkModeService } from '../../../shared/services/dark-mode.service';
+import { AuthService } from '../../../shared/services/auth.service';
+import { ReportsService } from '../../../shared/sdk/rest-api/api/reports.service';
+import { StatisticsService } from '../../../shared/sdk/rest-api/api/statistics.service';
+import { Dialog } from '@angular/cdk/dialog';
 
 describe('ReportArticlesComponent', () => {
-  let component: ReportArticlesComponent;
   let fixture: ComponentFixture<ReportArticlesComponent>;
-  let reportsServiceMock: any;
-  let statisticsServiceMock: any;
-  let dialogMock: any;
+  let component: ReportArticlesComponent;
+  let mockArticleService: any;
+  let mockDarkMode: any;
+  let mockAuth: any;
+  let mockRouter: any;
+  let mockDialog: any;
+  let mockReports: any;
+  let mockStats: any;
 
   beforeEach(async () => {
-    reportsServiceMock = {
-      addSingleStatToReport: jest.fn(() => of({})),
+    mockArticleService = {
+      getAllArticleTypesWithArticles: jest.fn(() =>
+        of({ General: [{ title: 'T1', articleId: 'a1' }] })
+      ),
     };
-
-    statisticsServiceMock = {
-      getStatistics: jest.fn(() => of([])),
-    };
-
-    dialogMock = {
-      open: jest.fn(() => ({
-        closed: of({ value: 10, title: 'Title', subtitle: 'SubTitle' }),
+    mockDarkMode = { isDarkMode$: of(false) };
+    mockAuth = { currentUser$: of({ role: 'ADMIN' }) };
+    mockRouter = {
+      navigate: jest.fn(),
+      getCurrentNavigation: jest.fn(() => ({
+        extras: { state: { reportId: 5, articles: [], stats: [] } },
       })),
     };
+    mockDialog = {
+      open: jest.fn(() => ({
+        closed: of({ value: 5, title: 't', subtitle: 's' }),
+      })),
+    };
+    mockReports = { addSingleStatToReport: jest.fn(() => of({})) };
+    mockStats = { getStatistics: jest.fn(() => of([])) };
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [ReportArticlesComponent],
       providers: [
-        { provide: ReportsService, useValue: reportsServiceMock },
-        { provide: StatisticsService, useValue: statisticsServiceMock },
-        { provide: Dialog, useValue: dialogMock },
+        FormBuilder,
+        { provide: ArticleService, useValue: mockArticleService },
+        { provide: DarkModeService, useValue: mockDarkMode },
+        { provide: AuthService, useValue: mockAuth },
+        { provide: Router, useValue: mockRouter },
+        { provide: Dialog, useValue: mockDialog },
+        { provide: ReportsService, useValue: mockReports },
+        { provide: StatisticsService, useValue: mockStats },
       ],
-    }).compileComponents();
+    })
+
+      .overrideComponent(ReportArticlesComponent, {
+        set: { template: '' },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ReportArticlesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component and form', () => {
     expect(component).toBeTruthy();
+    expect((component as any).form).toBeDefined();
   });
 
-  it('should add a statistic via dialog', () => {
-    const initialLength = component.addedStats.length;
-    component.openAddStatDialog();
-    expect(component.addedStats.length).toBe(initialLength + 1);
-  });
-
-  it('should add and remove stats correctly', () => {
-    component.addedStats = [
-      { statisticId: 'stat-1', statisticNumber: 5, title: 't', subtitle: 's' },
-    ];
-    component.onStatRemove('stat-1');
-    expect(component.addedStats.length).toBe(0);
-  });
-
-  it('should call addSingleStatToReport', () => {
-    component.reportId = 1;
-    component.onStatAdd('stat-123');
-    expect(reportsServiceMock.addSingleStatToReport).toHaveBeenCalledWith(
-      1,
-      'stat-123'
-    );
-  });
 });

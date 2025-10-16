@@ -22,12 +22,13 @@
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    overflow-x: auto;
   }
 
-  /* Styles for lists inside boxes */
+  /* Lists inside boxes */
   .box ul {
-    list-style-type: disc; /* Adds bullet points */
-    padding-left: 20px; /* Indent bullets */
+    list-style-type: disc;
+    padding-left: 20px;
   }
 
   .box ul li {
@@ -38,13 +39,13 @@
   .box ul li a {
     color: #007bff;
     text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
-  .box ul li a:hover {
-    text-decoration: underline;
-  }
-
-  /* Styles for the reports table */
+  /* Table styling */
   .box table {
     width: 100%;
     border-collapse: collapse;
@@ -73,6 +74,7 @@
     color: #555;
   }
 
+  /* Header inside each box */
   .box-header {
     display: flex;
     justify-content: space-between;
@@ -84,19 +86,53 @@
 
   /* "See More" button styles */
   .see-more-button {
-    background-color: #d32f2f; /* red */
+    background-color: #d32f2f;
     color: #fff;
     padding: 8px 16px;
     border-radius: 4px;
     text-decoration: none;
     font-weight: bold;
     display: inline-block;
-  }
 
-  .see-more-button:hover {
-    background-color: #b71c1c;
+    &:hover {
+      background-color: #b71c1c;
+    }
   }
 }
+
+
+// single-column if space gets tight
+@media (max-width: 1024px) {
+  .home-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+// stack boxes fully and reduce padding
+@media (max-width: 600px) {
+  .home-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .box {
+    padding: 16px;
+  }
+
+  .box-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .see-more-button {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Most Viewed table layout */
 .most-viewed-table {
   display: flex;
   flex-direction: column;
