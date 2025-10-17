@@ -119,5 +119,8 @@ export class ArticleService {
     );
   }
 
+  ingestArticle(article: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8080/api/v1/articles/ingest', article);
+  }
 
 }

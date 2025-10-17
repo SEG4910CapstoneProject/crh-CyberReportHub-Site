@@ -20,14 +20,30 @@ label {
 }
 
 input,
-select {
-  padding: 8px;
+textarea {
+  padding: 10px;
   width: 100%;
   font-size: 1rem;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
+textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: inherit;
+  font-size: 1rem;
+  color: #888;
+  opacity: 1;
+}
+
+/* Buttons */
 button {
   background-color: #007bff;
   color: #fff;
@@ -36,6 +52,11 @@ button {
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 
 button:disabled {
