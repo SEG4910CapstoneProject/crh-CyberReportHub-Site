@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ArticleService, Article } from '../../shared/services/article.service';
+import { ArticleService } from '../../shared/services/article.service';
 
 @Component({
   selector: 'crh-new-article',
@@ -8,53 +8,38 @@ import { ArticleService, Article } from '../../shared/services/article.service';
   standalone: false,
 })
 export class NewArticleComponent {
-  article: Partial<Article> = {
-    articleId: '',
+  article = {
     title: '',
-    description: '',
-    category: '',
     link: '',
-    publishDate: '',
-    type: '',
-    viewCount: 0,
-    isArticleOfNote: false,
+    description: '',
   };
-  articleForm: any;
 
   constructor(private articleService: ArticleService) {}
 
   onSubmit(): void {
-    if (!this.article.title || !this.article.link || !this.article.type) {
-      console.error('All fields are required');
+    if (
+      !this.article.title.trim() ||
+      !this.article.link.trim() ||
+      !this.article.description.trim()
+    ) {
+      alert('Please fill in all fields before submitting.');
       return;
     }
 
-    const newArticle: Article = {
-      articleId: this.article.articleId || this.generateUUID(),
-      title: this.article.title,
-      description: this.article.description || 'No description available.',
-      category: this.article.category || 'General',
-      link: this.article.link,
-      publishDate:
-        this.article.publishDate || new Date().toISOString().split('T')[0],
-      type: this.article.type,
-      viewCount: this.article.viewCount || 0,
-      isArticleOfNote: this.article.isArticleOfNote || false,
-    };
-
-    this.articleService.addArticle(newArticle).subscribe(response => {
-      console.log('Article added:', response);
+    this.articleService.ingestArticle(this.article).subscribe({
+      next: (response) => {
+        console.log('Article submitted for ingestion:', response);
+        if (response?.message?.includes('already exists')) {
+          alert('This article already exists in the system.');
+        } else {
+          alert('Your article has been submitted and will be classified shortly.');
+        }
+        this.article = { title: '', link: '', description: '' }; // Reset form
+      },
+      error: (err) => {
+        console.error('Error submitting article:', err);
+        alert('There was an error submitting the article.');
+      },
     });
-  }
-
-  private generateUUID(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        const r = (Math.random() * 16) | 0,
-          v = c === 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      }
-    );
   }
 }

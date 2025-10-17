@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { NewArticleComponent } from './new-article.component';
@@ -11,7 +11,8 @@ describe('NewArticleComponent', () => {
 
   beforeEach(async () => {
     const mockArticleService: jest.Mocked<ArticleService> = {
-      addArticle: jest.fn(),
+      ingestArticle: jest.fn(),
+      checkIfArticleExists: jest.fn(),
     } as any;
 
     await TestBed.configureTestingModule({
@@ -30,62 +31,45 @@ describe('NewArticleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not call service if required fields are missing', () => {
-    component.article = { title: '', link: '', type: '' };
-
+  it('should not call service if link is missing', () => {
+    component.article.link = '';
     component.onSubmit();
-
-    expect(articleService.addArticle).not.toHaveBeenCalled();
+    expect(articleService.ingestArticle).not.toHaveBeenCalled();
   });
 
-  it('should call service when form is valid', () => {
-    const testArticle = {
-      title: 'Test Title',
+  it('should call ingestArticle when form is valid', fakeAsync(() => {
+    component.article.title = 'Sample';
+    component.article.link = 'http://example.com';
+    component.article.description = 'A test description';
+
+    // Simulate no existing article found
+    articleService.checkIfArticleExists.mockReturnValue(of(null));
+    articleService.ingestArticle.mockReturnValue(of({ success: true }));
+
+    component.onSubmit();
+    tick();
+
+    expect(articleService.ingestArticle).toHaveBeenCalledWith({
+      title: 'Sample',
       link: 'http://example.com',
-      type: 'News',
-    };
-    component.article = testArticle;
+      description: 'A test description',
+    });
+  }));
 
-    articleService.addArticle.mockReturnValue(of({ success: true }));
+  it('should handle service errors gracefully', fakeAsync(() => {
+    component.article.title = 'Bad article';
+    component.article.link = 'http://bad.com';
+    component.article.description = 'desc';
 
-    component.onSubmit();
-
-    expect(articleService.addArticle).toHaveBeenCalled();
-    const calledArg = (articleService.addArticle as jest.Mock).mock.calls[0][0];
-    expect(calledArg.title).toBe('Test Title');
-    expect(calledArg.link).toBe('http://example.com');
-    expect(calledArg.type).toBe('News');
-  });
-
-  it('should handle error from service gracefully', () => {
-    component.article = {
-      title: 'Bad Article',
-      link: 'http://bad.com',
-      type: 'News',
-    };
-
-    articleService.addArticle.mockReturnValue(
+    articleService.checkIfArticleExists.mockReturnValue(of(null));
+    articleService.ingestArticle.mockReturnValue(
       throwError(() => new Error('Service error'))
     );
 
-    expect(() => component.onSubmit()).not.toThrow();
-    expect(articleService.addArticle).toHaveBeenCalled();
-  });
-
-  it('should generate an articleId if missing before submitting', () => {
-    component.article = {
-      title: 'UUID Article',
-      link: 'http://uuid.com',
-      type: 'Blog',
-    };
-
-    articleService.addArticle.mockReturnValue(of({ success: true }));
-
-    component.onSubmit();
-
-    expect(articleService.addArticle).toHaveBeenCalled();
-    const calledArg = (articleService.addArticle as jest.Mock).mock.calls[0][0];
-    expect(calledArg.articleId).toBeDefined();
-    expect(typeof calledArg.articleId).toBe('string');
-  });
+    expect(() => {
+      component.onSubmit();
+      tick();
+    }).not.toThrow();
+    expect(articleService.ingestArticle).toHaveBeenCalled();
+  }));
 });
