@@ -10,10 +10,9 @@ describe('NewArticleComponent', () => {
   let articleService: jest.Mocked<ArticleService>;
 
   beforeEach(async () => {
-    const mockArticleService: jest.Mocked<ArticleService> = {
+    const mockArticleService = {
       ingestArticle: jest.fn(),
-      checkIfArticleExists: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<ArticleService>;
 
     await TestBed.configureTestingModule({
       declarations: [NewArticleComponent],
@@ -31,8 +30,10 @@ describe('NewArticleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not call service if link is missing', () => {
+  it('should not call ingestArticle if fields are missing', () => {
+    component.article.title = '';
     component.article.link = '';
+    component.article.description = '';
     component.onSubmit();
     expect(articleService.ingestArticle).not.toHaveBeenCalled();
   });
@@ -40,11 +41,9 @@ describe('NewArticleComponent', () => {
   it('should call ingestArticle when form is valid', fakeAsync(() => {
     component.article.title = 'Sample';
     component.article.link = 'http://example.com';
-    component.article.description = 'A test description';
+    component.article.description = 'Test description';
 
-    // Simulate no existing article found
-    articleService.checkIfArticleExists.mockReturnValue(of(null));
-    articleService.ingestArticle.mockReturnValue(of({ success: true }));
+    articleService.ingestArticle.mockReturnValue(of({ message: 'Article successfully ingested' }));
 
     component.onSubmit();
     tick();
@@ -52,24 +51,24 @@ describe('NewArticleComponent', () => {
     expect(articleService.ingestArticle).toHaveBeenCalledWith({
       title: 'Sample',
       link: 'http://example.com',
-      description: 'A test description',
+      description: 'Test description',
     });
   }));
 
-  it('should handle service errors gracefully', fakeAsync(() => {
-    component.article.title = 'Bad article';
-    component.article.link = 'http://bad.com';
+  it('should handle backend errors gracefully', fakeAsync(() => {
+    component.article.title = 'Duplicate';
+    component.article.link = 'http://duplicate.com';
     component.article.description = 'desc';
 
-    articleService.checkIfArticleExists.mockReturnValue(of(null));
     articleService.ingestArticle.mockReturnValue(
-      throwError(() => new Error('Service error'))
+      throwError(() => ({ error: { message: 'Article already exists' } }))
     );
 
     expect(() => {
       component.onSubmit();
       tick();
     }).not.toThrow();
+
     expect(articleService.ingestArticle).toHaveBeenCalled();
   }));
 });
