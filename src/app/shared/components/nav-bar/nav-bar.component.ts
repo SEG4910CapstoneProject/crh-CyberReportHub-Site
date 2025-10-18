@@ -117,7 +117,7 @@ export class NavBarComponent implements OnInit {
   );
 
   protected navLinksSignal = computed<NavBarLink[]>(() => {
-    return [
+    const links: NavBarLink[] = [
       {
         id: 'home',
         label: this.linkHomeTranslationSignal(),
@@ -139,6 +139,17 @@ export class NavBarComponent implements OnInit {
         path: '/chatbot',
       },
     ];
+
+    // Only show Favourites if logged in
+    if (this.isLoggedIn()) {
+      links.push({
+        id: 'favourites',
+        label: 'Favourites',
+        path: '/favourites',
+      });
+    }
+
+    return links;
   });
 
   protected menuOpened = computed(

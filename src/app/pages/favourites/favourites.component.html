@@ -1,0 +1,42 @@
+<div class="favourites-page-container">
+  <div class="header">
+    <h1>Your Favourites</h1>
+  </div>
+
+  <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
+
+  <div *ngIf="!isLoading && isLoggedIn()">
+    <ng-container *ngIf="favouriteArticles.length; else noFavourites">
+      <ul class="article-list">
+        <li *ngFor="let article of favouriteArticles" class="article-item">
+          <a
+            [href]="article.link"
+            target="_blank"
+            class="article-link"
+            (click)="incrementViewCount(article.articleId)">
+            <h3>{{ article.title }}</h3>
+          </a>
+          <p class="article-description">
+            {{ article.description || 'No description available.' }}
+          </p>
+          <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+
+          <span
+            class="star-icon"
+            (click)="toggleFavourite(article)"
+            [class.fav]="true">
+            &#9733;
+          </span>
+        </li>
+      </ul>
+    </ng-container>
+
+    <ng-template #noFavourites>
+      <p>You have no favourite articles yet.</p>
+    </ng-template>
+  </div>
+
+  <div *ngIf="!isLoggedIn() && !isLoading">
+    <p>Please log in to view your favourite articles.</p>
+  </div>
+</div>
