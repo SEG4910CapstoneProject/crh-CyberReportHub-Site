@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import {
   ArticleService,
   Article,
-  ArticleOfNote,
 } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
 
@@ -17,7 +16,7 @@ export class ArticlesComponent implements OnInit {
   articlesByCategory: Record<string, Article[]> = {};
   articlesToShow: Record<string, number> = {}; // To track how many articles to display per category
   favouriteArticles: Article[] = []; // To store favourite articles
-  articlesOfNote: ArticleOfNote[] = []; // To store articles of note
+  articlesOfNote: Article[] = []; // To store articles of note
   isLoading = true;
   objectKeys = Object.keys;
 
@@ -80,9 +79,7 @@ export class ArticlesComponent implements OnInit {
 
   // Check if the article is in the articles of note list
   isArticleOfNote(article: Article): boolean {
-    return this.articlesOfNote?.some(
-      (note: ArticleOfNote) => note.url === article.link
-    );
+    return this.articlesOfNote?.some(note => note.link === article.link);
   }
 
   // Toggle functionality for See More / See Less
@@ -135,10 +132,16 @@ export class ArticlesComponent implements OnInit {
 
         if (isChecked) {
           // Add to Articles of Note
-          const articleOfNote: ArticleOfNote = {
-            title: article.title,
-            url: article.link,
+          const articleOfNote: Article = {
             articleId: article.articleId,
+            title: article.title,
+            description: article.description,
+            category: article.category,
+            link: article.link,
+            publishDate: article.publishDate,
+            type: article.type,
+            viewCount: article.viewCount,
+            isArticleOfNote: true,
           };
           this.articlesOfNote?.push(articleOfNote);
         } else {
@@ -171,7 +174,7 @@ export class ArticlesComponent implements OnInit {
   // Fetch articles that are marked as "Articles of Note"
   fetchArticlesOfNote(): void {
     this.articleService.getArticlesOfNote().subscribe({
-      next: (articles: ArticleOfNote[]) => {
+      next: (articles: Article[]) => {
         console.log('Articles of Note:', articles);
         this.articlesOfNote = articles;
       },

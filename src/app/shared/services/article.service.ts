@@ -23,14 +23,6 @@ export interface MostViewedArticle {
   title: string;
 }
 
-export interface ArticleOfNote {
-  url: string;
-  articleId: string;
-  title: string;
-  publishDate?: string;
-  description?: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -80,8 +72,8 @@ export class ArticleService {
   }
 
   // Fetch articles that are marked as "Articles of Note"
-  getArticlesOfNote(): Observable<ArticleOfNote[]> {
-    return this.http.get<ArticleOfNote[]>(`${this.apiUrl}/articles-of-note`);
+  getArticlesOfNote(): Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.apiUrl}/articles-of-note`);
   }
 
   getArticleByLink(link: string): Observable<any> {
