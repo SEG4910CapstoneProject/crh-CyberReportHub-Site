@@ -6,7 +6,7 @@ import { ReportsService } from '../../shared/services/reports.service';
 import {
   ArticleService,
   MostViewedArticle,
-  ArticleOfNote,
+  Article,
 } from '../../shared/services/article.service';
 import { of } from 'rxjs';
 
@@ -70,9 +70,7 @@ describe('HomeComponent', () => {
       { url: 'url1', title: 'Article 1', viewCount: 5, articleId: 'a1' },
       { url: 'url2', title: 'Article 2', viewCount: 10, articleId: 'a2' },
     ];
-    mockArticleService.getTopMostViewedArticles.mockReturnValue(
-      of(mockArticles)
-    );
+    mockArticleService.getTopMostViewedArticles.mockReturnValue(of(mockArticles));
 
     component.fetchMostViewedArticles();
 
@@ -82,9 +80,29 @@ describe('HomeComponent', () => {
   });
 
   it('should fetch articles of note', () => {
-    const mockNotes: ArticleOfNote[] = [
-      { url: 'note1', title: 'Note 1', articleId: 'n1' },
-      { url: 'note2', title: 'Note 2', articleId: 'n2' },
+    const mockNotes: Article[] = [
+      {
+        articleId: 'n1',
+        title: 'Note 1',
+        description: 'desc1',
+        category: 'cat1',
+        link: 'note1',
+        publishDate: '2024-01-01',
+        type: 'news',
+        viewCount: 0,
+        isArticleOfNote: true,
+      },
+      {
+        articleId: 'n2',
+        title: 'Note 2',
+        description: 'desc2',
+        category: 'cat2',
+        link: 'note2',
+        publishDate: '2024-02-01',
+        type: 'news',
+        viewCount: 0,
+        isArticleOfNote: true,
+      },
     ];
     mockArticleService.getArticlesOfNote.mockReturnValue(of(mockNotes));
 
@@ -92,8 +110,10 @@ describe('HomeComponent', () => {
 
     expect(mockArticleService.getArticlesOfNote).toHaveBeenCalled();
     expect(component.articlesOfNote.length).toBe(2);
+    expect(component.articlesOfNote[0].title).toBe('Note 1');
   });
 
+  // Tests incrementing view count
   it('should increment view count by articleId', () => {
     mockArticleService.incrementViewCount.mockReturnValue(of({}));
 

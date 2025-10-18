@@ -5,7 +5,7 @@ import { JsonReportResponse } from '../../shared/sdk/rest-api/model/jsonReportRe
 import {
   ArticleService,
   MostViewedArticle,
-  ArticleOfNote,
+  Article,
 } from '../../shared/services/article.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
 
   mostViewedArticles: MostViewedArticle[] = [];
 
-  articlesOfNote: ArticleOfNote[] = [];
+  articlesOfNote: Article[] = [];
 
   // Hardcoded Current Items of Interest
   currentItemsOfInterest = [
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
   // Fetch Articles of Note
   fetchArticlesOfNote(): void {
     this.articleService.getArticlesOfNote().subscribe({
-      next: (articles: ArticleOfNote[]) => {
+      next: (articles: Article[]) => {
         console.log('Articles of Note:', articles);
         this.articlesOfNote = articles;
       },
