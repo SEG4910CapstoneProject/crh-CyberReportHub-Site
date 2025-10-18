@@ -12,6 +12,7 @@ import { NewArticleComponent } from './pages/new-article/new-article.component';
 import { ChatbotComponent } from './pages/chatbot/chatbot.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { FavouritesComponent } from './pages/favourites/favourites.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
 import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
@@ -32,6 +33,11 @@ export const routes: Routes = [
     path: 'settings',
     component: SettingsComponent,
     data: { selectedNav: 'settings' },
+  },
+  {
+    path: 'favourites',
+    component: FavouritesComponent,
+    data: { selectedNav: 'favourites' satisfies NavBarSelectedLinkOptions },
   },
   {
     path: 'reports-articles',

@@ -73,6 +73,7 @@ import { ChatbotComponent } from './pages/chatbot/chatbot.component';
 import { ArticlesComponent } from './pages/articles/articles.component';
 import { ReportPreviewComponent } from './pages/reports/articles/report-preview/report-preview.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { FavouritesComponent } from './pages/favourites/favourites.component';
 
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
 import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
@@ -129,6 +130,8 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     ReportNewComponent,
     ReportArticlesComponent,
     SettingsComponent,
+    FavouritesComponent,
+
     ProgressSpinnerComponent,
   ],
   imports: [

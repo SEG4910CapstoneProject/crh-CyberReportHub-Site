@@ -1,0 +1,24 @@
+.favourites-page-container {
+  padding: 20px;
+}
+
+.article-list {
+  list-style: none;
+  padding: 0;
+}
+
+.article-item {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+.star-icon {
+  cursor: pointer;
+  font-size: 20px;
+  color: #ccc;
+}
+
+.star-icon.fav {
+  color: gold;
+}

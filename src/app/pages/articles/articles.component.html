@@ -76,35 +76,7 @@
       </ng-template>
     </div>
 
-    <!-- Show the Favourites section if the user is logged in and has favourites -->
-    <div
-      *ngIf="isLoggedIn() && favouriteArticles?.length"
-      class="category-section">
-      <h2>Your Favourites</h2>
-      <ul class="article-list">
-        <li *ngFor="let fav of favouriteArticles" class="article-item">
-          <a
-            [href]="fav.link"
-            target="_blank"
-            (click)="incrementViewCount(fav.articleId)"
-            class="article-link">
-            <h3>{{ fav.title }}</h3>
-          </a>
-          <p class="article-description">
-            {{ fav.description || 'No description available.' }}
-          </p>
-          <p><strong>Published:</strong> {{ fav.publishDate || 'N/A' }}</p>
 
-          <!-- Optional: Star icon toggle -->
-          <span
-            class="star-icon"
-            (click)="toggleFavourite(fav)"
-            [class.fav]="isFavourite(fav)">
-            &#9733;
-          </span>
-        </li>
-      </ul>
-    </div>
 
     <!-- Show the "Articles of Note" section if there are any articles of note -->
     <div *ngIf="articlesOfNote?.length" class="category-section">
