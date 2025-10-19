@@ -30,7 +30,7 @@ import { DateTime } from 'luxon';
 export class ReportSearchComponent implements OnInit {
   private reportsService = inject(ReportsService);
   private router = inject(Router);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
 
   private type: 'DAILY' | 'WEEKLY' | 'notSpecified' = 'notSpecified';
   private startDate: FormControl = new FormControl<DateTime | null>(null);
