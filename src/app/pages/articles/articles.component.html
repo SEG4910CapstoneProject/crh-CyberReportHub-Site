@@ -95,7 +95,9 @@
           </p>
           <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
           <!-- Show the checkbox -->
-          <label *ngIf="isLoggedIn()" class="article-of-note-label">
+          <label
+            *ngIf="isLoggedIn() && authService.hasAnyRole('admin', 'analyst', 'restricted_analyst') "
+            class="article-of-note-label">
             <input
               type="checkbox"
               (change)="toggleArticleOfNote(article, $event)"

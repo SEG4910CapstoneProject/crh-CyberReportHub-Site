@@ -62,6 +62,18 @@ class MockArticleService {
 
 class MockAuthService {
   isLoggedIn$ = of(true);
+
+  isLoggedIn(): boolean {
+    return true;
+  }
+
+  hasRole(): boolean {
+    return true;
+  }
+
+  hasAnyRole(): boolean {
+    return true;
+  }
 }
 
 describe('ArticlesComponent', () => {

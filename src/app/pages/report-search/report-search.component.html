@@ -5,7 +5,7 @@
         {{ 'reportSearch.header' | translate }}
       </h1>
       <crh-button
-        *ngIf="isLoggedIn"
+        *ngIf="isLoggedIn && authService.hasAnyRole('admin', 'analyst', 'restricted_analyst')"
         class="report-search-header-latest"
         (click)="onLatestClick()">
         {{ 'reportNew.latest' | translate }}
