@@ -5,7 +5,9 @@
 
   <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
 
+  <!-- Logged-in view -->
   <div *ngIf="!isLoading && isLoggedIn()">
+    <!-- FAVOURITES -->
     <ng-container *ngIf="favouriteArticles.length; else noFavourites">
       <ul class="article-list">
         <li *ngFor="let article of favouriteArticles" class="article-item">
@@ -34,9 +36,36 @@
     <ng-template #noFavourites>
       <p>You have no favourite articles yet.</p>
     </ng-template>
+
+    <!-- Manually added articles section (submitted articles) -->
+    <div *ngIf="submittedArticles?.length" class="submitted-section">
+      <h2>Manually Added Articles</h2>
+      <ul class="article-list">
+        <li *ngFor="let article of submittedArticles" class="article-item">
+          <a
+            [href]="article.link"
+            target="_blank"
+            class="article-link"
+            (click)="incrementViewCount(article.articleId)">
+            <h3>{{ article.title }}</h3>
+          </a>
+          <p class="article-description">
+            {{ article.description || 'No description available.' }}
+          </p>
+          <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Message if there are no manually added articles -->
+    <div *ngIf="!submittedArticles?.length" class="submitted-section">
+      <h2>Manually Added Articles</h2>
+      <p>No articles have been manually submitted yet.</p>
+    </div>
   </div>
 
+  <!-- Logged-out view -->
   <div *ngIf="!isLoggedIn() && !isLoading">
-    <p>Please log in to view your favourite articles.</p>
+    <p>Please log in to view your favourite and submitted articles.</p>
   </div>
 </div>
