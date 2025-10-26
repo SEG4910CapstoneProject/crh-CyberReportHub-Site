@@ -96,6 +96,14 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     'World',
   ];
 
+  protected groupedArticlesByDate: {
+    date: string;
+    formattedDate: string;
+    articles: any[];
+    expanded: boolean;
+  }[] = [];
+
+
   // Flag to control visibility of the article form
   isArticleFormVisible = false;
 
@@ -286,22 +294,74 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     console.log('Fetching suggested articles...');
 
-    const days = 30; // Fetch articles from the last 30 days
-    this.articleService.getAllArticleTypesWithArticles(days).subscribe(
-      response => {
-        console.log('Suggested articles response:', response);
-        this.allSuggestedArticles = Object.values(response).flat();
-        this.suggestedArticles = [...this.allSuggestedArticles];
+    const days = 30; // Fetch articles from last 30 days
+    this.articleService.getAllArticleTypesWithArticles(days).subscribe({
+      next: response => {
+        // Flatten all categories into one list
+        const allArticles = Object.values(response).flat();
+
+        // Sort by publish date (newest first)
+        const sorted = allArticles.sort(
+          (a: any, b: any) =>
+            new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+        );
+
+        // Group by date (YYYY-MM-DD)
+        const grouped: Record<string, any[]> = {};
+        sorted.forEach(article => {
+          const dateKey = article.publishDate?.split('T')[0];
+          if (!dateKey) return;
+          if (!grouped[dateKey]) grouped[dateKey] = [];
+          grouped[dateKey].push(article);
+        });
+
+        // show each day as a filter (within the last 30 days)
+        const entries = Object.entries(grouped);
+
+              this.groupedArticlesByDate = entries.map(([date, articles], index) => ({
+                date,
+                formattedDate: new Date(date).toLocaleDateString(undefined, {
+                  weekday: 'long',
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                }),
+                articles,
+                expanded: index === 0, // expand most recent by default
+              }));
+
+              this.isLoading = false;
+      },
+      error: err => {
+        console.error('Error fetching suggested articles:', err);
         this.isLoading = false;
       },
-      error => console.error('Error fetching suggested articles:', error)
-    );
+    });
+  }
+
+  toggleDateGroup(group: any): void {
+    group.expanded = !group.expanded;
   }
 
   filterArticles(): void {
     const term = this.articleSearchTerm.toLowerCase().trim();
-    this.suggestedArticles = this.allSuggestedArticles.filter(article =>
-      article.title.toLowerCase().includes(term)
+
+    if (!term) {
+      // Reset to all articles if search is cleared
+      this.fetchSuggestedArticles();
+      return;
+    }
+
+    // Filter each date group individually
+    this.groupedArticlesByDate.forEach(group => {
+      group.articles = group.articles.filter(article =>
+        article.title.toLowerCase().includes(term)
+      );
+    });
+
+    // Collapse empty groups
+    this.groupedArticlesByDate = this.groupedArticlesByDate.filter(
+      g => g.articles.length > 0
     );
   }
 

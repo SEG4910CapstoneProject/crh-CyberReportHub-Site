@@ -476,3 +476,56 @@ body.dark-mode .add-button:hover {
     }
   }
 }
+
+.date-group-container {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background: #fff;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.date-group-header {
+  background-color: #f0f0f0;
+  cursor: pointer;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  user-select: none;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #eaeaea;
+  }
+
+  &.expanded {
+    background-color: #e0e0e0;
+  }
+
+  /* rotating caret icon */
+  .caret {
+    font-size: 14px;
+    transition: transform 0.25s ease;
+  }
+
+  &.expanded .caret {
+    transform: rotate(90deg);
+  }
+}
+
+.date-articles-list {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.article-list-container {
+  display: block;
+  overflow-y: auto;
+  max-height: 75vh;
+  padding-right: 4px;
+}
+
