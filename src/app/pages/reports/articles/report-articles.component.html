@@ -204,11 +204,27 @@
     </div>
     <ng-container *ngIf="!isLoading">
       <div
-        *ngFor="let article of suggestedArticles"
-        (click)="addArticleFromSelection(article)"
-        class="article-item">
-        <span>{{ article.title }}</span>
-        <button class="add-button">+</button>
+        *ngFor="let group of groupedArticlesByDate"
+        class="date-group-container">
+        <!-- Header -->
+        <div
+          class="date-group-header"
+          (click)="toggleDateGroup(group)"
+          [class.expanded]="group.expanded">
+          <span>{{ group.formattedDate }}</span>
+          <span class="caret">▶</span>
+        </div>
+
+        <!-- Articles -->
+        <div *ngIf="group.expanded" class="date-articles-list">
+          <div
+            *ngFor="let article of group.articles"
+            (click)="addArticleFromSelection(article)"
+            class="article-item">
+            <span>{{ article.title }}</span>
+            <button class="add-button">+</button>
+          </div>
+        </div>
       </div>
     </ng-container>
   </div>
