@@ -115,4 +115,13 @@ export class ArticleService {
     return this.http.post<any>('http://localhost:8080/api/v1/articles/ingest', article);
   }
 
+  //For manually added articles
+  getMySubmittedArticles(): Observable<Article[]> {
+    return this.http.get<Article[]>(
+      `http://localhost:8080/api/v1/articles/my-submissions`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+
 }

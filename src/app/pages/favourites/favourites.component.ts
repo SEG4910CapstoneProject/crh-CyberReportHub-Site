@@ -8,8 +8,9 @@ import { AuthService } from '../../shared/services/auth.service';
   styleUrls: ['./favourites.component.scss'],
   standalone: false,
 })
-export class FavouritesComponent implements OnInit {  
+export class FavouritesComponent implements OnInit {
   favouriteArticles: Article[] = [];
+  submittedArticles: Article[] = [];
   isLoading = true;
 
   protected isLoggedIn = signal<boolean>(false);
@@ -24,6 +25,7 @@ export class FavouritesComponent implements OnInit {
       this.isLoggedIn.set(status);
       if (status) {
         this.fetchFavourites();
+        this.fetchSubmittedArticles();
       } else {
         this.isLoading = false;
       }
@@ -42,6 +44,15 @@ export class FavouritesComponent implements OnInit {
       },
     });
   }
+
+  fetchSubmittedArticles(): void {
+      this.articleService.getMySubmittedArticles().subscribe({
+        next: (articles: Article[]) => {
+          this.submittedArticles = articles;
+        },
+        error: err => console.error('Error fetching submitted articles:', err),
+      });
+    }
 
   toggleFavourite(article: Article): void {
     if (!this.isLoggedIn()) return;
