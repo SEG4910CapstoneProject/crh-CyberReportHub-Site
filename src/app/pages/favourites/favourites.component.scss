@@ -1,35 +1,87 @@
 .favourites-page-container {
   padding: 20px;
-}
+  background-color: #f9f9f9;
+  color: #333;
 
-.article-list {
-  list-style: none;
-  padding: 0;
-}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 
-.article-item {
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 1rem;
-}
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      color: #444;
+    }
+  }
 
-.star-icon {
-  cursor: pointer;
-  font-size: 20px;
-  color: #ccc;
-}
+  .sections {
+    .category-section {
+      margin-bottom: 30px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 20px;
 
-.star-icon.fav {
-  color: gold;
-}
+      h2 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
 
-.submitted-section {
-  margin-top: 2rem;
-  border-top: 1px solid #ccc;
-  padding-top: 1.5rem;
+      .article-list {
+        list-style: none;
+        padding-left: 0;
 
-  h2 {
-    margin-bottom: 0.75rem;
+        .article-item {
+          background-color: #fff;
+          border: 1px solid #ddd;
+          padding: 15px;
+          border-radius: 8px;
+          margin-bottom: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+          transition: box-shadow 0.3s;
+
+          &:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          }
+
+          .article-link {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+
+            &:hover {
+              color: #0056b3;
+            }
+          }
+
+          .article-description {
+            font-size: 14px;
+            color: #777;
+            margin: 10px 0;
+          }
+
+          .star-icon {
+            font-size: 20px;
+            color: #ffcc00;
+            cursor: pointer;
+            margin-right: 10px;
+
+            &.fav {
+              color: #ff9900;
+            }
+          }
+        }
+      }
+
+      .empty-section {
+        font-size: 16px;
+        color: #777;
+        text-align: center;
+      }
+    }
   }
 }
-
