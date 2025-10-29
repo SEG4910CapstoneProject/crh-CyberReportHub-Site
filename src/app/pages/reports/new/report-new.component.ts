@@ -34,9 +34,6 @@ export class ReportNewComponent implements OnInit, OnDestroy {
   private translateService = inject(CrhTranslationService);
 
   private readonly ERROR_MESSAGE:string = 'dialog.error_message_incomplete_fields';
-  private dialogRef = null;
-  
-  
 
   constructor() {
     this.form = this.fb.group({
@@ -92,6 +89,7 @@ export class ReportNewComponent implements OnInit, OnDestroy {
       })
       return false;
     }
+
     return true;
   }
 
@@ -100,9 +98,18 @@ export class ReportNewComponent implements OnInit, OnDestroy {
     {
       return;
     }
-    const reportType = this.form.get('reportType')?.value;
+    const reportType = this.form.get('reportType')?.value.toLowerCase();
 
-    this.reportsService.createBasicReport(reportType).subscribe({
+    let template_type = '';
+
+    if (this.choosen_email_template == 'restricted')
+    {
+      template_type = 'restricted';
+    } else {
+      template_type = 'nonRestricted'
+    }
+
+    this.reportsService.createBasicReport(reportType,template_type).subscribe({
       next: response => {
         const reportId = response.reportId;
         console.log('Report created with ID:', reportId);

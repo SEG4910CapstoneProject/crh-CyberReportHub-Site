@@ -90,10 +90,10 @@ export class ReportsService {
   }
 
   //Create Report
-  createBasicReport(reportType: string): Observable<{ reportId: number }> {
+  createBasicReport(reportType: string, emailTemplateType:string): Observable<{ reportId: number }> {
     const url = 'http://localhost:8080/api/v1/reports/create-basic-report';
     const options = {
-      params: { reportType },
+      params: { reportType , emailTemplateType},
       headers: {
         'Content-Type': 'application/json',
       },
