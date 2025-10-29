@@ -84,4 +84,16 @@ export class FavouritesComponent implements OnInit {
       error: err => console.error('Error incrementing view count:', err),
     });
   }
+
+  deleteArticle(articleId: string): void {
+    if (!confirm('Are you sure you want to delete this article?')) return;
+    this.articleService.deleteArticle(articleId).subscribe({
+      next: () => {
+        this.submittedArticles = this.submittedArticles.filter(a => a.articleId !== articleId);
+        console.log('Article deleted successfully');
+      },
+      error: err => console.error('Error deleting article:', err)
+    });
+  }
+
 }

@@ -82,6 +82,21 @@
         color: #777;
         text-align: center;
       }
+
+      .delete-btn {
+        background-color: #c62828;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 12px;
+        cursor: pointer;
+        margin-top: 5px;
+
+        &:hover {
+          background-color: #b71c1c;
+        }
+      }
+
     }
   }
 }

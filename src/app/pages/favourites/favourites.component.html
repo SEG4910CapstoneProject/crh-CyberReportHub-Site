@@ -59,6 +59,7 @@
               {{ article.description || 'No description available.' }}
             </p>
             <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+            <button class="delete-btn" (click)="deleteArticle(article.articleId)">Delete</button>
           </li>
         </ul>
       </ng-container>
