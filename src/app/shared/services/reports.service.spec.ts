@@ -114,12 +114,12 @@ describe('ReportsService', () => {
     it('should POST to create-basic-report with correct params', () => {
       const mockResponse = { reportId: 999 };
 
-      service.createBasicReport('DAILY').subscribe((res) => {
+      service.createBasicReport('daily','restricted').subscribe((res) => {
         expect(res.reportId).toBe(999);
       });
 
       const req = httpMock.expectOne(
-        'http://localhost:8080/api/v1/reports/create-basic-report?reportType=DAILY'
+        'http://localhost:8080/api/v1/reports/create-basic-report?reportType=daily&emailTemplateType=restricted'
       );
       expect(req.request.method).toBe('POST');
       expect(req.request.headers.get('Content-Type')).toBe('application/json');
