@@ -112,7 +112,11 @@ export class ArticleService {
   }
 
   ingestArticle(article: any): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/api/v1/articles/ingest', article);
+    return this.http.post<any>(
+      'http://localhost:8080/api/v1/articles/ingest',
+      article,
+      { headers: this.getAuthHeaders() }
+    );
   }
 
   //For manually added articles
@@ -122,6 +126,13 @@ export class ArticleService {
       { headers: this.getAuthHeaders() }
     );
   }
+
+  deleteArticle(articleId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${articleId}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
 
 
 }

@@ -3,6 +3,10 @@ import { of, throwError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { NewArticleComponent } from './new-article.component';
 import { ArticleService } from '../../shared/services/article.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { DialogModule } from '@angular/cdk/dialog';
+import { AuthService } from '../../shared/services/auth.service';
+import { ErrorDialogComponent } from '../../shared/dialogs/error-dialog/error-dialog.component';
 
 describe('NewArticleComponent', () => {
   let component: NewArticleComponent;
@@ -14,10 +18,21 @@ describe('NewArticleComponent', () => {
       ingestArticle: jest.fn(),
     } as unknown as jest.Mocked<ArticleService>;
 
+    const mockAuthService = {
+      isLoggedIn: jest.fn().mockReturnValue(true),
+    } as unknown as jest.Mocked<AuthService>;
+
     await TestBed.configureTestingModule({
-      declarations: [NewArticleComponent],
-      imports: [FormsModule],
-      providers: [{ provide: ArticleService, useValue: mockArticleService }],
+      declarations: [NewArticleComponent, ErrorDialogComponent],
+      imports: [
+        FormsModule,
+        DialogModule,
+        TranslateModule.forRoot()
+      ],
+      providers: [
+        { provide: ArticleService, useValue: mockArticleService },
+        { provide: AuthService, useValue: mockAuthService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NewArticleComponent);

@@ -3,64 +3,70 @@
     <h1>Your Favourites</h1>
   </div>
 
+  <!-- Loading Spinner -->
   <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
 
   <!-- Logged-in view -->
-  <div *ngIf="!isLoading && isLoggedIn()">
-    <!-- FAVOURITES -->
-    <ng-container *ngIf="favouriteArticles.length; else noFavourites">
-      <ul class="article-list">
-        <li *ngFor="let article of favouriteArticles" class="article-item">
-          <a
-            [href]="article.link"
-            target="_blank"
-            class="article-link"
-            (click)="incrementViewCount(article.articleId)">
-            <h3>{{ article.title }}</h3>
-          </a>
-          <p class="article-description">
-            {{ article.description || 'No description available.' }}
-          </p>
-          <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+  <div *ngIf="!isLoading && isLoggedIn()" class="sections">
+    <!-- Favourite Articles Section -->
+    <div class="category-section">
+      <h2>Favourite Articles</h2>
 
-          <span
-            class="star-icon"
-            (click)="toggleFavourite(article)"
-            [class.fav]="true">
-            &#9733;
-          </span>
-        </li>
-      </ul>
-    </ng-container>
+      <ng-container *ngIf="favouriteArticles.length; else noFavourites">
+        <ul class="article-list">
+          <li *ngFor="let article of favouriteArticles" class="article-item">
+            <a
+              [href]="article.link"
+              target="_blank"
+              class="article-link"
+              (click)="incrementViewCount(article.articleId)">
+              <h3>{{ article.title }}</h3>
+            </a>
+            <p class="article-description">
+              {{ article.description || 'No description available.' }}
+            </p>
+            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
 
-    <ng-template #noFavourites>
-      <p>You have no favourite articles yet.</p>
-    </ng-template>
+            <span
+              class="star-icon"
+              (click)="toggleFavourite(article)"
+              [class.fav]="true">
+              &#9733;
+            </span>
+          </li>
+        </ul>
+      </ng-container>
 
-    <!-- Manually added articles section (submitted articles) -->
-    <div *ngIf="submittedArticles?.length" class="submitted-section">
-      <h2>Manually Added Articles</h2>
-      <ul class="article-list">
-        <li *ngFor="let article of submittedArticles" class="article-item">
-          <a
-            [href]="article.link"
-            target="_blank"
-            class="article-link"
-            (click)="incrementViewCount(article.articleId)">
-            <h3>{{ article.title }}</h3>
-          </a>
-          <p class="article-description">
-            {{ article.description || 'No description available.' }}
-          </p>
-          <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
-        </li>
-      </ul>
+      <ng-template #noFavourites>
+        <p class="empty-section">You have no favourite articles yet.</p>
+      </ng-template>
     </div>
 
-    <!-- Message if there are no manually added articles -->
-    <div *ngIf="!submittedArticles?.length" class="submitted-section">
+    <!-- Submitted (Manually Added) Articles Section -->
+    <div class="category-section">
       <h2>Manually Added Articles</h2>
-      <p>No articles have been manually submitted yet.</p>
+      <ng-container *ngIf="submittedArticles?.length; else noSubmitted">
+        <ul class="article-list">
+          <li *ngFor="let article of submittedArticles" class="article-item">
+            <a
+              [href]="article.link"
+              target="_blank"
+              class="article-link"
+              (click)="incrementViewCount(article.articleId)">
+              <h3>{{ article.title }}</h3>
+            </a>
+            <p class="article-description">
+              {{ article.description || 'No description available.' }}
+            </p>
+            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+            <button class="delete-btn" (click)="deleteArticle(article.articleId)">Delete</button>
+          </li>
+        </ul>
+      </ng-container>
+
+      <ng-template #noSubmitted>
+        <p class="empty-section">No articles have been manually submitted yet.</p>
+      </ng-template>
     </div>
   </div>
 
