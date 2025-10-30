@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
+import { ArticleForCreateReport } from '../Types/types';
 
 export interface Article {
   articleId: string;
@@ -50,6 +51,15 @@ export class ArticleService {
   ): Observable<Record<string, Article[]>> {
     return this.http.get<Record<string, Article[]>>(
       `${this.apiUrl}/article-types-with-articles?days=${days}`
+    );
+  }
+
+  // Fetch all articles with types included (it is a list of all articles, with each article having its won characteristics)
+  getAllArticlesTypesIncluded(
+    days: number
+  ): Observable<ArticleForCreateReport[]> {
+    return this.http.get<ArticleForCreateReport[]>(
+      `${this.apiUrl}/get-all-articles-with-types?days=${days}`
     );
   }
 

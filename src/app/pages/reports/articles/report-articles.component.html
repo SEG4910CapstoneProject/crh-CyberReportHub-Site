@@ -1,105 +1,157 @@
-<div class="report-articles" [class.dark]="isDarkMode">
-  <h1>{{ 'reportNew.header' | translate }}</h1>
+<h1 class="main-title">{{ 'reportNew.header' | translate }}</h1>
 
-  <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
-    <!-- Statistics Section -->
-    <div class="form-section">
-      <label>{{ 'reportNew.addstats' | translate }}:</label>
-      <div class="stat-list">
-        <div *ngFor="let stat of addedStats" class="stat-card">
-          <div class="stat-content">
-            <div class="stat-header">
-              <strong>{{ stat.title }}</strong>
-              <span class="stat-number">#{{ stat.statisticNumber }}</span>
+<div class="grid-parent">
+  <div class="report-articles" [class.dark]="isDarkMode">
+    <form *ngIf="form && (template_type == 'nonRestricted')" [formGroup]="form" (ngSubmit)="submit()">
+      <!-- Statistics Section -->
+      <div class="form-section">
+        <label>{{ 'reportNew.addstats' | translate }}:</label>
+        <div class="stat-list">
+          <div *ngFor="let stat of addedStats" class="stat-card">
+            <div class="stat-content">
+              <div class="stat-header">
+                <strong>{{ stat.title }}</strong>
+                <span class="stat-number">#{{ stat.statisticNumber }}</span>
+              </div>
+              <div class="stat-subtitle">{{ stat.subtitle }}</div>
             </div>
-            <div class="stat-subtitle">{{ stat.subtitle }}</div>
+            <div class="stat-actions">
+              <button
+                mat-icon-button
+                (click)="onStatEdit(stat)"
+                aria-label="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="onStatRemove(stat.statisticId)"
+                aria-label="Delete"
+                class="delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
-          <div class="stat-actions">
-            <button
-              mat-icon-button
-              (click)="onStatEdit(stat)"
-              aria-label="Edit">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              (click)="onStatRemove(stat.statisticId)"
-              aria-label="Delete"
-              class="delete">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
+        </div>
+
+        <!-- Add statistics button -->
+        <div class="add-statistics-container">
+          <button
+            class="add-statistics-button"
+            type="button"
+            (click)="openAddStatDialog()">
+            +
+          </button>
         </div>
       </div>
 
-      <!-- Add statistics button -->
-      <div class="add-statistics-container">
-        <button
-          class="add-statistics-button"
-          type="button"
-          (click)="openAddStatDialog()">
-          +
-        </button>
-      </div>
-    </div>
+      <!-- Articles Section -->
+      <div class="form-section">
+        <label for="analyst-comment"
+          >{{ 'reportNew.analyst' | translate }}:</label
+        >
+        <textarea
+          id="analyst-comment"
+          formControlName="analystComment"
+          [attr.maxLength]="maxCommentLength"
+          rows="4"
+          placeholder="{{ 'reportNew.commentplaceholder' | translate }}"
+          class="analyst-comment-textarea"></textarea>
+        <div class="char-counter">
+          {{ currentCommentLength }}/{{ maxCommentLength }}
+        </div>
 
-    <!-- Articles Section -->
-    <div class="form-section">
-      <label for="analyst-comment"
-        >{{ 'reportNew.analyst' | translate }}:</label
-      >
-      <textarea
-        id="analyst-comment"
-        formControlName="analystComment"
-        [attr.maxLength]="maxCommentLength"
-        rows="4"
-        placeholder="{{ 'reportNew.commentplaceholder' | translate }}"
-        class="analyst-comment-textarea"></textarea>
-      <div class="char-counter">
-        {{ currentCommentLength }}/{{ maxCommentLength }}
-      </div>
+        <label>Articles:</label>
 
-      <label>Articles:</label>
+        <!-- Add Article Search Box -->
+        <div class="add-article-container">
+          <input
+            type="text"
+            [formControl]="newArticleForm"
+            placeholder="{{ 'reportNew.addurl' | translate }}"
+            (focus)="newArticleForm.setValue('')" />
+          <button type="button" (click)="toggleArticleForm()" class="add-button">
+            +
+          </button>
+        </div>
 
-      <!-- Add Article Search Box -->
-      <div class="add-article-container">
-        <input
-          type="text"
-          [formControl]="newArticleForm"
-          placeholder="{{ 'reportNew.addurl' | translate }}"
-          (focus)="newArticleForm.setValue('')" />
-        <button type="button" (click)="toggleArticleForm()" class="add-button">
-          +
-        </button>
-      </div>
+        <!-- Article Form For Adding a Link Manually-->
+        <!-- This will be removed in future implementations -->
+        <div *ngIf="isArticleFormVisible" class="article-form">
+          <div class="manual-article-form">
+            <div class="form-field">
+              <label for="articleTitle">Title</label>
+              <input
+                id="articleTitle"
+                [(ngModel)]="newArticle.title"
+                placeholder="Enter article title" />
+            </div>
+            <div class="form-field">
+              <label for="articleType">Type</label>
+              <select id="articleType" [(ngModel)]="newArticle.type">
+                <option value="" disabled selected hidden>
+                  -- Select Type --
+                </option>
+                <option *ngFor="let type of articleTypes" [value]="type">
+                  {{ type }}
+                </option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="articleCategory">Category</label>
+              <select id="articleCategory" [(ngModel)]="newArticle.category">
+                <option value="" disabled selected hidden>
+                  -- Select Category --
+                </option>
+                <option value="activeThreats">
+                  {{ 'reportNew.activethreats' | translate }}
+                </option>
+                <option value="emergingInternationalThreats">
+                  {{ 'reportNew.emergingthreats' | translate }}
+                </option>
+                <option value="globalNews">
+                  {{ 'reportNew.globalnews' | translate }}
+                </option>
+                <option value="customerThreats">
+                  {{ 'reportNew.customerthreats' | translate }}
+                </option>
+              </select>
+            </div>
 
-      <!-- Article Form For Adding a Link Manually-->
-      <!-- This will be removed in future implementations -->
-      <div *ngIf="isArticleFormVisible" class="article-form">
-        <div class="manual-article-form">
-          <div class="form-field">
-            <label for="articleTitle">Title</label>
-            <input
-              id="articleTitle"
-              [(ngModel)]="newArticle.title"
-              placeholder="Enter article title" />
+            <!-- Submit + Cancel Buttons -->
+            <div class="form-actions">
+              <button type="button" (click)="addNewArticle()">
+                {{ 'common.add' | translate }}
+              </button>
+              <button type="button" (click)="toggleArticleForm()">
+                {{ 'common.cancel' | translate }}
+              </button>
+            </div>
           </div>
-          <div class="form-field">
-            <label for="articleType">Type</label>
-            <select id="articleType" [(ngModel)]="newArticle.type">
-              <option value="" disabled selected hidden>
-                -- Select Type --
-              </option>
-              <option *ngFor="let type of articleTypes" [value]="type">
-                {{ type }}
-              </option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label for="articleCategory">Category</label>
-            <select id="articleCategory" [(ngModel)]="newArticle.category">
-              <option value="" disabled selected hidden>
-                -- Select Category --
+        </div>
+
+        <div class="article-list">
+          <div
+            class="article"
+            *ngFor="let article of articles; let i = index"
+            >
+            <!-- <input
+              placeholder="Title"
+              formControlName="title"
+              readonly
+              class="article-title" />
+             -->
+            <div>{{article.title}}</div>
+            <div>{{article.type}}</div>
+
+            <!-- <input
+              placeholder="Type"
+              formControlName="type"
+              readonly
+              class="article-type" /> -->
+
+            <!-- <select formControlName="category" class="article-category">
+              <option value="">
+                -- {{ 'reportNew.category' | translate }} --
               </option>
               <option value="activeThreats">
                 {{ 'reportNew.activethreats' | translate }}
@@ -113,119 +165,78 @@
               <option value="customerThreats">
                 {{ 'reportNew.customerthreats' | translate }}
               </option>
-            </select>
-          </div>
+            </select> -->
 
-          <!-- Submit + Cancel Buttons -->
-          <div class="form-actions">
-            <button type="button" (click)="addNewArticle()">
-              {{ 'common.add' | translate }}
+            <!-- <input
+              placeholder="Link"
+              formControlName="link"
+              readonly
+              class="article-link" /> -->
+
+            <button type="button" (click)="removeArticle(i)">
+              {{ 'common.remove' | translate }}
             </button>
-            <button type="button" (click)="toggleArticleForm()">
-              {{ 'common.cancel' | translate }}
-            </button>
           </div>
         </div>
       </div>
 
-      <div class="article-list">
-        <div
-          class="article"
-          *ngFor="let article of articles.controls; let i = index"
-          [formGroup]="article">
-          <input
-            placeholder="Title"
-            formControlName="title"
-            readonly
-            class="article-title" />
-
-          <input
-            placeholder="Type"
-            formControlName="type"
-            readonly
-            class="article-type" />
-
-          <select formControlName="category" class="article-category">
-            <option value="">
-              -- {{ 'reportNew.category' | translate }} --
-            </option>
-            <option value="activeThreats">
-              {{ 'reportNew.activethreats' | translate }}
-            </option>
-            <option value="emergingInternationalThreats">
-              {{ 'reportNew.emergingthreats' | translate }}
-            </option>
-            <option value="globalNews">
-              {{ 'reportNew.globalnews' | translate }}
-            </option>
-            <option value="customerThreats">
-              {{ 'reportNew.customerthreats' | translate }}
-            </option>
-          </select>
-
-          <input
-            placeholder="Link"
-            formControlName="link"
-            readonly
-            class="article-link" />
-
-          <button type="button" (click)="removeArticle(i)">
-            {{ 'common.remove' | translate }}
-          </button>
-        </div>
+      <div class="form-actions">
+        <button type="button" (click)="back()">
+          {{ 'common.back' | translate }}
+        </button>
+        <button type="button">
+          {{ 'common.preview' | translate }}
+        </button>
+        <button type="submit">{{ 'common.submit' | translate }}</button>
       </div>
-    </div>
-
-    <div class="form-actions">
-      <button type="button" (click)="back()">
-        {{ 'common.back' | translate }}
-      </button>
-      <button type="button" (click)="viewReport()">
-        {{ 'common.preview' | translate }}
-      </button>
-      <button type="submit">{{ 'common.submit' | translate }}</button>
-    </div>
-  </form>
-</div>
-
-<!-- Suggested Articles Section -->
-<div class="article-selection-box" [class.dark]="isDarkMode">
-  <h2>Articles</h2>
-
-  <input
-    type="text"
-    placeholder="{{ 'reportNew.searcharticles' | translate }}..."
-    [(ngModel)]="articleSearchTerm"
-    (input)="filterArticles()" />
-
-  <div class="article-list-container">
-    <div *ngIf="isLoading" class="spinner-wrapper">
-      <crh-progress-spinner></crh-progress-spinner>
-    </div>
-    <ng-container *ngIf="!isLoading">
-      <div
-        *ngFor="let group of groupedArticlesByDate"
-        class="date-group-container">
-        <!-- Header -->
-        <div
-          class="date-group-header"
-          (click)="toggleDateGroup(group)"
-          [class.expanded]="group.expanded">
-          <span>{{ group.formattedDate }}</span>
-          <span class="caret">▶</span>
-        </div>
-
-        <!-- Articles -->
-        <div *ngIf="group.expanded" class="date-articles-list">
-          <div
-            *ngFor="let article of group.articles"
-            (click)="addArticleFromSelection(article)"
-            class="article-item">
-            <span>{{ article.title }}</span>
-            <button class="add-button">+</button>
-          </div>
-        </div>
-      </div>
-    </ng-container>
+    </form>
   </div>
+
+  <!-- Suggested Articles Section -->
+  <div class="article-selection-box" [class.dark]="isDarkMode">
+    <h2>Articles</h2>
+
+    <input
+      type="text"
+      placeholder="{{ 'reportNew.searcharticles' | translate }}..."
+      [(ngModel)]="articleSearchTerm"
+      (input)="filterArticles()" />
+
+    <div class="article-list-container">
+      <div *ngIf="isLoading" class="spinner-wrapper">
+        <crh-progress-spinner></crh-progress-spinner>
+      </div>
+      <ng-container *ngIf="!isLoading">
+        <div
+          *ngFor="let group of groupedArticlesByDate"
+          class="date-group-container">
+          <!-- Header -->
+          <div
+            class="date-group-header"
+            (click)="toggleDateGroup(group)"
+            [class.expanded]="group.expanded">
+            <span>{{ group.formattedDate }}</span>
+            <span class="caret">▶</span>
+          </div>
+
+          <!-- Articles -->
+          <div *ngIf="group.expanded" class="date-articles-list">
+            <div
+              *ngFor="let article of group.articles"
+              (click)="addArticleFromSelection(article)"
+              class="article-item">
+              <span>{{ article.title }}</span>
+              <button class="add-button">+</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+
+
+
+
 </div>
+

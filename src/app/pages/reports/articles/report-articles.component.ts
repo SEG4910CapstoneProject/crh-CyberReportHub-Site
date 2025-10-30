@@ -30,6 +30,7 @@ import {
 } from '../../../shared/dialogs/edit-statistic-dialog/edit-statistic-dialog.model';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ArticleForCreateReport } from '../../../shared/Types/types';
 
 @Component({
   selector: 'crh-report-articles',
@@ -72,6 +73,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
   // Mock data for now - This will be replaced with an API call
   public reportId = 1;
+  protected template_type = '';
 
   // Store the added statistics
   public addedStats: JsonStatsResponse[] = [];
@@ -103,9 +105,75 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     expanded: boolean;
   }[] = [];
 
+  articles:ArticleForCreateReport[] = [];
+
 
   // Flag to control visibility of the article form
   isArticleFormVisible = false;
+
+  constructor() {
+    this.form = this.fb.group({
+      analystComment: ['', [Validators.maxLength(1000)]],
+      articles: this.fb.array([] as FormGroup[]),
+    });
+  }
+
+  ngOnInit(): void {
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state ?? window.history.state;
+
+    // console.log("this state is: ",state)
+
+    if (state?.reportId != null && state?.template_type != '') {
+      this.reportId = state.reportId;
+      this.template_type = state.template_type
+      console.log('Received report ID from previous page:', this.reportId);
+    } else {
+      console.warn('No report ID received or no template type received. Redirecting...');
+      this.router.navigate(['/reports/create']);
+      return;
+    }
+
+    // Restore previously selected articles (if any)
+    // if (state?.articles?.length) {  TODO AMANI (AMANI DOESNT UNDERSTAND THE POINT OF THIS CODE)
+    //   state.articles.forEach((article: any) => {
+    //     const articleForm = this.fb.group({
+    //       id: [article.articleId, Validators.required],
+    //       title: [article.title, Validators.required],
+    //       type: [article.type || '', Validators.required],
+    //       category: [article.category || ''],
+    //       link: [article.link || ''],
+    //     });
+    //     this.articles.push(articleForm);
+    //   });
+    // }
+
+    // Restore stats (if any)
+    if (state?.stats?.length) {
+      this.addedStats = state.stats;
+    }
+
+    // Restore analyst comment (if any)
+    if (state?.analystComment) {
+      this.form.get('analystComment')?.setValue(state.analystComment);
+    }
+
+    // Load article suggestions
+    this.fetchSuggestedArticles();
+
+    // Setup dark mode handling
+    this.subscriptions.push(
+      this.darkModeService.isDarkMode$.subscribe(mode => {
+        this.isDarkMode = mode;
+        this.applyDarkModeClass();
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
 
   // Method for handling opening the statistics dialog
   openAddStatDialog(): void {
@@ -203,7 +271,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
         link,
       };
 
-      this.addArticleFromSelection(newArticle);
+      // this.addArticleFromSelection(newArticle); TODO AMANI, would we need this? I don't see why...
 
       // Clear form values
       this.newArticleForm.reset();
@@ -220,85 +288,27 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   }
 
   // Method to view the report preview
-  viewReport(): void {
-    this.router.navigate(['/report-preview'], {
-      state: {
-        articles: this.articles.value,
-        stats: this.addedStats,
-        analystComment: this.form.get('analystComment')?.value,
-      },
-    });
-  }
-
-  constructor() {
-    this.form = this.fb.group({
-      analystComment: ['', [Validators.maxLength(1000)]],
-      articles: this.fb.array([] as FormGroup[]),
-    });
-  }
-
-  ngOnInit(): void {
-    const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras?.state ?? window.history.state;
-
-    if (state?.reportId != null) {
-      this.reportId = state.reportId;
-      console.log('Received report ID from previous page:', this.reportId);
-    } else {
-      console.warn('No report ID received. Redirecting...');
-      this.router.navigate(['/reports/create']);
-      return;
-    }
-
-    // Restore previously selected articles (if any)
-    if (state?.articles?.length) {
-      state.articles.forEach((article: any) => {
-        const articleForm = this.fb.group({
-          id: [article.articleId, Validators.required],
-          title: [article.title, Validators.required],
-          type: [article.type || '', Validators.required],
-          category: [article.category || ''],
-          link: [article.link || ''],
-        });
-        this.articles.push(articleForm);
-      });
-    }
-
-    // Restore stats (if any)
-    if (state?.stats?.length) {
-      this.addedStats = state.stats;
-    }
-
-    // Restore analyst comment (if any)
-    if (state?.analystComment) {
-      this.form.get('analystComment')?.setValue(state.analystComment);
-    }
-
-    // Load article suggestions
-    this.fetchSuggestedArticles();
-
-    // Setup dark mode handling
-    this.subscriptions.push(
-      this.darkModeService.isDarkMode$.subscribe(mode => {
-        this.isDarkMode = mode;
-        this.applyDarkModeClass();
-      })
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
+  // TODO AMANI, REWORK
+  // viewReport(): void {
+  //   this.router.navigate(['/report-preview'], {
+  //     state: {
+  //       articles: this.articles.value,
+  //       stats: this.addedStats,
+  //       analystComment: this.form.get('analystComment')?.value,
+  //     },
+  //   });
+  // }
 
   private fetchSuggestedArticles(): void {
     this.isLoading = true;
     console.log('Fetching suggested articles...');
 
     const days = 30; // Fetch articles from last 30 days
-    this.articleService.getAllArticleTypesWithArticles(days).subscribe({
+    this.articleService.getAllArticlesTypesIncluded(days).subscribe({
       next: response => {
         // Flatten all categories into one list
-        const allArticles = Object.values(response).flat();
+        const allArticles = Object.values(response);
+        console.log("the all articles are: ",response)
 
         // Sort by publish date (newest first)
         const sorted = allArticles.sort(
@@ -365,25 +375,28 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     );
   }
 
-  get articles(): FormArray<FormGroup> {
-    return this.form.get('articles') as FormArray<FormGroup>;
-  }
+  // get articles(): FormArray<FormGroup> {
+  //   return this.form.get('articles') as FormArray<FormGroup>;
+  // }
 
   // Add new article to the report
-  addArticleFromSelection(article: any): void {
-    const articleForm = this.fb.group({
-      id: [article.articleId, Validators.required],
-      title: [article.title, Validators.required],
-      type: [article.type || '', Validators.required],
-      category: [article.category || ''],
-      link: [article.link || ''],
-    });
+  addArticleFromSelection(article: ArticleForCreateReport): void {
+    console.log("the article here is: ",article)
+    // const articleForm = this.fb.group({
+    //   id: [article.articleId, Validators.required],
+    //   title: [article.title, Validators.required],
+    //   type: [article.type || '', Validators.required],
+    //   category: [article.category || ''],
+    //   link: [article.link || ''],
+    // });
 
-    this.articles.push(articleForm);
+    // this.articles.push(articleForm);
+    this.articles.push(article)
+    // console.log("the article form is: ",articleForm)
   }
 
   removeArticle(index: number): void {
-    this.articles.removeAt(index);
+    this.articles.splice(index,1);
   }
 
   private applyDarkModeClass(): void {
@@ -401,8 +414,8 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.selectedArticleIds = this.articles.value.map(article => article.id);
-    console.log('Selected Articles:', this.selectedArticleIds);
+    // this.selectedArticleIds = this.articles.value.map(article => article.id);
+    // console.log('Selected Articles:', this.selectedArticleIds);
   }
 
   back(): void {

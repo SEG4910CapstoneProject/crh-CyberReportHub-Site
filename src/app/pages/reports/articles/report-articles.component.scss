@@ -1,10 +1,29 @@
+@use 'style-utils' as *;
+
+
+.main-title {
+  @include text('heading-1');
+  margin: 0;
+  padding: size(16);
+}
+
+.grid-parent {
+  border: 2px solid red;
+  display: grid;
+  grid-template-columns: 1fr size(300);
+  gap: size(10);
+  height: 100vh;
+}
+
 .report-articles {
+  border: 2px solid blue;
+
   font-family: Arial, sans-serif;
-  padding: 24px;
-  max-width: 800px;
-  margin: 32px auto;
+  margin: size(10);
+  // max-width: 800px;
+  // margin: 32px auto;
   background-color: #f9f9f9;
-  border-radius: 12px;
+  border-radius: size(12);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition:
     background-color 0.3s,
@@ -34,39 +53,32 @@
     }
   }
 
-  h1 {
-    font-size: 24px;
-    margin-bottom: 24px;
-    text-align: center;
-  }
-
   .form-section {
-    margin-bottom: 20px;
+    margin: size(15);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: size(8);
 
     label {
       font-weight: bold;
-      font-size: 14px;
     }
 
     input,
     select {
-      padding: 10px;
+      // padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: 14px;
+      // font-size: 14px;
     }
 
     .article-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: size(12);
 
       .article {
         display: grid;
-        grid-template-columns: 2fr 1fr 1.2fr 2fr auto;
+        grid-template-columns: 30% 10% 30% 10% auto;
         gap: 8px;
         align-items: center;
 
@@ -81,8 +93,8 @@
 
         .article-title {
           font-weight: bold;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          // overflow: hidden;
+          // text-overflow: ellipsis;
           white-space: nowrap;
         }
 
@@ -157,22 +169,23 @@
 }
 
 .article-selection-box {
-  position: fixed;
-  top: 100px;
-  right: 20px;
-  width: 220px;
-  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  // position: fixed;
+  // top: size(250);
+  // right: 20px;
+  // width: 220px;
+  // height: auto;
   background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: size(8);
+  // padding: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
+  // overflow-y: auto;
   transition:
     background-color 0.3s,
     color 0.3s;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ddd;
+
+  border: 4px solid pink;
 
   &.dark {
     background-color: #242424;
