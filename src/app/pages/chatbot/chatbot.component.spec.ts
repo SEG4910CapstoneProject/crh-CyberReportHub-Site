@@ -43,7 +43,8 @@ describe('ChatbotComponent', () => {
   });
 
   it('should send a user message and add loading bot message', fakeAsync(() => {
-    const subject = new Subject<{ reply: string }>();
+    const subject = new Subject<string>();
+
     mockHttpClient.post.mockReturnValue(subject.asObservable());
 
     component.userMessage.set('Hello');
@@ -55,7 +56,7 @@ describe('ChatbotComponent', () => {
     expect(msgs.some(m => m.sender === 'bot' && m.text === '...')).toBe(true);
 
     // Simulate API response
-    subject.next({ reply: 'Hello user!' });
+    subject.next('Hello user!');
     subject.complete();
     tick();
 
@@ -66,7 +67,7 @@ describe('ChatbotComponent', () => {
   }));
 
   it('should replace loading bot message with reply on success', () => {
-    mockHttpClient.post.mockReturnValue(of({ reply: 'Hi back!' }));
+    mockHttpClient.post.mockReturnValue(of('Hi back!'));
 
     component.userMessage.set('Hi');
     component.sendMessage();

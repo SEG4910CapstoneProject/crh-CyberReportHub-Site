@@ -1,7 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, effect, runInInjectionContext, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService, User } from '../../shared/services/auth.service';
 
 interface ChatMessage {
   sender: 'user' | 'bot';
@@ -17,15 +18,38 @@ interface ChatMessage {
 })
 export class ChatbotComponent implements OnInit {
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
+  private injector = inject(Injector);
 
   messages = signal<ChatMessage[]>([]);
   userMessage = signal<string>('');
 
+  private storageKey = 'chatbotMessages_guest';
+  private storage: Storage = sessionStorage; // default for guests
+
   ngOnInit(): void {
-    this.messages.update(msgs => [
-      ...msgs,
-      { sender: 'bot', text: 'Hi there! How can I help you today?' },
-    ]);
+    const user = this.authService.getCurrentUser();
+
+    // If logged in, switch to persistent localStorage
+    if (user) {
+      this.storageKey = `chatbotMessages_${user.userId}`;
+      this.storage = localStorage;
+    }
+
+    // Load previous chat (if exists)
+    const saved = this.storage.getItem(this.storageKey);
+    if (saved) {
+      this.messages.set(JSON.parse(saved));
+    } else {
+      this.messages.set([{ sender: 'bot', text: 'Hi there! How can I help you today?' }]);
+    }
+
+    // Auto-save messages when they change
+    runInInjectionContext(this.injector, () => {
+      effect(() => {
+        this.storage.setItem(this.storageKey, JSON.stringify(this.messages()));
+      });
+    });
   }
 
   sendMessage(): void {
@@ -37,11 +61,16 @@ export class ChatbotComponent implements OnInit {
     this.messages.update(msgs => [...msgs, { sender: 'bot', text: '...' }]);
 
     this.http
-      .post<{ reply: string }>('http://localhost:5000/chat', { message: trimmed })
+      .post('http://localhost:8080/api/v1/chat', { message: trimmed }, { responseType: 'text' })
       .subscribe({
-        next: res => this.replaceLastBotMessage(res.reply),
+        next: reply => this.replaceLastBotMessage(reply),
         error: () => this.replaceLastBotMessage('Sorry, something went wrong.'),
       });
+  }
+
+  clearChat(): void {
+    this.storage.removeItem(this.storageKey);
+    this.messages.set([{ sender: 'bot', text: 'Chat cleared. How can I help you?' }]);
   }
 
   private replaceLastBotMessage(text: string): void {
