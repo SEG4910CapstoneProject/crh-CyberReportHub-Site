@@ -1,17 +1,17 @@
 export interface IOC {
-    iocId: Number,
-    iocTypeId: Number,
-    iocTypeName: String,
-    value: String
+    iocId: number,
+    iocTypeId: number,
+    iocTypeName: string,
+    value: string
 }
 
 export interface ArticleForCreateReport {
-    articleId: String,
-    title: String,
-    description: String,
-    category: String,
-    link: String,
+    articleId: string,
+    title: string,
+    description: string,
+    category: string,
+    link: string,
     iocs: IOC[],
-    publishDate: String,
+    publishDate: string,
     type:string
 }

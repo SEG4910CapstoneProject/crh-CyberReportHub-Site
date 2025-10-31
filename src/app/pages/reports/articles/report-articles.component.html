@@ -2,7 +2,7 @@
 
 <div class="grid-parent">
   <div class="report-articles" [class.dark]="isDarkMode">
-    <form *ngIf="form && (template_type == 'nonRestricted')" [formGroup]="form" (ngSubmit)="submit()">
+    <form *ngIf="form && (template_type === 'nonRestricted')" [formGroup]="form" (ngSubmit)="submit()">
       <!-- Statistics Section -->
       <div class="form-section">
         <label>{{ 'reportNew.addstats' | translate }}:</label>
