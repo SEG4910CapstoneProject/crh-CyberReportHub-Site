@@ -89,7 +89,7 @@ export class SettingsComponent implements OnInit {
     this.darkModeService.setDarkMode(isChecked);
   }
 
-  onClearlogo(): void {
+  onClearlogo(logoInput?: HTMLInputElement): void {
     this.preview.set(null);
     this.branding.clearLogo();
 
@@ -97,6 +97,9 @@ export class SettingsComponent implements OnInit {
     const current = saved ? JSON.parse(saved) : {};
     delete current.logo;
     localStorage.setItem('brandingSettings', JSON.stringify(current));
+    if (logoInput) {
+      logoInput.value = '';
+    }
   }
 
   handleLogoUpload(ev: Event): void {
