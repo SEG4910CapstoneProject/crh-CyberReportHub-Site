@@ -62,132 +62,33 @@
 
         <label>Articles:</label>
 
-        <!-- Add Article Search Box -->
-        <div class="add-article-container">
-          <input
-            type="text"
-            [formControl]="newArticleForm"
-            placeholder="{{ 'reportNew.addurl' | translate }}"
-            (focus)="newArticleForm.setValue('')" />
-          <button type="button" (click)="toggleArticleForm()" class="add-button">
-            +
-          </button>
-        </div>
-
-        <!-- Article Form For Adding a Link Manually-->
-        <!-- This will be removed in future implementations -->
-        <div *ngIf="isArticleFormVisible" class="article-form">
-          <div class="manual-article-form">
-            <div class="form-field">
-              <label for="articleTitle">Title</label>
-              <input
-                id="articleTitle"
-                [(ngModel)]="newArticle.title"
-                placeholder="Enter article title" />
-            </div>
-            <div class="form-field">
-              <label for="articleType">Type</label>
-              <select id="articleType" [(ngModel)]="newArticle.type">
-                <option value="" disabled selected hidden>
-                  -- Select Type --
-                </option>
-                <option *ngFor="let type of articleTypes" [value]="type">
-                  {{ type }}
-                </option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="articleCategory">Category</label>
-              <select id="articleCategory" [(ngModel)]="newArticle.category">
-                <option value="" disabled selected hidden>
-                  -- Select Category --
-                </option>
-                <option value="activeThreats">
-                  {{ 'reportNew.activethreats' | translate }}
-                </option>
-                <option value="emergingInternationalThreats">
-                  {{ 'reportNew.emergingthreats' | translate }}
-                </option>
-                <option value="globalNews">
-                  {{ 'reportNew.globalnews' | translate }}
-                </option>
-                <option value="customerThreats">
-                  {{ 'reportNew.customerthreats' | translate }}
-                </option>
-              </select>
-            </div>
-
-            <!-- Submit + Cancel Buttons -->
-            <div class="form-actions">
-              <button type="button" (click)="addNewArticle()">
-                {{ 'common.add' | translate }}
-              </button>
-              <button type="button" (click)="toggleArticleForm()">
-                {{ 'common.cancel' | translate }}
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div class="article-list">
+          <div *ngIf="articles.length === 0">You have no selected articles</div>
           <div
             class="article"
             *ngFor="let article of articles; let i = index"
             >
-            <!-- <input
-              placeholder="Title"
-              formControlName="title"
-              readonly
-              class="article-title" />
-             -->
+
             <div>{{article.title}}</div>
             <div>{{article.type}}</div>
+            <div>{{article.category}}</div>
+            <div>{{article.link}}</div>
 
-            <!-- <input
-              placeholder="Type"
-              formControlName="type"
-              readonly
-              class="article-type" /> -->
-
-            <!-- <select formControlName="category" class="article-category">
-              <option value="">
-                -- {{ 'reportNew.category' | translate }} --
-              </option>
-              <option value="activeThreats">
-                {{ 'reportNew.activethreats' | translate }}
-              </option>
-              <option value="emergingInternationalThreats">
-                {{ 'reportNew.emergingthreats' | translate }}
-              </option>
-              <option value="globalNews">
-                {{ 'reportNew.globalnews' | translate }}
-              </option>
-              <option value="customerThreats">
-                {{ 'reportNew.customerthreats' | translate }}
-              </option>
-            </select> -->
-
-            <!-- <input
-              placeholder="Link"
-              formControlName="link"
-              readonly
-              class="article-link" /> -->
-
-            <button type="button" (click)="removeArticle(i)">
-              {{ 'common.remove' | translate }}
-            </button>
+            <span class="delete-btn material-symbols-outlined" (click)="removeArticle(i)">
+              close
+            </span>
           </div>
         </div>
       </div>
 
       <div class="form-actions">
-        <button type="button" (click)="back()">
+        <crh-button (click)="back()">
           {{ 'common.back' | translate }}
-        </button>
-        <button type="button">
+        </crh-button>
+        <crh-button class="preview-btn">
           {{ 'common.preview' | translate }}
-        </button>
-        <button type="submit">{{ 'common.submit' | translate }}</button>
+        </crh-button>
+        <crh-button>{{ 'common.submit' | translate }}</crh-button>
       </div>
     </form>
   </div>
@@ -202,41 +103,38 @@
       [(ngModel)]="articleSearchTerm"
       (input)="filterArticles()" />
 
-    <div class="article-list-container">
-      <div *ngIf="isLoading" class="spinner-wrapper">
-        <crh-progress-spinner></crh-progress-spinner>
-      </div>
-      <ng-container *ngIf="!isLoading">
-        <div
-          *ngFor="let group of groupedArticlesByDate"
-          class="date-group-container">
-          <!-- Header -->
+    <div class="relative-articles-wrapper">
+      <div class="article-list-container">
+        <div *ngIf="isLoading" class="spinner-wrapper">
+          <crh-progress-spinner></crh-progress-spinner>
+        </div>
+        <ng-container *ngIf="!isLoading">
           <div
-            class="date-group-header"
-            (click)="toggleDateGroup(group)"
-            [class.expanded]="group.expanded">
-            <span>{{ group.formattedDate }}</span>
-            <span class="caret">▶</span>
-          </div>
-
-          <!-- Articles -->
-          <div *ngIf="group.expanded" class="date-articles-list">
+            *ngFor="let group of groupedArticlesByDate"
+            class="date-group-container">
+            <!-- Header -->
             <div
-              *ngFor="let article of group.articles"
-              (click)="addArticleFromSelection(article)"
-              class="article-item">
-              <span>{{ article.title }}</span>
-              <button class="add-button">+</button>
+              class="date-group-header"
+              (click)="toggleDateGroup(group)"
+              [class.expanded]="group.expanded">
+              <span>{{ group.formattedDate }}</span>
+              <span class="caret">▶</span>
+            </div>
+
+            <!-- Articles -->
+            <div *ngIf="group.expanded" class="date-articles-list">
+              <div
+                *ngFor="let article of group.articles"
+                (click)="addArticleFromSelection(article)"
+                class="article-item">
+                <span>{{ article.title }}</span>
+                <button class="add-button">+</button>
+              </div>
             </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
     </div>
   </div>
-
-
-
-
-
 </div>
 
