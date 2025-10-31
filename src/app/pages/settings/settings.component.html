@@ -33,7 +33,11 @@
 
       <div class="form-section">
         <label>Logo:</label>
-        <input type="file" accept="image/*" (change)="handleLogoUpload($event)" />
+        <input
+  #logoInput
+  type="file"
+  accept="image/*"
+  (change)="handleLogoUpload($event)"/>
         <div *ngIf="logoToSave()" style="margin-top: 8px">
           <span>Preview:</span><br />
           <img [src]="logoToSave()!" alt="Logo preview" class="logo-preview" />
@@ -41,7 +45,7 @@
             *ngIf="logoToSave()"
             type="button"
             class="remove-logo-button"
-            (click)="onClearlogo()">
+            (click)="onClearlogo(logoInput)">
             Remove logo
           </button>
         </div>
