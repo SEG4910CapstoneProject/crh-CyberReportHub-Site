@@ -116,7 +116,7 @@ export class ReportNewComponent implements OnInit, OnDestroy {
 
         // Navigate to the next page and pass reportId in state
         this.router.navigate(['/reports-articles'], {
-          state: { reportId },
+          state: { reportId , template_type},
         });
       },
       error: (err: any) => {
