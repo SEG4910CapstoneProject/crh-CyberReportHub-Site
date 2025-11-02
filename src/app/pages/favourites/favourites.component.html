@@ -1,4 +1,4 @@
-<div class="favourites-page-container">
+<div class="favourites-page-container" [class.dark-mode]="isDarkMode()">
   <div class="header">
     <h1>Your Favourites</h1>
     <button class="add-tag-btn" (click)="openCreateTagDialog()">+ Add Tag</button>

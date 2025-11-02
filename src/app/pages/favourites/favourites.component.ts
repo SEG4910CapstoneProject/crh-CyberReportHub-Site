@@ -1,7 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ArticleService, Article } from '../../shared/services/article.service';
 import { TagService, Tag } from '../../shared/services/tag.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { DarkModeService } from '../../shared/services/dark-mode.service';
 import { CreateTagDialogComponent } from '../../shared/dialogs/create-tag-dialog/create-tag-dialog.component';
 import { CreateTagDialogData, CreateTagDialogResult } from '../../shared/dialogs/create-tag-dialog/create-tag-dialog.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
   standalone: false,
 })
 export class FavouritesComponent implements OnInit {
+  private darkModeService = inject(DarkModeService);
+
   favouriteArticles: Article[] = [];
   untaggedFavourites: Article[] = [];
   submittedArticles: Article[] = [];
@@ -22,6 +25,7 @@ export class FavouritesComponent implements OnInit {
   collapsedSections: Record<string, boolean> = {}; // Tracks which sections are collapsed
 
   protected isLoggedIn = signal<boolean>(false);
+  protected isDarkMode = signal<boolean>(false);
 
   constructor(
     private articleService: ArticleService,
@@ -31,19 +35,27 @@ export class FavouritesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Watch for authentication changes
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn.set(status);
       if (status) this.loadData();
       else this.isLoading = false;
     });
+
+    // Watch for dark mode changes
+    this.darkModeService.isDarkMode$.subscribe(mode => {
+      this.isDarkMode.set(mode);
+    });
   }
 
+  // Loads all required data when user is logged in
   private loadData(): void {
     this.fetchFavourites();
     this.fetchSubmittedArticles();
     this.fetchTags();
   }
 
+  // Fetch all favourite articles
   fetchFavourites(): void {
     this.articleService.getMyFavourites().subscribe({
       next: (articles: Article[]) => {
@@ -55,13 +67,17 @@ export class FavouritesComponent implements OnInit {
     });
   }
 
+  // Fetch all manually submitted articles
   fetchSubmittedArticles(): void {
     this.articleService.getMySubmittedArticles().subscribe({
-      next: articles => (this.submittedArticles = articles),
+      next: (articles: Article[]) => {
+        this.submittedArticles = articles;
+      },
       error: err => console.error('Error fetching submitted articles:', err),
     });
   }
 
+  // Fetch all user-created tags
   fetchTags(): void {
     this.tagService.getUserTags().subscribe({
       next: tags => {
@@ -72,6 +88,7 @@ export class FavouritesComponent implements OnInit {
     });
   }
 
+  // Load all articles associated with a specific tag
   loadArticlesByTag(tagId: number): void {
     this.tagService.getArticlesByTag(tagId).subscribe({
       next: (articles: Article[]) => {
@@ -94,19 +111,22 @@ export class FavouritesComponent implements OnInit {
     });
   }
 
+  // Check if an article is currently in favourites
   isFavourite(article: Article): boolean {
     return this.favouriteArticles?.some(f => f.articleId === article.articleId);
   }
 
+  // Toggle article's favourite status (add/remove)
   toggleFavourite(article: Article): void {
     if (!this.isLoggedIn()) return;
 
     const isFav = this.favouriteArticles.some(f => f.articleId === article.articleId);
 
     if (isFav) {
+      // Remove from favourites
       this.articleService.removeFavourite(article.articleId).subscribe({
         next: () => {
-          // Remove from favourites
+          // Update favourites list
           this.favouriteArticles = this.favouriteArticles.filter(f => f.articleId !== article.articleId);
           this.untaggedFavourites = this.untaggedFavourites.filter(f => f.articleId !== article.articleId);
 
@@ -124,30 +144,40 @@ export class FavouritesComponent implements OnInit {
         },
       });
     } else {
+      // Add to favourites
       this.articleService.addFavourite(article.articleId).subscribe({
         next: () => this.favouriteArticles.push(article),
       });
     }
   }
 
+  // Increment article view count when clicked
   incrementViewCount(articleId: string): void {
     this.articleService.incrementViewCount(articleId).subscribe();
   }
 
+  // Delete a manually submitted article
   deleteArticle(articleId: string): void {
     if (!confirm('Are you sure you want to delete this article?')) return;
     this.articleService.deleteArticle(articleId).subscribe({
       next: () => {
-        this.submittedArticles = this.submittedArticles.filter(a => a.articleId !== articleId);
+        this.submittedArticles = this.submittedArticles.filter(
+          a => a.articleId !== articleId
+        );
+        console.log('Article deleted successfully');
       },
+      error: err => console.error('Error deleting article:', err),
     });
   }
 
   // ---------- DIALOG LOGIC ----------
+
+  // Opens the Create Tag dialog
   openCreateTagDialog(): void {
     const data: CreateTagDialogData = {
-      favouriteArticles: this.favouriteArticles
+      favouriteArticles: this.favouriteArticles,
     };
+
     const dialogRef = this.dialog.open<CreateTagDialogComponent, CreateTagDialogData, CreateTagDialogResult>(
       CreateTagDialogComponent,
       { data }
@@ -157,6 +187,7 @@ export class FavouritesComponent implements OnInit {
       if (result) {
         this.tagService.createTag(result.tagName).subscribe({
           next: newTag => {
+            // Link selected articles to new tag
             result.selectedArticleIds.forEach(articleId =>
               this.tagService.addArticleToTag(newTag.tagId, articleId).subscribe()
             );
@@ -166,6 +197,7 @@ export class FavouritesComponent implements OnInit {
           error: err => {
             console.warn('Tag creation failed gracefully:', err);
 
+            // Send user error message
             let msg = 'Failed to create tag.';
             if (err?.error?.message) msg = err.error.message;
             else if (err?.error?.error) msg = err.error.error;
@@ -173,12 +205,13 @@ export class FavouritesComponent implements OnInit {
 
             // show error to the user
             alert(msg);
-          }
+          },
         });
       }
     });
   }
 
+  // Opens the Edit Tag dialog for an existing tag
   openEditTagDialog(tag: Tag): void {
     // Fetch the articles under this tag to preselect them in the dialog
     this.tagService.getArticlesByTag(tag.tagId).subscribe({
@@ -205,7 +238,7 @@ export class FavouritesComponent implements OnInit {
               });
             }
 
-            // Update new article selections
+            // Update article selections
             const currentIds = new Set(articles.map(a => a.articleId));
             const selectedIds = new Set(result.selectedArticleIds);
 
@@ -223,6 +256,7 @@ export class FavouritesComponent implements OnInit {
               }
             });
 
+            // Refresh lists
             this.fetchTags();
             this.fetchFavourites();
           }
@@ -232,6 +266,7 @@ export class FavouritesComponent implements OnInit {
     });
   }
 
+  // Deletes a tag and updates view
   deleteTag(tag: Tag): void {
     if (!confirm(`Are you sure you want to delete "${tag.tagName}"?`)) return;
     this.tagService.deleteTag(tag.tagId).subscribe({
@@ -243,8 +278,8 @@ export class FavouritesComponent implements OnInit {
     });
   }
 
+  // Expands or collapses a section
   toggleSection(sectionKey: string): void {
     this.collapsedSections[sectionKey] = !this.collapsedSections[sectionKey];
   }
-
 }
