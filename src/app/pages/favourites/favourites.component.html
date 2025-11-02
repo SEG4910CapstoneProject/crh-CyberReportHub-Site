@@ -1,6 +1,7 @@
 <div class="favourites-page-container">
   <div class="header">
     <h1>Your Favourites</h1>
+    <button class="add-tag-btn" (click)="openCreateTagDialog()">+ Add Tag</button>
   </div>
 
   <!-- Loading Spinner -->
@@ -8,65 +9,86 @@
 
   <!-- Logged-in view -->
   <div *ngIf="!isLoading && isLoggedIn()" class="sections">
-    <!-- Favourite Articles Section -->
-    <div class="category-section">
+
+    <!-- Show only if there are untagged favourites -->
+    <div class="category-section" *ngIf="(untaggedFavourites?.length || 0) > 0">
       <h2>Favourite Articles</h2>
+      <ul class="article-list">
+        <li *ngFor="let article of untaggedFavourites" class="article-item">
+          <a
+            [href]="article.link"
+            target="_blank"
+            class="article-link"
+            (click)="incrementViewCount(article.articleId)">
+            <h3>{{ article.title }}</h3>
+          </a>
+          <p class="article-description">
+            {{ article.description || 'No description available.' }}
+          </p>
+          <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
 
-      <ng-container *ngIf="favouriteArticles.length; else noFavourites">
-        <ul class="article-list">
-          <li *ngFor="let article of favouriteArticles" class="article-item">
-            <a
-              [href]="article.link"
-              target="_blank"
-              class="article-link"
-              (click)="incrementViewCount(article.articleId)">
-              <h3>{{ article.title }}</h3>
-            </a>
-            <p class="article-description">
-              {{ article.description || 'No description available.' }}
-            </p>
-            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
-
-            <span
-              class="star-icon"
-              (click)="toggleFavourite(article)"
-              [class.fav]="true">
-              &#9733;
-            </span>
-          </li>
-        </ul>
-      </ng-container>
-
-      <ng-template #noFavourites>
-        <p class="empty-section">You have no favourite articles yet.</p>
-      </ng-template>
+          <span
+            class="star-icon"
+            (click)="toggleFavourite(article)"
+            [class.fav]="true">
+            &#9733;
+          </span>
+        </li>
+      </ul>
     </div>
 
-    <!-- Submitted (Manually Added) Articles Section -->
-    <div class="category-section">
-      <h2>Manually Added Articles</h2>
-      <ng-container *ngIf="submittedArticles?.length; else noSubmitted">
-        <ul class="article-list">
-          <li *ngFor="let article of submittedArticles" class="article-item">
-            <a
-              [href]="article.link"
-              target="_blank"
-              class="article-link"
-              (click)="incrementViewCount(article.articleId)">
-              <h3>{{ article.title }}</h3>
-            </a>
-            <p class="article-description">
-              {{ article.description || 'No description available.' }}
-            </p>
-            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
-            <button class="delete-btn" (click)="deleteArticle(article.articleId)">Delete</button>
-          </li>
-        </ul>
-      </ng-container>
+    <!-- Tagged sections -->
+    <div class="category-section" *ngFor="let tag of userTags">
+      <div class="tag-header">
+        <h2>{{ tag.tagName }}</h2>
+        <div class="tag-actions">
+          <span class="edit-icon" (click)="openEditTagDialog(tag)">✏️</span>
+          <span class="delete-icon" (click)="deleteTag(tag)">🗑️</span>
+        </div>
+      </div>
 
-      <ng-template #noSubmitted>
-        <p class="empty-section">No articles have been manually submitted yet.</p>
-      </ng-template>
+      <ul class="article-list">
+        <li *ngFor="let article of taggedArticles[tag.tagId]" class="article-item">
+          <a
+            [href]="article.link"
+            target="_blank"
+            class="article-link"
+            (click)="incrementViewCount(article.articleId)">
+            <h3>{{ article.title }}</h3>
+          </a>
+          <p class="article-description">{{ article.description || 'No description available.' }}</p>
+          <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+
+          <!-- favourite toggle -->
+          <span
+            class="star-icon"
+            (click)="toggleFavourite(article)"
+            [class.fav]="true">
+            &#9733;
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Show only if there are manually added articles -->
+    <div class="category-section" *ngIf="(submittedArticles?.length || 0) > 0">
+      <h2>Manually Added Articles</h2>
+      <ul class="article-list">
+        <li *ngFor="let article of submittedArticles" class="article-item">
+          <a
+            [href]="article.link"
+            target="_blank"
+            class="article-link"
+            (click)="incrementViewCount(article.articleId)">
+            <h3>{{ article.title }}</h3>
+          </a>
+          <p class="article-description">
+            {{ article.description || 'No description available.' }}
+          </p>
+          <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+          <button class="delete-btn" (click)="deleteArticle(article.articleId)">Delete</button>
+        </li>
+      </ul>
     </div>
   </div>
 

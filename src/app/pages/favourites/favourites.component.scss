@@ -14,6 +14,21 @@
       font-weight: bold;
       color: #444;
     }
+
+    .add-tag-btn {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #1b5e20;
+      }
+    }
   }
 
   .sections {
@@ -27,6 +42,29 @@
         color: #333;
         margin-bottom: 15px;
         font-weight: 600;
+      }
+
+      .tag-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .tag-actions {
+          .edit-icon,
+          .delete-icon {
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 18px;
+          }
+
+          .edit-icon:hover {
+            color: #1976d2;
+          }
+
+          .delete-icon:hover {
+            color: #d32f2f;
+          }
+        }
       }
 
       .article-list {
@@ -74,6 +112,20 @@
               color: #ff9900;
             }
           }
+
+          .delete-btn {
+            background-color: #c62828;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 12px;
+            cursor: pointer;
+            margin-top: 5px;
+
+            &:hover {
+              background-color: #b71c1c;
+            }
+          }
         }
       }
 
@@ -82,21 +134,6 @@
         color: #777;
         text-align: center;
       }
-
-      .delete-btn {
-        background-color: #c62828;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 6px 12px;
-        cursor: pointer;
-        margin-top: 5px;
-
-        &:hover {
-          background-color: #b71c1c;
-        }
-      }
-
     }
   }
 }
