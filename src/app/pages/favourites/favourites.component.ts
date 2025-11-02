@@ -163,6 +163,17 @@ export class FavouritesComponent implements OnInit {
             this.fetchTags();
             this.fetchFavourites();
           },
+          error: err => {
+            console.warn('Tag creation failed gracefully:', err);
+
+            let msg = 'Failed to create tag.';
+            if (err?.error?.message) msg = err.error.message;
+            else if (err?.error?.error) msg = err.error.error;
+            else if (err?.status === 400) msg = 'A tag with this name already exists.';
+
+            // show error to the user
+            alert(msg);
+          }
         });
       }
     });
