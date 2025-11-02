@@ -1,14 +1,12 @@
-<div class="favourites-page-container">
+<div class="favourites-page-container" [class.dark-mode]="isDarkMode()">
   <div class="header">
     <h1>Your Favourites</h1>
   </div>
 
-  <!-- Loading Spinner -->
   <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
 
-  <!-- Logged-in view -->
   <div *ngIf="!isLoading && isLoggedIn()" class="sections">
-    <!-- Favourite Articles Section -->
+    <!-- Favourite Articles -->
     <div class="category-section">
       <h2>Favourite Articles</h2>
 
@@ -42,7 +40,7 @@
       </ng-template>
     </div>
 
-    <!-- Submitted (Manually Added) Articles Section -->
+    <!-- Submitted Articles -->
     <div class="category-section">
       <h2>Manually Added Articles</h2>
       <ng-container *ngIf="submittedArticles?.length; else noSubmitted">
@@ -59,7 +57,9 @@
               {{ article.description || 'No description available.' }}
             </p>
             <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
-            <button class="delete-btn" (click)="deleteArticle(article.articleId)">Delete</button>
+            <button class="delete-btn" (click)="deleteArticle(article.articleId)">
+              Delete
+            </button>
           </li>
         </ul>
       </ng-container>
@@ -70,7 +70,6 @@
     </div>
   </div>
 
-  <!-- Logged-out view -->
   <div *ngIf="!isLoggedIn() && !isLoading">
     <p>Please log in to view your favourite and submitted articles.</p>
   </div>
