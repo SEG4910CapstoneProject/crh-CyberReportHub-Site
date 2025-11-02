@@ -1,10 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   ArticleService,
   Article,
 } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { DarkModeService } from '../../shared/services/dark-mode.service';
 
 @Component({
   selector: 'crh-articles',
@@ -22,6 +23,8 @@ export class ArticlesComponent implements OnInit {
 
   // Use signal to track logged-in status
   protected isLoggedIn = signal<boolean>(false);
+  protected isDarkMode = signal<boolean>(false);
+  private darkModeService = inject(DarkModeService);
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +42,10 @@ export class ArticlesComponent implements OnInit {
       } else {
         this.favouriteArticles = [];
       }
+    });
+
+    this.darkModeService.isDarkMode$.subscribe(mode => {
+      this.isDarkMode.set(mode);
     });
 
     // Load all articles

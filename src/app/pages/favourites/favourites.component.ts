@@ -1,6 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ArticleService, Article } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { DarkModeService } from '../../shared/services/dark-mode.service';
 
 @Component({
   selector: 'crh-favourites',
@@ -9,11 +10,14 @@ import { AuthService } from '../../shared/services/auth.service';
   standalone: false,
 })
 export class FavouritesComponent implements OnInit {
+  private darkModeService = inject(DarkModeService);
+
   favouriteArticles: Article[] = [];
   submittedArticles: Article[] = [];
   isLoading = true;
 
   protected isLoggedIn = signal<boolean>(false);
+  protected isDarkMode = signal<boolean>(false);
 
   constructor(
     private articleService: ArticleService,
@@ -21,6 +25,7 @@ export class FavouritesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn.set(status);
       if (status) {
@@ -29,6 +34,10 @@ export class FavouritesComponent implements OnInit {
       } else {
         this.isLoading = false;
       }
+    });
+
+    this.darkModeService.isDarkMode$.subscribe(mode => {
+      this.isDarkMode.set(mode);
     });
   }
 
@@ -46,13 +55,13 @@ export class FavouritesComponent implements OnInit {
   }
 
   fetchSubmittedArticles(): void {
-      this.articleService.getMySubmittedArticles().subscribe({
-        next: (articles: Article[]) => {
-          this.submittedArticles = articles;
-        },
-        error: err => console.error('Error fetching submitted articles:', err),
-      });
-    }
+    this.articleService.getMySubmittedArticles().subscribe({
+      next: (articles: Article[]) => {
+        this.submittedArticles = articles;
+      },
+      error: err => console.error('Error fetching submitted articles:', err),
+    });
+  }
 
   toggleFavourite(article: Article): void {
     if (!this.isLoggedIn()) return;
@@ -89,11 +98,12 @@ export class FavouritesComponent implements OnInit {
     if (!confirm('Are you sure you want to delete this article?')) return;
     this.articleService.deleteArticle(articleId).subscribe({
       next: () => {
-        this.submittedArticles = this.submittedArticles.filter(a => a.articleId !== articleId);
+        this.submittedArticles = this.submittedArticles.filter(
+          a => a.articleId !== articleId
+        );
         console.log('Article deleted successfully');
       },
-      error: err => console.error('Error deleting article:', err)
+      error: err => console.error('Error deleting article:', err),
     });
   }
-
 }
