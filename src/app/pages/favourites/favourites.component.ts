@@ -19,6 +19,7 @@ export class FavouritesComponent implements OnInit {
   userTags: Tag[] = [];
   taggedArticles: Record<number, Article[]> = {};
   isLoading = true;
+  collapsedSections: Record<string, boolean> = {}; // Tracks which sections are collapsed
 
   protected isLoggedIn = signal<boolean>(false);
 
@@ -91,6 +92,10 @@ export class FavouritesComponent implements OnInit {
       error: (err: unknown) =>
         console.error('Error loading tagged articles:', err),
     });
+  }
+
+  isFavourite(article: Article): boolean {
+    return this.favouriteArticles?.some(f => f.articleId === article.articleId);
   }
 
   toggleFavourite(article: Article): void {
@@ -226,4 +231,9 @@ export class FavouritesComponent implements OnInit {
       },
     });
   }
+
+  toggleSection(sectionKey: string): void {
+    this.collapsedSections[sectionKey] = !this.collapsedSections[sectionKey];
+  }
+
 }
