@@ -24,8 +24,8 @@ describe('ReportArticlesComponent', () => {
 
   beforeEach(async () => {
     mockArticleService = {
-      getAllArticleTypesWithArticles: jest.fn(() =>
-        of({ General: [{ title: 'T1', articleId: 'a1' }] })
+      getAllArticlesTypesIncluded: jest.fn(() =>
+        of({ General: [{ title: 'T1', articleId: 'a1', type:'Malware' }] })
       ),
     };
     mockDarkMode = { isDarkMode$: of(false) };
