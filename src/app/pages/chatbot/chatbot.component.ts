@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DarkModeService } from '../../shared/services/dark-mode.service';
 
 interface ChatMessage {
   sender: 'user' | 'bot';
@@ -17,11 +18,19 @@ interface ChatMessage {
 })
 export class ChatbotComponent implements OnInit {
   private http = inject(HttpClient);
+  private darkModeService = inject(DarkModeService);
 
   messages = signal<ChatMessage[]>([]);
   userMessage = signal<string>('');
+  isDarkMode = signal<boolean>(false);
 
   ngOnInit(): void {
+
+    this.darkModeService.isDarkMode$.subscribe(mode => {
+      this.isDarkMode.set(mode);
+    });
+
+    // Initial bot message
     this.messages.update(msgs => [
       ...msgs,
       { sender: 'bot', text: 'Hi there! How can I help you today?' },
@@ -55,3 +64,4 @@ export class ChatbotComponent implements OnInit {
     this.messages.set([...msgs]);
   }
 }
+
