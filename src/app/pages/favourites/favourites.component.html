@@ -1,18 +1,27 @@
 <div class="favourites-page-container" [class.dark-mode]="isDarkMode()">
   <div class="header">
     <h1>Your Favourites</h1>
+    <button class="add-tag-btn" (click)="openCreateTagDialog()">+ Add Tag</button>
   </div>
 
+  <!-- Loading Spinner -->
   <crh-progress-spinner *ngIf="isLoading"></crh-progress-spinner>
 
+  <!-- Logged-in view -->
   <div *ngIf="!isLoading && isLoggedIn()" class="sections">
-    <!-- Favourite Articles -->
-    <div class="category-section">
-      <h2>Favourite Articles</h2>
 
-      <ng-container *ngIf="favouriteArticles.length; else noFavourites">
+    <!-- Show only if there are untagged favourites -->
+    <div class="category-section" *ngIf="(untaggedFavourites?.length || 0) > 0">
+      <h2 (click)="toggleSection('general')" class="collapsible-header">
+        Favourite Articles
+        <span class="arrow">
+          {{ collapsedSections['general'] ? '►' : '▼' }}
+        </span>
+      </h2>
+
+      <div *ngIf="!collapsedSections['general']">
         <ul class="article-list">
-          <li *ngFor="let article of favouriteArticles" class="article-item">
+          <li *ngFor="let article of untaggedFavourites" class="article-item">
             <a
               [href]="article.link"
               target="_blank"
@@ -28,22 +37,66 @@
             <span
               class="star-icon"
               (click)="toggleFavourite(article)"
-              [class.fav]="true">
+              [class.fav]="isFavourite(article)">
               &#9733;
             </span>
           </li>
         </ul>
-      </ng-container>
-
-      <ng-template #noFavourites>
-        <p class="empty-section">You have no favourite articles yet.</p>
-      </ng-template>
+      </div>
     </div>
 
-    <!-- Submitted Articles -->
-    <div class="category-section">
-      <h2>Manually Added Articles</h2>
-      <ng-container *ngIf="submittedArticles?.length; else noSubmitted">
+    <!-- Tagged sections -->
+    <div class="category-section" *ngFor="let tag of userTags">
+      <h2 class="collapsible-header tag-header" (click)="toggleSection('tag-' + tag.tagId)">
+        <div class="tag-info">
+          <span class="tag-name">{{ tag.tagName }}</span>
+          <span class="tag-actions" (click)="$event.stopPropagation()">
+        <span class="edit-icon" (click)="openEditTagDialog(tag)">✏️</span>
+        <span class="delete-icon" (click)="deleteTag(tag)">🗑️</span>
+      </span>
+        </div>
+        <span class="arrow">
+      {{ collapsedSections['tag-' + tag.tagId] ? '►' : '▼' }}
+    </span>
+      </h2>
+
+      <div *ngIf="!collapsedSections['tag-' + tag.tagId]">
+        <ul class="article-list">
+          <li *ngFor="let article of taggedArticles[tag.tagId]" class="article-item">
+            <a
+              [href]="article.link"
+              target="_blank"
+              class="article-link"
+              (click)="incrementViewCount(article.articleId)">
+              <h3>{{ article.title }}</h3>
+            </a>
+            <p class="article-description">
+              {{ article.description || 'No description available.' }}
+            </p>
+            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+
+            <span
+              class="star-icon"
+              (click)="toggleFavourite(article)"
+              [class.fav]="isFavourite(article)">
+          &#9733;
+        </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- Manually added articles -->
+    <div class="category-section" *ngIf="(submittedArticles?.length || 0) > 0">
+      <h2 (click)="toggleSection('manual')" class="collapsible-header">
+        Manually Added Articles
+        <span class="arrow">
+          {{ collapsedSections['manual'] ? '►' : '▼' }}
+        </span>
+      </h2>
+
+      <div *ngIf="!collapsedSections['manual']">
         <ul class="article-list">
           <li *ngFor="let article of submittedArticles" class="article-item">
             <a
@@ -57,19 +110,24 @@
               {{ article.description || 'No description available.' }}
             </p>
             <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+
+            <span
+              class="star-icon"
+              (click)="toggleFavourite(article)"
+              [class.fav]="isFavourite(article)">
+              &#9733;
+            </span>
+
             <button class="delete-btn" (click)="deleteArticle(article.articleId)">
               Delete
             </button>
           </li>
         </ul>
-      </ng-container>
-
-      <ng-template #noSubmitted>
-        <p class="empty-section">No articles have been manually submitted yet.</p>
-      </ng-template>
+      </div>
     </div>
   </div>
 
+  <!-- Logged-out view -->
   <div *ngIf="!isLoggedIn() && !isLoading">
     <p>Please log in to view your favourite and submitted articles.</p>
   </div>

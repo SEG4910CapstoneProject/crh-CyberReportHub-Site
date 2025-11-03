@@ -14,6 +14,21 @@
       font-weight: bold;
       color: #444;
     }
+
+    .add-tag-btn {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #1b5e20;
+      }
+    }
   }
 
   .sections {
@@ -27,6 +42,29 @@
         color: #333;
         margin-bottom: 15px;
         font-weight: 600;
+      }
+
+      .tag-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .tag-actions {
+          .edit-icon,
+          .delete-icon {
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 18px;
+          }
+
+          .edit-icon:hover {
+            color: #1976d2;
+          }
+
+          .delete-icon:hover {
+            color: #d32f2f;
+          }
+        }
       }
 
       .article-list {
@@ -51,6 +89,7 @@
             font-weight: bold;
             color: #007bff;
             text-decoration: none;
+            transition: color 0.3s;
 
             &:hover {
               color: #0056b3;
@@ -96,10 +135,86 @@
         text-align: center;
       }
     }
+
+    .collapsible-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+      padding-right: 6px;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #0056b3;
+      }
+
+      .arrow {
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-left: 8px;
+        color: #666;
+        transition: transform 0.2s ease, color 0.2s ease;
+
+        .collapsible-header:hover & {
+          color: #000;
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .tag-header {
+      .tag-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .tag-name {
+          font-weight: 600;
+          color: #333;
+        }
+
+        .tag-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .edit-icon,
+          .delete-icon {
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.2s;
+
+            &:hover {
+              color: #1976d2;
+            }
+
+            &.delete-icon:hover {
+              color: #d32f2f;
+            }
+          }
+        }
+      }
+    }
+
+    .arrow {
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-left: auto;
+      color: #666;
+      transition: transform 0.2s ease, color 0.2s ease;
+
+      .collapsible-header:hover & {
+        color: #000;
+        transform: scale(1.1);
+      }
+    }
   }
 }
 
-
+/* Dark mode */
 .dark-mode {
   background-color: #121212;
   color: #eaeaea;

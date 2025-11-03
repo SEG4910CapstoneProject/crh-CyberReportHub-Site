@@ -79,6 +79,7 @@ import { ReportNewComponent } from './pages/reports/new/report-new.component';
 import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
 import { CrhEmailTemplateCardComponent } from './pages/reports/new/new_components/crh-email-template-card/crh-email-template-card.component';
 import { ErrorDialogComponent } from './shared/dialogs/error-dialog/error-dialog.component';
+import { DialogModule } from '@angular/cdk/dialog';
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
@@ -140,6 +141,7 @@ export function initBrandingFactory(branding: BrandingService): () => void {
   ],
   imports: [
     RouterModule,
+    DialogModule,
     RouterModule.forRoot([]),
     MatSelectModule,
     FormsModule,

@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ data.tag ? 'Edit Tag' : 'Create Tag' }}</h2>
+
+<div mat-dialog-content>
+  <label>Tag Name</label>
+  <input type="text" [(ngModel)]="tagName" placeholder="Enter tag name" />
+
+  <h3>Select Articles</h3>
+  <ul class="article-list">
+    <li *ngFor="let article of data.favouriteArticles">
+      <span>{{ article.title }}</span>
+      <span
+        class="add-icon"
+        [class.selected]="isSelected(article.articleId)"
+        (click)="toggleArticleSelection(article.articleId)">
+        {{ isSelected(article.articleId) ? '✔️' : '+' }}
+      </span>
+    </li>
+  </ul>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    [disabled]="!tagName.trim()">
+    Save
+  </button>
+</div>
+
