@@ -1,10 +1,13 @@
 import { Component, ComponentRef, inject } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   MATERIAL_INPUT_DIRECTIVE_HOST_FULL,
   MaterialInputDirective,
 } from './material-input.directive';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ErrorHintConfig } from '../models/input.model';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { FormControl, NgControl } from '@angular/forms';
+import { CrhErrorStateMatcher } from '../class/crh-error-state-matcher';
 
 @Component({
   hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST_FULL],
@@ -22,6 +25,7 @@ describe('MaterialInputDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MaterialInputDirective, HostComponent],
+      providers: [ErrorStateMatcher],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
@@ -37,62 +41,137 @@ describe('MaterialInputDirective', () => {
   });
 
   describe('activeError', () => {
-    it('should return no hints if error hints are not defined', () => {
+    it('should return undefined if errorHints empty', () => {
       expect(directive.activeError()).toBeUndefined();
     });
 
-    it('should return error if a error hint is showing errors', () => {
-      const expectedHint = 'SomeHint';
+    it('should return hint when hasError returns true', () => {
+      const hint = 'Error A';
       componentRef.setInput('errorHints', [
-        {
-          hint: expectedHint,
-          hasError: (): boolean => true,
-        } satisfies ErrorHintConfig,
+        { hint, hasError: () => true } as ErrorHintConfig,
       ]);
-
       fixture.detectChanges();
-
-      expect(directive.activeError()).toEqual(expectedHint);
+      expect(directive.activeError()).toBe(hint);
     });
 
-    it('should return error if a error hint is defined but error check undefined', () => {
-      const expectedHint = 'SomeHint';
+    it('should return hint when hasError undefined', () => {
+      const hint = 'Error B';
       componentRef.setInput('errorHints', [
-        {
-          hint: expectedHint,
-          hasError: undefined,
-        } satisfies ErrorHintConfig,
+        { hint, hasError: undefined } as ErrorHintConfig,
       ]);
-
       fixture.detectChanges();
-
-      expect(directive.activeError()).toEqual(expectedHint);
+      expect(directive.activeError()).toBe(hint);
     });
 
-    it('should return undefined if a error hint is not showing errors', () => {
-      const expectedHint = 'SomeHint';
+    it('should return undefined when hasError returns false', () => {
+      const hint = 'Error C';
       componentRef.setInput('errorHints', [
-        {
-          hint: expectedHint,
-          hasError: (): boolean => false,
-        } satisfies ErrorHintConfig,
+        { hint, hasError: () => false } as ErrorHintConfig,
       ]);
-
       fixture.detectChanges();
-
       expect(directive.activeError()).toBeUndefined();
     });
   });
 
-  it('should emit value when value is written', () => {
+  describe('onHasError', () => {
+    it('should return true if hasError is undefined', () => {
+      const config = { hint: 'Hint', hasError: undefined } as ErrorHintConfig;
+      expect(directive.onHasError(config)).toBe(true);
+    });
+
+    it('should return true if hasError returns true', () => {
+      directive.fieldContent.set('SomeValue');
+      const config = { hint: 'Hint', hasError: () => true } as ErrorHintConfig;
+      expect(directive.onHasError(config)).toBe(true);
+    });
+
+    it('should return false if hasError returns false', () => {
+      directive.fieldContent.set('OtherValue');
+      const config = { hint: 'Hint', hasError: () => false } as ErrorHintConfig;
+      expect(directive.onHasError(config)).toBe(false);
+    });
+  });
+
+  describe('ControlValueAccessor methods', () => {
+    it('should write value to form and fieldContent', () => {
+      const val = 'MyValue';
+      directive.writeValue(val);
+      expect(directive.childControl.value).toBe(val);
+      expect(directive.fieldContent()).toBe(val);
+    });
+
+    it('should call registered onChange function when value changes', () => {
+      const spy = jest.fn();
+      directive.registerOnChange(spy);
+      directive.childControl.setValue('new');
+      expect(spy).toHaveBeenCalledWith('new');
+    });
+
+    it('should call registered onTouched function and mark as touched', () => {
+      const spy = jest.fn();
+      directive.registerOnTouched(spy);
+      directive.onTouched();
+      expect(spy).toHaveBeenCalled();
+      expect(directive.childControl.touched).toBe(true);
+    });
+  });
+
+  describe('setDisabledState', () => {
+    it('should disable and enable control', () => {
+      directive.setDisabledState(true);
+      expect(directive.isFieldDisabled).toBe(true);
+      expect(directive.childControl.disabled).toBe(true);
+
+      directive.setDisabledState(false);
+      expect(directive.isFieldDisabled).toBe(false);
+      expect(directive.childControl.enabled).toBe(true);
+    });
+  });
+
+  describe('getErrorMatcher', () => {
+    it('should return defined errorStateMatcher if provided', () => {
+      const mockMatcher = new ErrorStateMatcher();
+      componentRef.setInput('errorStateMatcher', mockMatcher);
+      fixture.detectChanges();
+      expect(directive.getErrorMatcher()).toBe(mockMatcher);
+    });
+
+    it('should return CrhErrorStateMatcher if ngControl exists', () => {
+      directive.ngControl = { control: new FormControl() } as unknown as NgControl;
+      const result = directive.getErrorMatcher();
+      expect(result).toBeInstanceOf(CrhErrorStateMatcher);
+    });
+
+    it('should return defaultErrorStateMatcher otherwise', () => {
+      const result = directive.getErrorMatcher();
+      expect(result).toBeInstanceOf(ErrorStateMatcher);
+    });
+  });
+
+  describe('ngAfterViewInit', () => {
+    it('should handle missing NgControl gracefully', () => {
+
+      expect(() => directive.ngAfterViewInit()).not.toThrow();
+    });
+
+    it('should attach listener when NgControl is available', () => {
+      const mockNgControl = { control: new FormControl() } as unknown as NgControl;
+
+
+      const getSpy = jest.spyOn(directive['injector'], 'get').mockReturnValue(mockNgControl);
+      directive.ngAfterViewInit();
+
+
+      jest.runAllTimers?.();
+      getSpy.mockRestore();
+    });
+  });
+
+  it('should emit value when onValueWrite called', () => {
     const outputSpy = jest.spyOn(directive._onValueChanged, 'emit');
-
-    const expectedValue = 'SomeValue';
-    directive.onValueWrite(expectedValue);
-
-    fixture.detectChanges();
-
-    expect(directive.fieldContent()).toEqual(expectedValue);
-    expect(outputSpy).toHaveBeenCalledWith(expectedValue);
+    const val = 'NewVal';
+    directive.onValueWrite(val);
+    expect(directive.fieldContent()).toBe(val);
+    expect(outputSpy).toHaveBeenCalledWith(val);
   });
 });
