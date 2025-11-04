@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService, User } from '../../shared/services/auth.service';
+import { DarkModeService } from '../../shared/services/dark-mode.service';
 
 interface ChatMessage {
   sender: 'user' | 'bot';
@@ -20,9 +21,11 @@ export class ChatbotComponent implements OnInit {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
   private injector = inject(Injector);
+  private darkModeService = inject(DarkModeService);
 
   messages = signal<ChatMessage[]>([]);
   userMessage = signal<string>('');
+  isDarkMode = signal<boolean>(false);
 
   private storageKey = 'chatbotMessages_guest';
   private storage: Storage = sessionStorage; // default for guests
@@ -49,6 +52,11 @@ export class ChatbotComponent implements OnInit {
       effect(() => {
         this.storage.setItem(this.storageKey, JSON.stringify(this.messages()));
       });
+    });
+
+    // Track dark mode changes
+    this.darkModeService.isDarkMode$.subscribe(mode => {
+      this.isDarkMode.set(mode);
     });
   }
 
