@@ -1,10 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   ArticleService,
   Article,
 } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { DarkModeService } from '../../shared/services/dark-mode.service';
 
 @Component({
   selector: 'crh-articles',
@@ -19,9 +20,12 @@ export class ArticlesComponent implements OnInit {
   articlesOfNote: Article[] = []; // To store articles of note
   isLoading = true;
   objectKeys = Object.keys;
+  collapsedSections: Record<string, boolean> = {};
 
   // Use signal to track logged-in status
   protected isLoggedIn = signal<boolean>(false);
+  protected isDarkMode = signal<boolean>(false);
+  private darkModeService = inject(DarkModeService);
 
   constructor(
     private route: ActivatedRoute,
@@ -41,11 +45,14 @@ export class ArticlesComponent implements OnInit {
       }
     });
 
+    this.darkModeService.isDarkMode$.subscribe(mode => {
+      this.isDarkMode.set(mode);
+    });
+
     // Load all articles
     this.articleService.getAllArticleTypesWithArticles(30).subscribe({
       next: response => {
         this.articlesByCategory = response;
-        //this.categories = Object.keys(response);
         this.isLoading = false;
 
         // Initialize articlesToShow to show 3 articles initially for each category
@@ -194,5 +201,9 @@ export class ArticlesComponent implements OnInit {
         console.error('Error incrementing view count', error);
       },
     });
+  }
+
+  toggleCategory(category: string): void {
+    this.collapsedSections[category] = !this.collapsedSections[category];
   }
 }

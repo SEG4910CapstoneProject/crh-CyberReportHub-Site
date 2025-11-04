@@ -1,4 +1,4 @@
-<div class="home-container">
+<div class="home-container" [class.dark-mode]="isDarkMode()">
   <div class="box chatbot">
     <div class="box-header">
       <h2>Cyber Report Chatbot</h2>
@@ -6,11 +6,11 @@
 
     <!-- Chat window -->
     <div class="chat-window">
-      <div *ngFor="let msg of messages()"
-           [ngClass]="msg.sender === 'user' ? 'user' : 'bot'">
-        <div class="message-bubble">
-          {{ msg.text }}
-        </div>
+      <div
+        *ngFor="let msg of messages()"
+        [ngClass]="msg.sender === 'user' ? 'user' : 'bot'"
+      >
+        <div class="message-bubble">{{ msg.text }}</div>
       </div>
     </div>
 
