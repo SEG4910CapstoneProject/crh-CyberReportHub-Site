@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, effect, runInInjectionContext, Injec
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService, User } from '../../shared/services/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { DarkModeService } from '../../shared/services/dark-mode.service';
 
 interface ChatMessage {
