@@ -1,5 +1,8 @@
+
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { of, throwError, Subject } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { FavouritesComponent } from './favourites.component';
 import { ArticleService } from '../../shared/services/article.service';
 import { TagService } from '../../shared/services/tag.service';
@@ -117,8 +120,10 @@ describe('FavouritesComponent', () => {
   }));
 
   it('should handle error when fetching favourites', fakeAsync(() => {
-    jest.spyOn(articleService, 'getMyFavourites').mockReturnValueOnce(throwError(() => new Error('Network error')));
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest
+      .spyOn(articleService, 'getMyFavourites')
+      .mockReturnValueOnce(throwError(() => new Error('Network error')));
+    const spy = jest.spyOn(console, 'error').mockImplementation(jest.fn());
     component.fetchFavourites();
     tick();
     expect(spy).toHaveBeenCalled();
@@ -143,7 +148,6 @@ describe('FavouritesComponent', () => {
   it('should toggle favourite - add case', fakeAsync(() => {
     component.favouriteArticles = [];
     (component as any).isLoggedIn.set(true);
-
 
     const addSpy = jest.spyOn(articleService, 'addFavourite');
     component.toggleFavourite(mockArticles[0]);
@@ -195,10 +199,10 @@ describe('FavouritesComponent', () => {
       afterClosed: () => of({ tagName: 'BadTag', selectedArticleIds: [] }),
     };
     jest.spyOn(dialog, 'open').mockReturnValue(mockDialogRef as any);
-    jest.spyOn(tagService, 'createTag').mockReturnValueOnce(
-      throwError(() => ({ error: { message: 'Tag failed' } }))
-    );
-    const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
+    jest
+      .spyOn(tagService, 'createTag')
+      .mockReturnValueOnce(throwError(() => ({ error: { message: 'Tag failed' } })));
+    const alertSpy = jest.spyOn(window, 'alert').mockImplementation(jest.fn());
     component.openCreateTagDialog();
     tick();
     expect(alertSpy).toHaveBeenCalledWith('Tag failed');
