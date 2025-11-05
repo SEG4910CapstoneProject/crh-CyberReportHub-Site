@@ -2,7 +2,7 @@
 
 <div class="grid-parent">
   <div class="report-articles" [class.dark]="isDarkMode">
-    <form *ngIf="form && (template_type === 'nonRestricted')" [formGroup]="form" (ngSubmit)="submit()">
+    <form *ngIf="form && (template_type === 'restricted')" [formGroup]="form">
       <!-- Statistics Section -->
       <div class="form-section">
         <label>{{ 'reportNew.addstats' | translate }}:</label>
@@ -63,34 +63,71 @@
         <label>Articles:</label>
 
         <div class="article-list">
-          <div *ngIf="articles.length === 0">You have no selected articles</div>
+          <div *ngIf="articles.size === 0">You have no selected articles</div>
           <div
             class="article"
-            *ngFor="let article of articles; let i = index"
+            *ngFor="let article of articles | keyvalue: keepOriginalOrder"
             >
 
-            <div>{{article.title}}</div>
-            <div>{{article.type}}</div>
-            <div>{{article.category}}</div>
-            <div>{{article.link}}</div>
+            <div class="article-title">{{article.value.title}}</div>
+            <div class="article-type">{{article.value.type}}</div>
+            <div class="article-category">{{article.value.category}}</div>
+            <a href={{article.value.link}} target="_blank">{{article.value.link}}</a>
 
-            <span class="delete-btn material-symbols-outlined" (click)="removeArticle(i)">
-              close
-            </span>
-          </div>
+            <div class="actions-per-article">
+                <span class="delete-btn material-symbols-outlined" (click)="removeArticle(article.key)">
+                  close
+                </span>
+                <span class="edit-btn material-symbols-outlined">
+                    edit
+                </span>
+            </div>
+          </div>  
         </div>
       </div>
-
-      <div class="form-actions">
-        <crh-button (click)="back()">
-          {{ 'common.back' | translate }}
-        </crh-button>
-        <crh-button class="preview-btn">
-          {{ 'common.preview' | translate }}
-        </crh-button>
-        <crh-button>{{ 'common.submit' | translate }}</crh-button>
-      </div>
     </form>
+
+    <div *ngIf="(template_type === 'nonRestricted')">
+      <div class="form-section">
+        <label><b>{{ 'report.chosen-articles' | translate }}:</b></label>
+        <div *ngIf="articles.size === 0">You have no selected articles</div>
+
+          <!-- <div *ngIf="articles.length != 0" class="actions">
+            <div class="action-article">Article Title</div>
+            <div class="action-link">Article Link</div>
+            <div class="action-action">Article Actions</div>
+          </div> -->
+          <div class="article-list">
+            <div
+              class="article article-unrestricted"
+              *ngFor="let article of articles | keyvalue: keepOriginalOrder"
+              >
+
+              <div class="article-title">{{article.value.title}}</div>
+              <a href={{article.value.link}} target="_blank">{{article.value.link}}</a>
+
+              <div class="actions-per-article">
+                <span class="delete-btn material-symbols-outlined" (click)="removeArticle(article.key)">
+                  close
+                </span>
+                <span class="edit-btn material-symbols-outlined">
+                    edit
+                </span>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <crh-button (click)="back()">
+          {{ 'common.back' | translate }}
+      </crh-button>
+      <crh-button *ngIf="articles.size != 0" class="preview-btn">
+          {{ 'common.preview' | translate }}
+      </crh-button>
+      <crh-button (click)="submit()" *ngIf="articles.size != 0">{{ 'common.submit' | translate }}</crh-button>
+    </div>
+
   </div>
 
   <!-- Suggested Articles Section -->

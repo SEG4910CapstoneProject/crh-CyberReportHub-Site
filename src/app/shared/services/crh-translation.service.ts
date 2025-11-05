@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { concatMap, map, Observable, shareReplay, startWith } from 'rxjs';
+import { concatMap, map, Observable, shareReplay, startWith, take } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Language } from '../models/languages.model';
 
@@ -23,6 +23,11 @@ export class CrhTranslationService {
       concatMap(() => this.translateService.get(translationKey))
     );
   }
+
+  public getTranslationOnce(key: string): Observable<string> {
+    return this.getTranslationFromKeyAsStream(key).pipe(take(1));
+  }
+
 
   public setLanguage(lang: Language): void {
     this.translateService.use(lang);
