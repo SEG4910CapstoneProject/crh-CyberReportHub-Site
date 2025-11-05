@@ -30,14 +30,6 @@
     background-color: #1e1e1e;
     color: #f0f0f0;
 
-    input,
-    select,
-    button { // those elements might not be present anymore
-      background-color: #2c2c2c;
-      color: #f0f0f0;
-      border: 1px solid #555;
-    }
-
     label {
       color: #d0d0d0;
     }
@@ -60,55 +52,25 @@
       font-weight: bold;
     }
 
-    input,
-    select {
-      // padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      // font-size: 14px;
-    }
-
     .article-list {
       display: flex;
       flex-direction: column;
+      //border: 2px solid green;
       gap: size(12);
 
       .article {
         display: grid;
         grid-template-columns: 30% 10% 10% 45% 5%;
-        // gap: 8px;
         align-items: center;
-
-        input,
-        select {
-          width: 100%;
-          padding: 8px;
-          font-size: 14px;
-          border: 1px solid #ccc;
-          border-radius: 6px;
-        }
+        gap: size(3);
 
         .article-title {
-          font-weight: bold;
-          // overflow: hidden;
-          // text-overflow: ellipsis;
-          white-space: nowrap;
+          color: var(--crh-primary-color);
         }
-
-        .article-link {
-          font-style: italic;
-          font-size: 13px;
-          color: #555;
-        }
-
-        .delete-btn {
-          background-color: var(--crh-error-color);
-          color: var(--crh-error-contrast-color);
-          display: flex;
-          justify-content: center;
-          border-radius: size(8);
-          cursor: pointer;
-        }
+      }
+      .article-unrestricted {
+        display: grid;
+        grid-template-columns: 45% 50% 5%;
       }
     }
   }
@@ -118,6 +80,7 @@
     justify-content: space-between;
     margin: size(10);
     flex-wrap: wrap;
+    // border: 2px solid orange;
   }
 
   button {
@@ -131,6 +94,28 @@
     &:hover {
       opacity: 0.8;
     }
+  }
+}
+.actions-per-article {
+  display: flex;
+  flex-direction: row;
+  // border: 2px solid red;
+  align-items: center;
+  justify-content: center;
+  gap: size(5);
+  padding: size(5);
+
+  .delete-btn {
+    background-color: var(--crh-error-color);
+    color: var(--crh-error-contrast-color);
+    display: flex;
+    justify-content: center;
+    border-radius: size(4);
+    cursor: pointer;
+  }
+
+  .edit-btn {
+    cursor: pointer;
   }
 }
 
@@ -147,6 +132,7 @@
 
   position: relative;
   border: 4px solid var(--crh-divider-color);
+  min-height: 100vh;
   // overflow-y: scroll;
 
   &.dark {

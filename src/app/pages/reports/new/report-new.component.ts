@@ -77,7 +77,7 @@ export class ReportNewComponent implements OnInit, OnDestroy {
     if (this.form.get('reportType')?.value == "" || this.choosen_email_template == "")
     {
       // trigger an alert if one of the fields is missing, although reportType has a mandatory validator on it
-      this.translateService.getTranslationFromKeyAsStream(this.ERROR_MESSAGE).subscribe((data)=>{
+      this.translateService.getTranslationOnce(this.ERROR_MESSAGE).subscribe((data)=>{
         const error_message = data;
         setTimeout(()=> { // this prevents an aria hidden warning, it's for accessibility purposes
           this.dialog.open(ErrorDialogComponent, {

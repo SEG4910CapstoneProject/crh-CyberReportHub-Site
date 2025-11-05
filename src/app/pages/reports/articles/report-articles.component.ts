@@ -9,7 +9,6 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, EMPTY, Subject } from 'rxjs';
@@ -30,6 +29,8 @@ import {
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ArticleForCreateReport } from '../../../shared/Types/types';
+import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
+import { ErrorDialogComponent } from '../../../shared/dialogs/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'crh-report-articles',
@@ -49,10 +50,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   public isLoading = true; //spinner
 
   private destroyRef = inject(DestroyRef);
-  public newArticleForm = new FormControl<string | null>(null, [
-    Validators.required,
-    Validators.pattern('https?://.+'),
-  ]);
 
   protected reloadReportDataSubject$ = new Subject<void>();
 
@@ -63,9 +60,13 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
   private dialog = inject(Dialog);
   private statisticsService = inject(StatisticsService);
+  private translateService = inject(CrhTranslationService);
+  
   private reportsService = inject(ReportsService);
 
   protected maxCommentLength = 1000;
+  private readonly ERROR_MESSAGE:string = 'dialog.error_message_duplicate_fields';
+
   get currentCommentLength(): number {
     return this.form?.get('analystComment')?.value?.length || 0;
   }
@@ -104,7 +105,8 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     expanded: boolean;
   }[] = [];
 
-  articles:ArticleForCreateReport[] = [];
+  articles:Map<string,ArticleForCreateReport> = new Map<string,ArticleForCreateReport>();
+
 
 
   // Flag to control visibility of the article form
@@ -113,7 +115,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   constructor() {
     this.form = this.fb.group({
       analystComment: ['', [Validators.maxLength(1000)]],
-      articles: this.fb.array([] as FormGroup[]),
     });
   }
 
@@ -250,6 +251,8 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       });
   }
 
+  keepOriginalOrder = ():number=>0;// tells angular to not sort the map that has articles
+
   // Toggle visibility of the article form (We will remove the form after)
   toggleArticleForm(): void {
     this.isArticleFormVisible = !this.isArticleFormVisible;
@@ -327,19 +330,20 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
         // show each day as a filter (within the last 30 days)
         const entries = Object.entries(grouped);
 
-              this.groupedArticlesByDate = entries.map(([date, articles], index) => ({
-                date,
-                formattedDate: new Date(date).toLocaleDateString(undefined, {
-                  weekday: 'long',
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                }),
-                articles,
-                expanded: index === 0, // expand most recent by default
-              }));
+        this.groupedArticlesByDate = entries.map(([date, articles], index) => ({
+          date,
+          formattedDate: new Date(date).toLocaleDateString(undefined, {
+            weekday: 'long',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+          articles,
+          expanded: index === 0, // expand most recent by default
+        }));
 
-              this.isLoading = false;
+        this.isLoading = false;
+        //console.log("grouped articles by dates: ",this.groupedArticlesByDate, this.isLoading)
       },
       error: err => {
         console.error('Error fetching suggested articles:', err);
@@ -390,12 +394,28 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     // });
 
     // this.articles.push(articleForm);
-    this.articles.push(article)
-    // console.log("the article form is: ",articleForm)
+    if (this.articles.has(article.articleId))
+    {
+      // make the pop us saying you cant add
+      this.translateService.getTranslationOnce(this.ERROR_MESSAGE).subscribe((data)=>{
+        const error_message = data;
+        setTimeout(()=> { // this prevents an aria hidden warning, it's for accessibility purposes
+          this.dialog.open(ErrorDialogComponent, {
+            data:{
+            message:error_message
+            }
+          })
+        })})
+    }
+    else
+    {
+      // add
+      this.articles.set(article.articleId,article)
+    }
   }
 
-  removeArticle(index: number): void {
-    this.articles.splice(index,1);
+  removeArticle(id: string): void {
+    this.articles.delete(id);
   }
 
   private applyDarkModeClass(): void {
@@ -408,10 +428,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    if (this.form.invalid) {
-      alert('Please complete the required fields.');
-      return;
-    }
+    console.log("in the submit")
 
     // this.selectedArticleIds = this.articles.value.map(article => article.id);
     // console.log('Selected Articles:', this.selectedArticleIds);

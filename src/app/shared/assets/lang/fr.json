@@ -111,6 +111,7 @@
   "report.edit.articles": "Articles",
   "report.edit.addArticle": "Ajouter un article",
   "report.edit.addArticle.placeholder": "http://example.com",
+  "report.chosen-articles":"Vos articles choisis",
 
   "dialog.editArticle.header": "Modifier l'article",
   "dialog.editArticle.field.link": "Lien",
@@ -126,5 +127,6 @@
   "dialog.editStat.field.subtitle": "Sous-titre",
 
   "dialog.error_message_incomplete_fields":"Vous devez compléter tous les champs requis.",
-  "dialog.error_message_ok":"D'accord"
+  "dialog.error_message_ok":"D'accord",
+  "dialog.error_message_duplicate_fields":"Vous ne pouvez pas ajouter le même article deux fois"
 }
