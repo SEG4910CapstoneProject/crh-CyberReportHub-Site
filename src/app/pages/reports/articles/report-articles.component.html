@@ -122,10 +122,10 @@
       <crh-button (click)="back()">
           {{ 'common.back' | translate }}
       </crh-button>
-      <crh-button *ngIf="articles.size != 0" class="preview-btn">
+      <crh-button *ngIf="articles.size !== 0" class="preview-btn">
           {{ 'common.preview' | translate }}
       </crh-button>
-      <crh-button (click)="submit()" *ngIf="articles.size != 0">{{ 'common.submit' | translate }}</crh-button>
+      <crh-button (click)="submit()" *ngIf="articles.size !== 0">{{ 'common.submit' | translate }}</crh-button>
     </div>
 
   </div>

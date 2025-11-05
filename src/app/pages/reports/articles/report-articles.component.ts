@@ -9,7 +9,6 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, EMPTY, Subject } from 'rxjs';
@@ -106,7 +105,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     expanded: boolean;
   }[] = [];
 
-  articles:Map<string,ArticleForCreateReport> = new Map();
+  articles:Map<string,ArticleForCreateReport> = new Map<string,ArticleForCreateReport>();
 
 
 
@@ -252,7 +251,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       });
   }
 
-  keepOriginalOrder = (a:any,b:any):number=>0;// tells angular to not sort the map that has articles
+  keepOriginalOrder = ():number=>0;// tells angular to not sort the map that has articles
 
   // Toggle visibility of the article form (We will remove the form after)
   toggleArticleForm(): void {
