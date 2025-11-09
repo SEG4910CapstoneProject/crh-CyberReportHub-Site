@@ -7,7 +7,7 @@
     <button
       *ngIf="isLoggedIn()"
       class="add-article-btn"
-      routerLink="/articles/add">
+      (click)="openAddArticleDialog()">
       Add Article
     </button>
   </div>

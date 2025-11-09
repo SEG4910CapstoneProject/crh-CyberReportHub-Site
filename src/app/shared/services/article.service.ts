@@ -137,11 +137,22 @@ export class ArticleService {
     );
   }
 
+  //For manually added articles
   deleteArticle(articleId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${articleId}`, {
       headers: this.getAuthHeaders(),
     });
   }
+
+  //For manually added articles
+  updateArticle(articleId: string, article: any): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/${articleId}`,
+      article,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
 
 
 

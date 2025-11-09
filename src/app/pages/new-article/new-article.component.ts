@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { ArticleService } from '../../shared/services/article.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { ErrorDialogComponent } from '../../shared/dialogs/error-dialog/error-dialog.component';
 import { AuthService } from '../../shared/services/auth.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'crh-new-article',
@@ -18,10 +19,16 @@ export class NewArticleComponent {
   };
 
   constructor(
-      private articleService: ArticleService,
-      private dialog: Dialog,
-      private authService: AuthService
-    ) {}
+    private articleService: ArticleService,
+    private dialog: Dialog,
+    private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: any | null,  // receives article when we edit articles
+    @Optional() private dialogRef?: MatDialogRef<NewArticleComponent>
+  ) {
+    if (data) {
+      this.article = { ...data }; // prefill fields when editing
+    }
+  }
 
   private showError(message: string): void {
     this.dialog.open(ErrorDialogComponent, { data: { message } });
@@ -55,26 +62,41 @@ export class NewArticleComponent {
       return;
     }
 
-    // Submit to backend
-    this.articleService.ingestArticle(this.article).subscribe({
-      next: (response) => {
-        const message = response?.message || 'Your article has been submitted successfully.';
-        this.showError(message);
-        this.article = { title: '', link: '', description: '' };
-      },
-      error: (err) => {
-        console.error('Error submitting article:', err);
-        const message =
-          err.error?.message ||
-          (err.status === 409
-            ? 'This article already exists in the system.'
-            : err.status === 400
-            ? 'Please provide a valid URL or complete all required fields.'
-            : err.status === 401
-            ? 'You must be logged in to submit an article.'
-            : 'There was an unexpected error submitting the article.');
-        this.showError(message);
-      },
-    });
+    // There is existing data, so we are in edit mode
+    if (this.data && this.data.articleId) {
+        this.articleService.updateArticle(this.data.articleId, this.article).subscribe({
+          next: (response) => {
+            this.dialogRef?.close(this.article);
+            this.showError(response?.message || 'Article updated successfully!');
+          },
+          error: (err) => {
+            console.error('Error updating article:', err);
+            const message =
+              err.error?.message ||
+              (err.status === 409
+                ? 'This article already exists in the system.'
+                : 'There was an unexpected error updating the article.');
+            this.showError(message);
+          },
+        });
+      } else {
+        // There is no existing data, so we are in add mode
+        this.articleService.ingestArticle(this.article).subscribe({
+          next: (response) => {
+            const message = response?.message || 'Your article has been submitted successfully.';
+            this.showError(message);
+            this.article = { title: '', link: '', description: '' };
+          },
+          error: (err) => {
+            console.error('Error submitting article:', err);
+            const message =
+              err.error?.message ||
+              (err.status === 409
+                ? 'This article already exists in the system.'
+                : 'There was an unexpected error submitting the article.');
+            this.showError(message);
+          },
+        });
+      }
   }
 }

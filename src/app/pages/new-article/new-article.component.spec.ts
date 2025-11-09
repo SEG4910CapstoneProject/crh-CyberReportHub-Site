@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DialogModule } from '@angular/cdk/dialog';
 import { AuthService } from '../../shared/services/auth.service';
 import { ErrorDialogComponent } from '../../shared/dialogs/error-dialog/error-dialog.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 describe('NewArticleComponent', () => {
   let component: NewArticleComponent;
@@ -32,6 +33,8 @@ describe('NewArticleComponent', () => {
       providers: [
         { provide: ArticleService, useValue: mockArticleService },
         { provide: AuthService, useValue: mockAuthService },
+        { provide: MatDialogRef, useValue: { close: jest.fn() } },
+        { provide: MAT_DIALOG_DATA, useValue: null },
       ],
     }).compileComponents();
 
