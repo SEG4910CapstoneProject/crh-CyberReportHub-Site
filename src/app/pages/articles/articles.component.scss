@@ -88,13 +88,22 @@
           }
 
           .star-icon {
-            font-size: 20px;
-            color: #ffcc00;
+            font-size: 22px;
+            color: transparent;
+            -webkit-text-stroke: 1.5px #666; /* gray outline for non-favourited */
             cursor: pointer;
             margin-right: 10px;
+            transition: all 0.25s ease;
+
+            &:hover {
+              transform: scale(1.1);
+              -webkit-text-stroke: 1.5px #333; /* darker outline on hover */
+            }
 
             &.fav {
-              color: #ff9900;
+              color: #ffb400;
+              -webkit-text-stroke: 0.5px #cc8800; /* darker edge for definition */
+              text-shadow: 0 0 6px rgba(255, 200, 0, 0.5);
             }
           }
 

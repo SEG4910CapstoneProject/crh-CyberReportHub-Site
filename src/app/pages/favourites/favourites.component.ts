@@ -6,6 +6,8 @@ import { DarkModeService } from '../../shared/services/dark-mode.service';
 import { CreateTagDialogComponent } from '../../shared/dialogs/create-tag-dialog/create-tag-dialog.component';
 import { CreateTagDialogData, CreateTagDialogResult } from '../../shared/dialogs/create-tag-dialog/create-tag-dialog.model';
 import { MatDialog } from '@angular/material/dialog';
+import { NewArticleComponent } from '../new-article/new-article.component';
+import { ErrorDialogComponent } from '../../shared/dialogs/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'crh-favourites',
@@ -169,6 +171,40 @@ export class FavouritesComponent implements OnInit {
       error: err => console.error('Error deleting article:', err),
     });
   }
+
+  openEditArticleDialog(article: Article): void {
+    const dialogRef = this.dialog.open(NewArticleComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      data: { ...article }, // prefill with existing article info
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.articleService.updateArticle(article.articleId, result).subscribe({
+          next: (res) => {
+            Object.assign(article, result); // update view
+            this.dialog.open(ErrorDialogComponent, {
+              data: { message: res.message || 'Article updated successfully!' },
+            });
+          },
+          error: (err) => {
+            const message =
+              err.error?.message ||
+              (err.status === 409
+                ? 'This article link already exists.'
+                : 'Error updating article.');
+            this.dialog.open(ErrorDialogComponent, {
+              data: { message },
+            });
+            console.error('Error updating article:', err);
+          },
+        });
+      }
+    });
+  }
+
+
 
   // ---------- DIALOG LOGIC ----------
 

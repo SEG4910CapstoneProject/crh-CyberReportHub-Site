@@ -1,11 +1,14 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import {
   ArticleService,
   Article,
 } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { DarkModeService } from '../../shared/services/dark-mode.service';
+import { NewArticleComponent } from '../new-article/new-article.component';
+import { ErrorDialogComponent } from '../../shared/dialogs/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'crh-articles',
@@ -30,7 +33,8 @@ export class ArticlesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private articleService: ArticleService,
-    public authService: AuthService
+    public authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +79,28 @@ export class ArticlesComponent implements OnInit {
 
     // Fetch Articles of Note
     this.fetchArticlesOfNote();
+  }
+
+  // Open the Add Article dialog
+  openAddArticleDialog(): void {
+    const dialogRef = this.dialog.open(NewArticleComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dialog.open(ErrorDialogComponent, {
+          data: { message: 'Your article has been submitted successfully!' },
+        });
+
+        // Refresh the list to include the new article
+        this.articleService.getAllArticleTypesWithArticles(30).subscribe({
+          next: response => (this.articlesByCategory = response),
+          error: e => console.error('Error reloading articles:', e),
+        });
+      }
+    });
   }
 
   // Check if the article is in the favourites list

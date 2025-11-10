@@ -1,22 +1,28 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .add-article-form {
-  max-width: 500px;
-  margin: 30px auto;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  gap: 15px;
+  box-sizing: border-box;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
 label {
   font-weight: bold;
   margin-bottom: 5px;
-  display: block;
 }
 
 input,
@@ -24,7 +30,6 @@ textarea {
   padding: 10px;
   width: 100%;
   font-size: 1rem;
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -35,20 +40,12 @@ textarea {
   min-height: 120px;
 }
 
-input::placeholder,
-textarea::placeholder {
-  font-family: inherit;
-  font-size: 1rem;
-  color: #888;
-  opacity: 1;
-}
-
-/* Buttons */
 button {
+  align-self: flex-end;
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 10px;
+  padding: 10px 20px;
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
