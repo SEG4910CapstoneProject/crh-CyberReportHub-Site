@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { DialogRef } from '@angular/cdk/dialog';
+import { DialogRef, Dialog } from '@angular/cdk/dialog';
 import { AuthService } from '../../services/auth.service';
+import { ErrorDialogComponent } from '../../dialogs/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'crh-login-dialog',
@@ -11,11 +12,12 @@ import { AuthService } from '../../services/auth.service';
 export class LoginDialogComponent {
   private authService = inject(AuthService);
   private dialogRef = inject(DialogRef<unknown, boolean>);
+  private dialog = inject(Dialog);
 
   protected email = '';
   protected password = '';
 
-  //covered password
+  // covered password
   public showPassword = false;
   public togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
@@ -28,7 +30,9 @@ export class LoginDialogComponent {
       this.dialogRef.close(true);
       console.log('Login successful!');
     } else {
-      console.error('Login failed');
+      this.dialog.open(ErrorDialogComponent, {
+        data: { message: 'Invalid email or password. Please try again.' },
+      });
     }
   }
 
@@ -36,3 +40,4 @@ export class LoginDialogComponent {
     this.dialogRef.close(false);
   }
 }
+
