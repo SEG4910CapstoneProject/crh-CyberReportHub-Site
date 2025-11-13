@@ -5,8 +5,19 @@
   <input type="text" [(ngModel)]="tagName" placeholder="Enter tag name" />
 
   <h3>Select Articles</h3>
+
+  <!-- Search Bar -->
+  <input
+    type="text"
+    placeholder="Search articles..."
+    [(ngModel)]="articleSearchTerm"
+    (input)="filterArticles()"
+    class="article-search"
+  />
+
+  <!-- Article List (Paginated) -->
   <ul class="article-list">
-    <li *ngFor="let article of data.favouriteArticles">
+    <li *ngFor="let article of paginatedArticles">
       <span>{{ article.title }}</span>
       <span
         class="add-icon"
@@ -16,6 +27,13 @@
       </span>
     </li>
   </ul>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-controls" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">←</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">→</button>
+  </div>
 </div>
 
 <div mat-dialog-actions align="end">
