@@ -8,6 +8,18 @@ import {
 } from '../../shared/services/article.service';
 import { AuthService } from '../../shared/services/auth.service';
 
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'translate',
+  standalone: false
+})
+class FakeTranslatePipe implements PipeTransform {
+  transform(value: string): string {
+    return value;
+  }
+}
+
 const mockArticles: Record<string, Article[]> = {
   Category1: [
     {
@@ -83,7 +95,7 @@ describe('ArticlesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArticlesComponent],
+      declarations: [ArticlesComponent, FakeTranslatePipe],
       providers: [
         { provide: ActivatedRoute, useValue: { params: of({ id: 1 }) } },
         { provide: ArticleService, useClass: MockArticleService },
