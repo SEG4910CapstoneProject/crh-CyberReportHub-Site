@@ -128,5 +128,24 @@
 
   "dialog.error_message_incomplete_fields":"Vous devez compléter tous les champs requis.",
   "dialog.error_message_ok":"D'accord",
-  "dialog.error_message_duplicate_fields":"Vous ne pouvez pas ajouter le même article deux fois"
+  "dialog.error_message_duplicate_fields":"Vous ne pouvez pas ajouter le même article deux fois",
+
+  "articles.add": "Ajouter un article",
+  "articles.title": "Articles",
+  "articles.pub": "Articles publiés:",
+  "articles.note": "Article de note",
+  "articles.more": "Voir plus",
+  "articles.less": "Voir moins",
+  "articles.empty": "Aucun article pour le moment.",
+  "articles.urnote": "Vos articles de note",
+
+  "fav.urfav": "Vos favoris",
+  "fav.articles": "Articles favoris",
+  "fav.manadded": "Manually Added Articles",
+  "fav.edit": "Modifier",
+  "fav.delete": "Supprimer",
+  "fav.login": "Veuillez vous connecter pour voir vos articles favoris et soumis.",
+  "fav.addtag": "Ajouter un tag"
+
+
 }

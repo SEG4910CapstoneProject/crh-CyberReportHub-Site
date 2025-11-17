@@ -1,7 +1,11 @@
 <div class="favourites-page-container" [class.dark-mode]="isDarkMode()">
   <div class="header">
-    <h1>Your Favourites</h1>
-    <button class="add-tag-btn" (click)="openCreateTagDialog()">+ Add Tag</button>
+    <h1>{{
+      'fav.urfav' | translate
+    }}</h1>
+    <button class="add-tag-btn" (click)="openCreateTagDialog()">+ {{
+      'fav.addtag' | translate
+    }}</button>
   </div>
 
   <!-- Loading Spinner -->
@@ -13,7 +17,9 @@
     <!-- Show only if there are untagged favourites -->
     <div class="category-section" *ngIf="(untaggedFavourites?.length || 0) > 0">
       <h2 (click)="toggleSection('general')" class="collapsible-header">
-        Favourite Articles
+        {{
+          'fav.articles' | translate
+        }}
         <span class="arrow">
           {{ collapsedSections['general'] ? '►' : '▼' }}
         </span>
@@ -32,7 +38,9 @@
             <p class="article-description">
               {{ article.description || 'No description available.' }}
             </p>
-            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+            <p><strong>{{
+              'articles.pub' | translate
+            }}</strong> {{ article.publishDate || 'N/A' }}</p>
 
             <span
               class="star-icon"
@@ -73,7 +81,9 @@
             <p class="article-description">
               {{ article.description || 'No description available.' }}
             </p>
-            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+            <p><strong>{{
+              'articles.pub' | translate
+            }}</strong> {{ article.publishDate || 'N/A' }}</p>
 
             <span
               class="star-icon"
@@ -90,7 +100,9 @@
     <!-- Manually added articles -->
     <div class="category-section" *ngIf="(submittedArticles?.length || 0) > 0">
       <h2 (click)="toggleSection('manual')" class="collapsible-header">
-        Manually Added Articles
+        {{
+          'fav.manadded' | translate
+        }}
         <span class="arrow">
           {{ collapsedSections['manual'] ? '►' : '▼' }}
         </span>
@@ -109,7 +121,9 @@
             <p class="article-description">
               {{ article.description || 'No description available.' }}
             </p>
-            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+            <p><strong>{{
+              'articles.pub' | translate
+            }}</strong> {{ article.publishDate || 'N/A' }}</p>
 
             <span
               class="star-icon"
@@ -118,9 +132,13 @@
               &#9733;
             </span>
 
-            <button class="edit-btn" (click)="openEditArticleDialog(article)">✏️ Edit</button>
+            <button class="edit-btn" (click)="openEditArticleDialog(article)">✏️ {{
+              'fav.edit' | translate
+            }}</button>
             <button class="delete-btn" (click)="deleteArticle(article.articleId)">
-              Delete
+              {{
+                'fav.delete' | translate
+              }}
             </button>
           </li>
         </ul>
@@ -130,6 +148,8 @@
 
   <!-- Logged-out view -->
   <div *ngIf="!isLoggedIn() && !isLoading">
-    <p>Please log in to view your favourite and submitted articles.</p>
+    <p>{{
+      'fav.login' | translate
+    }}</p>
   </div>
 </div>

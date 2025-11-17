@@ -1,14 +1,18 @@
 <div class="articles-page-container" [class.dark-mode]="isDarkMode()">
 
   <div class="header">
-    <h1>Articles</h1>
+    <h1>{{
+      'articles.title' | translate
+    }}</h1>
     <!-- "Add Article" button in the top right -->
     <!-- Only show button if user is logged in -->
     <button
       *ngIf="isLoggedIn()"
       class="add-article-btn"
       (click)="openAddArticleDialog()">
-      Add Article
+      {{
+        'articles.add' | translate
+      }}
     </button>
   </div>
 
@@ -48,7 +52,9 @@
                 <h3>{{ article.title }}</h3>
               </a>
               <p class="article-description">{{ article.description }}</p>
-              <p><strong>Published:</strong> {{ article.publishDate }}</p>
+              <p><strong>{{
+                'articles.pub' | translate
+              }}</strong> {{ article.publishDate }}</p>
 
               <!-- Only show the star icon for logged-in users -->
               <span
@@ -65,7 +71,9 @@
                   type="checkbox"
                   (change)="toggleArticleOfNote(article, $event)"
                   [checked]="isArticleOfNote(article)" />
-                Article of Note
+                  {{
+                    'articles.note' | translate
+                  }}
               </label>
             </li>
           </ul>
@@ -78,17 +86,23 @@
             "
             (click)="toggleArticles(category)"
             class="see-more-btn">
-            See More
+            {{
+              'articles.more' | translate
+            }}
           </button>
           <button
             *ngIf="(articlesToShow?.[category] ?? 3) !== 3"
             (click)="toggleArticles(category)"
             class="see-less-btn">
-            See Less
+            {{
+              'articles.less' | translate
+            }}
           </button>
         </div>
         <ng-template #emptySection>
-          <p class="empty-section">No articles yet.</p>
+          <p class="empty-section">{{
+            'articles.empty' | translate
+          }}</p>
         </ng-template>
       </div>
     </div>
@@ -98,7 +112,9 @@
     <!-- Show the "Articles of Note" section if there are any articles of note -->
     <div *ngIf="articlesOfNote?.length" class="category-section">
       <h2 (click)="toggleCategory('articlesOfNote')" class="collapsible-header">
-        Your Articles of Note
+        {{
+          'articles.urnote' | translate
+        }}
         <span class="arrow" [class.collapsed]="collapsedSections['articlesOfNote']">
     {{ collapsedSections['articlesOfNote'] ? '►' : '▼' }}
   </span>
@@ -117,7 +133,9 @@
             <p class="article-description">
               {{ article.description || 'No description available.' }}
             </p>
-            <p><strong>Published:</strong> {{ article.publishDate || 'N/A' }}</p>
+            <p><strong>{{
+              'articles.pub' | translate
+            }}</strong> {{ article.publishDate || 'N/A' }}</p>
             <!-- Show the checkbox -->
             <label
               *ngIf="
@@ -129,7 +147,9 @@
                 type="checkbox"
                 (change)="toggleArticleOfNote(article, $event)"
                 [checked]="isArticleOfNote(article)" />
-              Article of Note
+                {{
+                  'articles.note' | translate
+                }}
             </label>
           </li>
         </ul>
