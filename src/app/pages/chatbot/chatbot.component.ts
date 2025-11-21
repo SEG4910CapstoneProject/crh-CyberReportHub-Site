@@ -58,6 +58,14 @@ export class ChatbotComponent implements OnInit {
     this.darkModeService.isDarkMode$.subscribe(mode => {
       this.isDarkMode.set(mode);
     });
+
+    // Clear chat immediately when user logs out
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      if (!isLoggedIn) {
+        this.storage.removeItem(this.storageKey);
+        this.messages.set([{ sender: 'bot', text: 'Hi there! How can I help you today?' }]);
+      }
+    });
   }
 
   sendMessage(): void {

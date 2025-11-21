@@ -13,6 +13,7 @@
   flex-direction: column;
   gap: 15px;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
 .form-group {
@@ -29,10 +30,18 @@ input,
 textarea {
   padding: 10px;
   width: 100%;
-  font-size: 1rem;
+  font-family: inherit;
+  font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: inherit;
+  font-size: 14px;
+  color: #888;
 }
 
 textarea {

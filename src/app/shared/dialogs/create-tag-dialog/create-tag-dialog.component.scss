@@ -1,11 +1,72 @@
-/* Fixed dialog content height */
+/* Lock dialog size */
+:host ::ng-deep .mat-mdc-dialog-container {
+  --mdc-dialog-inset: 0 !important;
+  resize: none !important;
+  width: 600px !important;
+  max-width: 600px !important;
+  min-width: 600px !important;
+  height: 700px !important;
+  max-height: 700px !important;
+  min-height: 700px !important;
+  overflow: hidden !important;
+}
+
+/* Lock dialog surface */
+:host ::ng-deep .mat-mdc-dialog-surface {
+  width: 600px !important;
+  height: 700px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
 :host ::ng-deep .mat-mdc-dialog-content {
-  max-height: 500px;
-  min-height: 500px;
-  overflow: hidden;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 0 8px;
+
+  overflow: visible;
 }
+
+
+:host {
+  font-family: Arial, sans-serif;
+}
+
+/* Dialog Title */
+h2[mat-dialog-title] {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Section Headings */
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 12px 0 8px;
+}
+
+/* Labels */
+label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Inputs */
+input[type="text"] {
+  font-size: 14px;
+  font-family: inherit;
+}
+
+input::placeholder {
+  font-family: inherit;
+  color: #888;
+}
+
 
 
 .article-search {
@@ -25,11 +86,9 @@
   list-style: none;
   padding: 4px 8px;
   margin: 0;
-  flex-grow: 1;
-
-  max-height: 300px;
-  min-height: 300px;
+  flex: 1;
   overflow-y: auto;
+  min-height: 0;
 
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -51,7 +110,6 @@
       cursor: pointer;
       font-size: 20px;
       font-weight: bold;
-      transition: transform 0.2s;
 
       &.selected {
         color: #43a047;
@@ -73,22 +131,4 @@
   font-size: 14px;
   color: #333;
   flex-shrink: 0;
-
-  button {
-    background: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 4px 8px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-
-    &:hover:not(:disabled) {
-      background: #e8e8e8;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
 }

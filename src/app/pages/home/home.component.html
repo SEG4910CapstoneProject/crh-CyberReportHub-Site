@@ -20,8 +20,9 @@
         </a>
       </li>
     </ul>
+    <!-- Stays empty if there are no articles -->
     <ng-template #noArticlesOfNote>
-      <p>No articles of note yet...</p>
+      <div style="height: 0;"></div>
     </ng-template>
   </div>
 
@@ -31,9 +32,9 @@
       <h2>{{ 'home.articlesmostviewed' | translate }}</h2>
     </div>
 
-    <!-- Show message if no articles are available -->
+    <!-- Stays emptu if no articles are available -->
     <div *ngIf="mostViewedArticles?.length === 0; else mostViewedTable">
-      <p>No articles available yet...</p>
+      <div style="height: 0;"></div>
     </div>
 
     <ng-template #mostViewedTable>
