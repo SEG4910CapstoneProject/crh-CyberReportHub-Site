@@ -216,7 +216,13 @@ export class FavouritesComponent implements OnInit {
 
     const dialogRef = this.dialog.open<CreateTagDialogComponent, CreateTagDialogData, CreateTagDialogResult>(
       CreateTagDialogComponent,
-      { data }
+      {
+        data,
+        width: '600px',
+        height: '700px',
+        maxWidth: '600px',
+        panelClass: 'fixed-dialog',
+      }
     );
 
     dialogRef.afterClosed().subscribe((result: CreateTagDialogResult | undefined) => {
@@ -259,7 +265,13 @@ export class FavouritesComponent implements OnInit {
 
         const dialogRef = this.dialog.open<CreateTagDialogComponent, CreateTagDialogData, CreateTagDialogResult>(
           CreateTagDialogComponent,
-          { data }
+          {
+            data,
+            width: '600px',
+            height: '700px',
+            maxWidth: '600px',
+            panelClass: 'fixed-dialog',
+          }
         );
 
         dialogRef.afterClosed().subscribe((result: CreateTagDialogResult | undefined) => {

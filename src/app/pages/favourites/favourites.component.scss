@@ -44,26 +44,39 @@
         font-weight: 600;
       }
 
+      .tag-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
       .tag-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
 
-        .tag-actions {
-          .edit-icon,
-          .delete-icon {
-            margin-left: 8px;
-            cursor: pointer;
-            font-size: 18px;
-          }
+        .tag-actions .edit-icon,
+        .tag-actions .delete-icon {
+          background-color: #1976d2;
+          color: white;
+          padding: 3px 6px;
+          border-radius: 5px;
+          font-size: 12px;
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          font-weight: 600;
+        }
 
-          .edit-icon:hover {
-            color: #1976d2;
-          }
+        .tag-actions .edit-icon:hover {
+          background-color: #1565c0;
+        }
 
-          .delete-icon:hover {
-            color: #d32f2f;
-          }
+        .tag-actions .delete-icon {
+          background-color: #c62828;
+        }
+
+        .tag-actions .delete-icon:hover {
+          background-color: #b71c1c;
         }
       }
 
@@ -198,26 +211,6 @@
           color: #333;
         }
 
-        .tag-actions {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-
-          .edit-icon,
-          .delete-icon {
-            cursor: pointer;
-            font-size: 18px;
-            transition: color 0.2s;
-
-            &:hover {
-              color: #1976d2;
-            }
-
-            &.delete-icon:hover {
-              color: #d32f2f;
-            }
-          }
-        }
       }
     }
 
