@@ -21,7 +21,7 @@
       </li>
     </ul>
     <ng-template #noArticlesOfNote>
-      <p>No articles of note yet...</p>
+      <p>{{ 'home.noart' | translate }}</p>
     </ng-template>
   </div>
 
@@ -33,7 +33,7 @@
 
     <!-- Show message if no articles are available -->
     <div *ngIf="mostViewedArticles?.length === 0; else mostViewedTable">
-      <p>No articles available yet...</p>
+      <p>{{ 'home.noav' | translate }}</p>
     </div>
 
     <ng-template #mostViewedTable>
@@ -90,7 +90,7 @@
           </td>
         </tr>
         <tr *ngIf="!latestPublishedReport">
-          <td colspan="5">Loading...</td>
+          <td colspan="5">{{ 'home.load' | translate }}</td>
         </tr>
       </tbody>
     </table>

@@ -11,6 +11,9 @@
   "common.back": "Retour",
   "common.remove": "Supprimer",
   "common.preview": "Aperçu",
+  "common.close": "Fermer",
+  "common.edit": "Modifier",
+  "common.delete": "Supprimer",
 
   "login.login": "Connexion",
   "login.logout": "Déconnexion",
@@ -37,6 +40,9 @@
   "home.email": "Courriel Envoyé",
   "home.link": "Lien",
   "home.views": "Vues",
+  "home.noart": "Aucun article de note pour le moment...",
+  "home.noav": "Aucun article disponible pour le moment...",
+  "home.load": "En chargement...",
 
   "reportheader.breadcrumbs.report": "Rapports",
   "reportheader.breadcrumbs.daily": "Rapports quotidiens",
@@ -145,7 +151,20 @@
   "fav.edit": "Modifier",
   "fav.delete": "Supprimer",
   "fav.login": "Veuillez vous connecter pour voir vos articles favoris et soumis.",
-  "fav.addtag": "Ajouter un tag"
+  "fav.addtag": "Ajouter un tag",
+
+  "article.type.phishing": "Hameçonnage",
+  "article.type.malware": "Logiciel malveillant",
+  "article.type.vulnerability": "Vulnérabilité",
+  "article.type.dataleak": "Fuite de données",
+  "article.type.cyberattack": "Cyberattaque",
+  "article.type.cloud": "Nuage informatique",
+  "article.type.ai5g": "IA & 5G",
+  "article.type.canada": "Canada",
+  "article.type.world": "Monde",
+
+  "article.no": "Aucun article sélectionné"
+
 
 
 }

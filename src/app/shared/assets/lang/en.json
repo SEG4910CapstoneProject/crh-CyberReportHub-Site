@@ -11,6 +11,9 @@
   "common.back": "Back",
   "common.remove": "Remove",
   "common.preview": "Preview",
+  "common.close": "Close",
+  "common.edit": "Edit",
+  "common.delete": "Delete",
 
   "login.login": "Login",
   "login.logout": "Logout",
@@ -37,6 +40,9 @@
   "home.email": "Email Sent",
   "home.link": "Link",
   "home.views": "Views",
+  "home.noart": "No articles of note yet...",
+  "home.noav": "No articles available yet...",
+  "home.load": "Loading...",
 
   "reportheader.breadcrumbs.report": "Reports",
   "reportheader.breadcrumbs.daily": "Daily Reports",
@@ -144,6 +150,20 @@
   "fav.edit": "Edit",
   "fav.delete": "Delete",
   "fav.login": "Please log in to view your favourite and submitted articles.",
-  "fav.addtag": "Add Tag"
+  "fav.addtag": "Add Tag",
+
+  "article.type.phishing": "Phishing",
+  "article.type.malware": "Malware",
+  "article.type.vulnerability": "Vulnerability",
+  "article.type.dataleak": "Data Leak",
+  "article.type.cyberattack": "Cyber Attack",
+  "article.type.cloud": "Cloud",
+  "article.type.ai5g": "AI & 5G",
+  "article.type.canada": "Canada",
+  "article.type.world": "World",
+
+  "article.no": "You have no selected articles"
+
+
 
 }
