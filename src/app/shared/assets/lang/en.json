@@ -11,6 +11,9 @@
   "common.back": "Back",
   "common.remove": "Remove",
   "common.preview": "Preview",
+  "common.close": "Close",
+  "common.edit": "Edit",
+  "common.delete": "Delete",
 
   "login.login": "Login",
   "login.logout": "Logout",
@@ -37,6 +40,9 @@
   "home.email": "Email Sent",
   "home.link": "Link",
   "home.views": "Views",
+  "home.noart": "No articles of note yet...",
+  "home.noav": "No articles available yet...",
+  "home.load": "Loading...",
 
   "reportheader.breadcrumbs.report": "Reports",
   "reportheader.breadcrumbs.daily": "Daily Reports",
@@ -127,5 +133,37 @@
 
   "dialog.error_message_incomplete_fields":"You must complete all the required fields.",
   "dialog.error_message_ok":"ok",
-  "dialog.error_message_duplicate_fields":"You can't add the same article twice"
+  "dialog.error_message_duplicate_fields":"You can't add the same article twice",
+
+  "articles.add": "Add Article",
+  "articles.title": "Articles",
+  "articles.pub": "Published:",
+  "articles.note": "Article of Note",
+  "articles.more": "See more",
+  "articles.less": "See less",
+  "articles.empty": "No articles yet.",
+  "articles.urnote": "Your Articles of Note",
+
+  "fav.urfav": "Your Favourites",
+  "fav.articles": "Favourite Articles",
+  "fav.manadded": "Manually Added Articles",
+  "fav.edit": "Edit",
+  "fav.delete": "Delete",
+  "fav.login": "Please log in to view your favourite and submitted articles.",
+  "fav.addtag": "Add Tag",
+
+  "article.type.phishing": "Phishing",
+  "article.type.malware": "Malware",
+  "article.type.vulnerability": "Vulnerability",
+  "article.type.dataleak": "Data Leak",
+  "article.type.cyberattack": "Cyber Attack",
+  "article.type.cloud": "Cloud",
+  "article.type.ai5g": "AI & 5G",
+  "article.type.canada": "Canada",
+  "article.type.world": "World",
+
+  "article.no": "You have no selected articles"
+
+
+
 }

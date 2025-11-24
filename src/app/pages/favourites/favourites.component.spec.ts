@@ -9,6 +9,17 @@ import { TagService } from '../../shared/services/tag.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { DarkModeService } from '../../shared/services/dark-mode.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'translate',
+  standalone: false
+})
+class FakeTranslatePipe implements PipeTransform {
+  transform(value: string): string {
+    return value;
+  }
+}
 
 const mockArticles = [
   {
@@ -62,7 +73,7 @@ describe('FavouritesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FavouritesComponent],
+      declarations: [FavouritesComponent, FakeTranslatePipe],
       providers: [
         { provide: ArticleService, useClass: MockArticleService },
         { provide: TagService, useClass: MockTagService },

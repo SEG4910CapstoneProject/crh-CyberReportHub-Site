@@ -20,14 +20,14 @@
                 mat-icon-button
                 (click)="onStatEdit(stat)"
                 aria-label="Edit">
-                <mat-icon>edit</mat-icon>
+                <mat-icon>{{ 'common.edit' | translate }}</mat-icon>
               </button>
               <button
                 mat-icon-button
                 (click)="onStatRemove(stat.statisticId)"
                 aria-label="Delete"
                 class="delete">
-                <mat-icon>delete</mat-icon>
+                <mat-icon>{{ 'common.delete' | translate }}</mat-icon>
               </button>
             </div>
           </div>
@@ -63,26 +63,26 @@
         <label>Articles:</label>
 
         <div class="article-list">
-          <div *ngIf="articles.size === 0">You have no selected articles</div>
+          <div *ngIf="articles.size === 0">{{ 'article.no' | translate }}</div>
           <div
             class="article"
             *ngFor="let article of articles | keyvalue: keepOriginalOrder"
             >
 
             <div class="article-title">{{article.value.title}}</div>
-            <div class="article-type">{{article.value.type}}</div>
+            <div class="article-type">{{ article.value.type | translate }}</div>
             <div class="article-category">{{article.value.category}}</div>
             <a href={{article.value.link}} target="_blank">{{article.value.link}}</a>
 
             <div class="actions-per-article">
                 <span class="delete-btn material-symbols-outlined" (click)="removeArticle(article.key)">
-                  close
+                  {{ 'common.close' | translate }}
                 </span>
                 <span class="edit-btn material-symbols-outlined">
-                    edit
+                  {{ 'common.edit' | translate }}
                 </span>
             </div>
-          </div>  
+          </div>
         </div>
       </div>
     </form>
@@ -90,7 +90,7 @@
     <div *ngIf="(template_type === 'nonRestricted')">
       <div class="form-section">
         <label><b>{{ 'report.chosen-articles' | translate }}:</b></label>
-        <div *ngIf="articles.size === 0">You have no selected articles</div>
+        <div *ngIf="articles.size === 0">{{ 'article.no' | translate }}</div>
 
           <!-- <div *ngIf="articles.length != 0" class="actions">
             <div class="action-article">Article Title</div>
@@ -108,10 +108,10 @@
 
               <div class="actions-per-article">
                 <span class="delete-btn material-symbols-outlined" (click)="removeArticle(article.key)">
-                  close
+                  {{ 'common.close' | translate }}
                 </span>
                 <span class="edit-btn material-symbols-outlined">
-                    edit
+                  {{ 'common.edit' | translate }}
                 </span>
               </div>
             </div>

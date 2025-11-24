@@ -61,7 +61,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   private dialog = inject(Dialog);
   private statisticsService = inject(StatisticsService);
   private translateService = inject(CrhTranslationService);
-  
+
   private reportsService = inject(ReportsService);
 
   protected maxCommentLength = 1000;
@@ -87,15 +87,15 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   };
 
   protected articleTypes: string[] = [
-    'Phishing',
-    'Malware',
-    'Vulnerability',
-    'Data Leak',
-    'Cyber Attack',
-    'Cloud',
-    'AI & 5G',
-    'Canada',
-    'World',
+    'article.type.phishing',
+    'article.type.malware',
+    'article.type.vulnerability',
+    'article.type.dataleak',
+    'article.type.cyberattack',
+    'article.type.cloud',
+    'article.type.ai5g',
+    'article.type.canada',
+    'article.type.world',
   ];
 
   protected groupedArticlesByDate: {

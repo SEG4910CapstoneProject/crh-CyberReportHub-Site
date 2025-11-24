@@ -59,6 +59,20 @@ export class HomeComponent implements OnInit {
     // Fetch Articles of Note
     this.fetchArticlesOfNote();
   }
+//user-friendly date format
+  formatDate(dateString: string | null | undefined): string {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
 
   // Method to fetch most viewed articles
   fetchMostViewedArticles(): void {
