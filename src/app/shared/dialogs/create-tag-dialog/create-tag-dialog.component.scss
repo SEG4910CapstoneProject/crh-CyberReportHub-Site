@@ -1,8 +1,98 @@
+/* Lock dialog size */
+:host ::ng-deep .mat-mdc-dialog-container {
+  --mdc-dialog-inset: 0 !important;
+  resize: none !important;
+  width: 600px !important;
+  max-width: 600px !important;
+  min-width: 600px !important;
+  height: 700px !important;
+  max-height: 700px !important;
+  min-height: 700px !important;
+  overflow: hidden !important;
+}
+
+/* Lock dialog surface */
+:host ::ng-deep .mat-mdc-dialog-surface {
+  width: 600px !important;
+  height: 700px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+:host ::ng-deep .mat-mdc-dialog-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px;
+
+  overflow: visible;
+}
+
+
+:host {
+  font-family: Arial, sans-serif;
+}
+
+/* Dialog Title */
+h2[mat-dialog-title] {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Section Headings */
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 12px 0 8px;
+}
+
+/* Labels */
+label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Inputs */
+input[type="text"] {
+  font-size: 14px;
+  font-family: inherit;
+}
+
+input::placeholder {
+  font-family: inherit;
+  color: #888;
+}
+
+
+
+.article-search {
+  width: 100%;
+  padding: 8px 10px;
+  margin: 8px 0 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fafafa;
+}
+
 .article-list {
   list-style: none;
-  padding: 0;
-  max-height: 300px;
+  padding: 4px 8px;
+  margin: 0;
+  flex: 1;
   overflow-y: auto;
+  min-height: 0;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fafafa;
 
   li {
     display: flex;
@@ -11,12 +101,15 @@
     padding: 6px 0;
     border-bottom: 1px solid #eee;
 
+    &:last-child {
+      border-bottom: none;
+    }
+
     .add-icon {
       color: green;
       cursor: pointer;
       font-size: 20px;
       font-weight: bold;
-      transition: transform 0.2s;
 
       &.selected {
         color: #43a047;
@@ -29,14 +122,13 @@
   }
 }
 
-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 500;
-}
-
-input {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 6px 8px;
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #333;
+  flex-shrink: 0;
 }

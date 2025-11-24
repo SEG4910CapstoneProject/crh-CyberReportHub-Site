@@ -25,6 +25,13 @@ export class CreateTagDialogComponent {
   tagName = '';
   selectedArticleIds: string[] = [];
 
+  // search + pagination variables
+  articleSearchTerm = '';
+  filteredArticles: any[] = [];
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
+
   constructor(
     private dialogRef: MatDialogRef<CreateTagDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CreateTagDialogData
@@ -32,6 +39,55 @@ export class CreateTagDialogComponent {
     if (data.tag) {
       this.tagName = data.tag.tagName;
       this.selectedArticleIds = data.tag.articleIds ?? [];
+    }
+
+    // Initialize list sorted by published date
+    this.filteredArticles = [...(data.favouriteArticles ?? [])].sort(
+      (a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+    );
+
+    this.updateTotalPages();
+  }
+
+  // Search logic
+  filterArticles(): void {
+    const term = this.articleSearchTerm.toLowerCase().trim();
+    const allArticles = [...this.data.favouriteArticles].sort(
+      (a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+    );
+
+    if (!term) {
+      this.filteredArticles = allArticles;
+    } else {
+      this.filteredArticles = allArticles.filter(article =>
+        article.title.toLowerCase().includes(term)
+      );
+    }
+
+    this.currentPage = 1;
+    this.updateTotalPages();
+  }
+
+  // Pagination logic
+  get paginatedArticles(): any[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.filteredArticles.slice(start, end);
+  }
+
+  updateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredArticles.length / this.pageSize) || 1;
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
     }
   }
 
