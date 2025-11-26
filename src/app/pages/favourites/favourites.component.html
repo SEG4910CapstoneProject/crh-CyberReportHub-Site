@@ -15,7 +15,7 @@
   <div *ngIf="!isLoading && isLoggedIn()" class="sections">
 
     <!-- Show only if there are untagged favourites -->
-    <div class="category-section" *ngIf="(untaggedFavourites?.length || 0) > 0">
+    <div class="category-section" *ngIf="(favouriteArticles?.length || 0) > 0">
       <h2 (click)="toggleSection('general')" class="collapsible-header">
         {{
           'fav.articles' | translate
@@ -27,7 +27,7 @@
 
       <div *ngIf="!collapsedSections['general']">
         <ul class="article-list">
-          <li *ngFor="let article of untaggedFavourites" class="article-item">
+          <li *ngFor="let article of favouriteArticles" class="article-item">
             <a
               [href]="article.link"
               target="_blank"

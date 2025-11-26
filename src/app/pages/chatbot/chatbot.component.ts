@@ -28,7 +28,10 @@ export class ChatbotComponent implements OnInit {
   isDarkMode = signal<boolean>(false);
 
   private storageKey = 'chatbotMessages_guest';
-  private storage: Storage = sessionStorage; // default for guests
+  private storage: Storage = localStorage; // add persistence for guests
+  private wasLoggedIn = false; // Tracks when to clear chats
+  private initialized = false;
+
 
   ngOnInit(): void {
     const user = this.authService.getCurrentUser();
@@ -59,13 +62,53 @@ export class ChatbotComponent implements OnInit {
       this.isDarkMode.set(mode);
     });
 
-    // Clear chat immediately when user logs out
+    // login/logout transition handling
     this.authService.isLoggedIn$.subscribe(isLoggedIn => {
-      if (!isLoggedIn) {
-        this.storage.removeItem(this.storageKey);
-        this.messages.set([{ sender: 'bot', text: 'Hi there! How can I help you today?' }]);
+
+      if (!this.initialized) {
+          this.initialized = true;
+          this.wasLoggedIn = isLoggedIn;
+          return;
+        }
+
+      if (this.wasLoggedIn !== isLoggedIn) {
+
+        // ---- USER LOGGED OUT ----
+        if (!isLoggedIn) {
+          this.storageKey = 'chatbotMessages_guest';
+          this.storage = localStorage;
+
+          // Load guest history if exists, else reset
+          const guestSaved = this.storage.getItem(this.storageKey);
+          this.messages.set(
+            guestSaved ? JSON.parse(guestSaved) :
+            [{ sender: 'bot', text: 'Hi there! How can I help you today?' }]
+          );
+
+          return;
+        }
+
+        // ---- USER LOGGED IN ----
+        if (isLoggedIn) {
+          const newUser = this.authService.getCurrentUser();
+          if (newUser) {
+            this.storageKey = `chatbotMessages_${newUser.userId}`;
+            this.storage = localStorage;
+
+            const userSaved = this.storage.getItem(this.storageKey);
+
+            // Only set messages if switching users or first load
+            this.messages.set(
+              userSaved ? JSON.parse(userSaved) :
+              [{ sender: 'bot', text: 'Hi there! How can I help you today?' }]
+            );
+          }
+        }
       }
+
+      this.wasLoggedIn = isLoggedIn;
     });
+
   }
 
   sendMessage(): void {
