@@ -122,14 +122,6 @@ describe('FavouritesComponent', () => {
     expect(spy).toHaveBeenCalledWith(1);
   }));
 
-  it('should handle tag article loading and update untaggedFavourites', fakeAsync(() => {
-    component.favouriteArticles = mockArticles;
-    component.loadArticlesByTag(1);
-    tick();
-    expect(component.taggedArticles[1]).toBeDefined();
-    expect(component.untaggedFavourites.length).toBe(0);
-  }));
-
   it('should handle error when fetching favourites', fakeAsync(() => {
     jest
       .spyOn(articleService, 'getMyFavourites')

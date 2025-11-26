@@ -38,6 +38,11 @@ export class ArticlesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    // Restore collapsed states
+    const saved = localStorage.getItem('collapsedSections_articles');
+    if (saved) this.collapsedSections = JSON.parse(saved);
+
     // Track login status
     this.authService.isLoggedIn$.subscribe(status => {
       console.log('Is Logged In:', status);
@@ -231,5 +236,9 @@ export class ArticlesComponent implements OnInit {
 
   toggleCategory(category: string): void {
     this.collapsedSections[category] = !this.collapsedSections[category];
+    localStorage.setItem(
+      'collapsedSections_articles',
+      JSON.stringify(this.collapsedSections)
+    );
   }
 }

@@ -19,7 +19,6 @@ export class FavouritesComponent implements OnInit {
   private darkModeService = inject(DarkModeService);
 
   favouriteArticles: Article[] = [];
-  untaggedFavourites: Article[] = [];
   submittedArticles: Article[] = [];
   userTags: Tag[] = [];
   taggedArticles: Record<number, Article[]> = {};
@@ -37,6 +36,11 @@ export class FavouritesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    // Load saved collapsed states
+    const saved = localStorage.getItem('collapsedSections_favourites');
+    if (saved) this.collapsedSections = JSON.parse(saved);
+
     // Watch for authentication changes
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn.set(status);
@@ -62,7 +66,6 @@ export class FavouritesComponent implements OnInit {
     this.articleService.getMyFavourites().subscribe({
       next: (articles: Article[]) => {
         this.favouriteArticles = articles;
-        this.untaggedFavourites = [...articles];
         this.isLoading = false;
       },
       error: err => console.error('Error fetching favourites:', err),
@@ -84,6 +87,10 @@ export class FavouritesComponent implements OnInit {
     this.tagService.getUserTags().subscribe({
       next: tags => {
         this.userTags = tags;
+        if (!tags.length) {
+          this.taggedArticles = {};
+          return;
+        }
         tags.forEach(tag => this.loadArticlesByTag(tag.tagId));
       },
       error: err => console.error('Error loading tags:', err),
@@ -95,18 +102,6 @@ export class FavouritesComponent implements OnInit {
     this.tagService.getArticlesByTag(tagId).subscribe({
       next: (articles: Article[]) => {
         this.taggedArticles[tagId] = articles;
-
-        // Compute all tagged IDs across all tags
-        const allTaggedIds = new Set(
-          Object.values(this.taggedArticles)
-            .flat()
-            .map((a: Article) => a.articleId)
-        );
-
-        // Remove all tagged articles from general favourites list
-        this.untaggedFavourites = this.favouriteArticles.filter(
-          (a: Article) => !allTaggedIds.has(a.articleId)
-        );
       },
       error: (err: unknown) =>
         console.error('Error loading tagged articles:', err),
@@ -130,8 +125,6 @@ export class FavouritesComponent implements OnInit {
         next: () => {
           // Update favourites list
           this.favouriteArticles = this.favouriteArticles.filter(f => f.articleId !== article.articleId);
-          this.untaggedFavourites = this.untaggedFavourites.filter(f => f.articleId !== article.articleId);
-
           // Remove from all tags
           Object.keys(this.taggedArticles).forEach(tagId => {
             const tagNum = +tagId;
@@ -329,5 +322,9 @@ export class FavouritesComponent implements OnInit {
   // Expands or collapses a section
   toggleSection(sectionKey: string): void {
     this.collapsedSections[sectionKey] = !this.collapsedSections[sectionKey];
+    localStorage.setItem(
+      'collapsedSections_favourites',
+      JSON.stringify(this.collapsedSections)
+    );
   }
 }
