@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TranslateModule } from '@ngx-translate/core';
 import { ReportPreviewComponent } from './report-preview.component';
 
 describe('ReportPreviewComponent', () => {
@@ -9,6 +9,9 @@ describe('ReportPreviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ReportPreviewComponent],
+      imports: [
+        TranslateModule.forRoot()
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportPreviewComponent);

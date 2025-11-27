@@ -3,6 +3,7 @@ import { ChatbotComponent } from './chatbot.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { of, throwError, Subject } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('ChatbotComponent', () => {
   let component: ChatbotComponent;
@@ -15,7 +16,7 @@ describe('ChatbotComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ChatbotComponent, FormsModule],
+      imports: [ChatbotComponent, FormsModule, TranslateModule.forRoot()],
       providers: [{ provide: HttpClient, useValue: mockHttpClient }]
     }).compileComponents();
 

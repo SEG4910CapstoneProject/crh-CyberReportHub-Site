@@ -43,14 +43,14 @@
         mat-raised-button
         class="action-btn view-btn"
         (click)="onLinkClick()">
-        View
+        {{ 'common.view' | translate }}
       </button>
       <button
         mat-raised-button
         class="action-btn delete-btn"
         (click)="onDeleteCard()"
         *ngIf="isLoggedInSignal()">
-        Delete
+        {{ 'common.delete' | translate }}
       </button>
     </mat-card-actions>
   </mat-card-content>

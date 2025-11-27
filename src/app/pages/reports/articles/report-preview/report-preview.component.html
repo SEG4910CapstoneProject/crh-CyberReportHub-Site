@@ -1,9 +1,9 @@
 <div class="report-preview">
   <!-- Title of the report -->
-  <h1>Report Preview</h1>
+  <h1>{{ 'report.preview.title' | translate }}</h1>
 
   <!-- Subtitle for statistics -->
-  <h2 *ngIf="stats.length > 0">Statistics</h2>
+  <h2 *ngIf="stats.length > 0">{{ 'report.preview.statistics' | translate }}</h2>
   <div *ngIf="stats.length > 0">
     <ul>
       <li *ngFor="let stat of stats">{{ stat.title }}: {{ stat.value }}</li>
@@ -11,7 +11,7 @@
   </div>
 
   <!-- Subtitle for articles -->
-  <h2 *ngIf="hasArticles()">Articles</h2>
+  <h2 *ngIf="hasArticles()">{{ 'report.preview.articles' | translate }}</h2>
   <div *ngIf="hasArticles()">
     <div *ngFor="let category of articleCategories">
       <h3>{{ category }}</h3>
@@ -24,13 +24,13 @@
   </div>
 
   <!-- Subtitle for Analyst Comments -->
-  <h2 *ngIf="analystComment">Analyst Comment</h2>
+  <h2 *ngIf="analystComment">A{{ 'report.preview.analystComment' | translate }}</h2>
   <div *ngIf="analystComment">
     <p>{{ analystComment }}</p>
   </div>
 
   <!-- Back Button -->
   <div class="form-actions">
-    <button type="button" (click)="goBack()">Back</button>
+    <button type="button" (click)="goBack()">{{ 'common.back' | translate }}</button>
   </div>
 </div>

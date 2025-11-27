@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { ReportsService } from '../../shared/services/reports.service';
+import { DateTime } from 'luxon';
 import { JsonReportResponse } from '../../shared/sdk/rest-api/model/jsonReportResponse';
 import {
   ArticleService,
@@ -42,14 +43,25 @@ export class HomeComponent implements OnInit {
       this.isLoggedIn.set(status);
     });
 
+
+
     // Fetch the latest published report
     this.reportsService.getLatestReport().subscribe({
       next: (data: JsonReportResponse) => {
-        console.log('Latest Published Report Data:', data); // Log the fetched data
         this.latestPublishedReport = data;
+
+
+        if (this.latestPublishedReport?.generatedDate) {
+          this.latestPublishedReport.generatedDate =
+            this.formatDate(this.latestPublishedReport.generatedDate);
+        }
+        if (this.latestPublishedReport?.lastModified) {
+          this.latestPublishedReport.lastModified =
+            this.formatDate(this.latestPublishedReport.lastModified);
+        }
       },
       error: error => {
-        console.error('Error fetching latest report:', error); // Debugging error
+        console.error('Error fetching latest report:', error);
       },
     });
 
@@ -63,15 +75,15 @@ export class HomeComponent implements OnInit {
   formatDate(dateString: string | null | undefined): string {
     if (!dateString) return '';
 
-    const date = new Date(dateString);
+    const dt = DateTime.fromISO(dateString, { zone: 'utc' });
 
-    return date.toLocaleString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    if (!dt.isValid) {
+      console.warn('Invalid date received:', dateString);
+      return dateString;
+    }
+
+
+    return dt.toFormat('dd LLL yyyy, HH:mm');
   }
 
   // Method to fetch most viewed articles
