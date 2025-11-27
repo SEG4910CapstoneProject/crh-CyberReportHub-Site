@@ -35,6 +35,17 @@
     ></textarea>
   </div>
 
+  <div class="form-group">
+    <label for="publishDate">Published Date</label>
+    <input
+      type="date"
+      id="publishDate"
+      name="publishDate"
+      [(ngModel)]="article.publishDate"
+      required
+    />
+  </div>
+
   <button type="submit" [disabled]="!articleForm.form.valid">
     {{ data?.articleId ? 'Save Changes' : 'Submit Article' }}
   </button>

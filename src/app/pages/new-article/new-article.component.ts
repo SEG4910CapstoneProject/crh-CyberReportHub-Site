@@ -16,6 +16,7 @@ export class NewArticleComponent {
     title: '',
     link: '',
     description: '',
+    publishDate: '',
   };
 
   constructor(
@@ -51,7 +52,11 @@ export class NewArticleComponent {
     }
 
     // Input validation
-    if (!this.article.title.trim() || !this.article.link.trim() || !this.article.description.trim()) {
+    if (
+      !this.article.title.trim() ||
+      !this.article.link.trim() ||
+      !this.article.description.trim() ||
+      !this.article.publishDate ) {
       this.showError('Please fill in all fields before submitting.');
       return;
     }
@@ -85,7 +90,7 @@ export class NewArticleComponent {
           next: (response) => {
             const message = response?.message || 'Your article has been submitted successfully.';
             this.showError(message);
-            this.article = { title: '', link: '', description: '' };
+            this.article = { title: '', link: '', description: '', publishDate: '' };
           },
           error: (err) => {
             console.error('Error submitting article:', err);
