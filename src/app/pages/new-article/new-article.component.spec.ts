@@ -66,6 +66,7 @@ describe('NewArticleComponent – extended coverage', () => {
       title: 'test',
       link: 'http://link.com',
       description: 'desc',
+      publishDate: '2024-10-10',
     };
 
     const comp = new NewArticleComponent(articleService, dialog, authService, data, dialogRef);
@@ -79,6 +80,7 @@ describe('NewArticleComponent – extended coverage', () => {
       title: 't',
       link: 'http://a.com',
       description: 'd',
+      publishDate: '2024-10-10',
     };
 
     component.onSubmit();
@@ -88,7 +90,7 @@ describe('NewArticleComponent – extended coverage', () => {
   });
 
   it('should show error if fields are missing', () => {
-    component.article = { title: '', link: '', description: '' };
+    component.article = { title: '', link: '', description: '', publishDate: '' };
 
     component.onSubmit();
 
@@ -101,6 +103,7 @@ describe('NewArticleComponent – extended coverage', () => {
       title: 'A',
       link: 'not-a-url',
       description: 'd',
+      publishDate: '2024-10-10',
     };
 
     component.onSubmit();
@@ -114,6 +117,7 @@ describe('NewArticleComponent – extended coverage', () => {
       title: 'Sample',
       link: 'http://example.com',
       description: 'Test',
+      publishDate: '2024-10-10',
     };
 
     const expectedPayload = { ...component.article };
@@ -133,6 +137,7 @@ describe('NewArticleComponent – extended coverage', () => {
       title: 'Dup',
       link: 'http://dup.com',
       description: 'd',
+      publishDate: '2024-10-10',
     };
 
     articleService.ingestArticle.mockReturnValue(
@@ -151,6 +156,7 @@ describe('NewArticleComponent – extended coverage', () => {
       title: 'Old',
       link: 'http://old.com',
       description: 'desc',
+      publishDate: '2024-10-10',
     };
 
     const comp = new NewArticleComponent(articleService, dialog, authService, data, dialogRef);
@@ -171,6 +177,7 @@ describe('NewArticleComponent – extended coverage', () => {
       title: 'Old',
       link: 'http://old.com',
       description: 'desc',
+      publishDate: '2024-10-10',
     };
 
     const comp = new NewArticleComponent(articleService, dialog, authService, data, dialogRef);
