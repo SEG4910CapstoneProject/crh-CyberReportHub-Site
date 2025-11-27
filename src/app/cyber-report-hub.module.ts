@@ -1,4 +1,4 @@
-import { APP_INITIALIZER } from '@angular/core'; // DEPRECATED
+import { provideAppInitializer, inject } from '@angular/core';
 import { BrandingService } from './shared/services/branding.service';
 import { NgModule } from '@angular/core';
 import { routes } from './app.routes';
@@ -178,13 +178,13 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimationsAsync(),
     LuxonDateFormatterPipe,
-    {
-      provide: APP_INITIALIZER,// DEPRECATED
-      useFactory: initBrandingFactory,
-      deps: [BrandingService],
-      multi: true,
-    },
-    { provide: BASE_PATH, useValue: 'http://localhost:8080' }, // TODO REPLACE ME WHEN SERVED INTO PRODUCTION
+
+    provideAppInitializer(() => {
+      const branding = inject(BrandingService);
+      return branding.init();
+    }),
+
+    { provide: BASE_PATH, useValue: 'http://localhost:8080' },
   ],
   bootstrap: [CyberReportHubComponent],
 })

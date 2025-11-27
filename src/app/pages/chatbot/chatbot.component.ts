@@ -120,9 +120,8 @@ export class ChatbotComponent implements OnInit {
     this.userMessage.set('');
     this.messages.update(msgs => [...msgs, { sender: 'bot', text: '...' }]);
 
-    this.http
-      .post('http://localhost:8080/api/v1/chat', { message: trimmed }, { responseType: 'text' })
-      .subscribe({
+    this.http.post('http://localhost:8080/api/v1/chat', { message: trimmed }, { responseType: 'text' }
+    ).subscribe({
         next: reply => this.replaceLastBotMessage(reply),
         error: () => this.replaceLastBotMessage('chat.error'),
       });
