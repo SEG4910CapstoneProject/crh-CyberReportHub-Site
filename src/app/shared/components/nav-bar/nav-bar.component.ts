@@ -103,6 +103,9 @@ export class NavBarComponent implements OnInit {
   private linkReportsTranslationSignal = toSignal(
     this.translateService.getTranslationFromKeyAsStream('navBar.link.reports')
   );
+  private linkFavTranslationSignal = toSignal(
+    this.translateService.getTranslationFromKeyAsStream('navBar.link.fav')
+  );
   protected langSelectTranslationSignal = toSignal(
     this.translateService.getTranslationFromKeyAsStream('navBar.langChange')
   );
@@ -144,7 +147,7 @@ export class NavBarComponent implements OnInit {
     if (this.isLoggedIn()) {
       links.push({
         id: 'favourites',
-        label: 'Favourites',
+        label: this.linkFavTranslationSignal(),
         path: '/favourites',
       });
     }

@@ -14,6 +14,7 @@
   "common.close": "Fermer",
   "common.edit": "Modifier",
   "common.delete": "Supprimer",
+  "common.view": "Voir",
 
   "login.login": "Connexion",
   "login.logout": "Déconnexion",
@@ -58,6 +59,7 @@
   "navBar.link.reportStats": "Statistiques des rapports",
   "navBar.langChange": "EN",
   "navBar.langChangeAria": "English",
+  "navBar.link.fav": "Favoris",
 
   "datePicker.iconAria": "Choisir la date",
 
@@ -163,7 +165,34 @@
   "article.type.canada": "Canada",
   "article.type.world": "Monde",
 
-  "article.no": "Aucun article sélectionné"
+  "article.no": "Aucun article sélectionné",
+
+  "new.article.title": "Titre de l'article",
+  "new.article.link": "Lien de l'article",
+  "new.article.description": "Description de l'article",
+  "new.article.ent": "Saisissez le titre de l'article",
+  "new.article.url": "Entrez l'URL complète de l'article",
+  "new.article.pro": "Fournissez une brève description de cet article ou incident",
+
+  "report.preview.title": "Aperçu du rapport",
+  "report.preview.statistics": "Statistiques",
+  "report.preview.articles": "Articles",
+  "report.preview.analystComment": "Commentaire de l'analyste",
+
+  "email.template.nonrestricted.example.title1": "titre-article-1",
+  "email.template.nonrestricted.example.summary1": "résumé-article-1",
+  "email.template.nonrestricted.example.title2": "titre-article-2",
+  "email.template.nonrestricted.example.summary2": "résumé-article-2",
+
+  "email.template.nonrestricted.overlay": "Un modèle non restreint qui liste les articles et leurs résumés générés par l'IA",
+
+  "email.template.restricted.confidential": "CONFIDENTIEL",
+  "email.template.restricted.overlay": "Un modèle spécifique au domaine, restreint uniquement aux personnes autorisées.",
+
+  "chat.title": "Chatbot Cyber Report",
+  "chat.send": "Envoyer",
+  "chat.clear": "Effacer",
+  "chat.type": "Écrivez votre message..."
 
 
 

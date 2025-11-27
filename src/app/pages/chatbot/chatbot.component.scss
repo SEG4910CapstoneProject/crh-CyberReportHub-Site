@@ -30,7 +30,7 @@
   justify-content: center;
   align-items: center;
   padding: 15px 0;
-  background-color: #007bff;
+  background-color: #050c9c;
   color: #fff;
   border-bottom: 1px solid #ddd;
 
@@ -72,7 +72,7 @@
   }
 
   .user .message-bubble {
-    background-color: #007bff;
+    background-color: #050c9c;
     color: white;
     border-bottom-right-radius: 4px;
   }
@@ -101,7 +101,7 @@
 
     &:focus {
       outline: none;
-      border-color: #007bff;
+      border-color: #050c9c;
     }
   }
 
@@ -115,7 +115,7 @@
       }
 
   button {
-    background-color: #007bff;
+    background-color: #050c9c;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -148,7 +148,7 @@
     background-color: #1a1a1a;
 
     .user .message-bubble {
-      background-color: #0d6efd;
+      background-color: #050c9c;
       color: #fff;
     }
 
@@ -168,12 +168,12 @@
       border: 1px solid #555;
 
       &:focus {
-        border-color: #0d6efd;
+        border-color: #050c9c;
       }
     }
 
     button {
-      background-color: #0d6efd;
+      background-color: #050c9c;
 
       &:hover {
         background-color: #084298;

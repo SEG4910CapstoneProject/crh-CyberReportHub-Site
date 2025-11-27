@@ -1,7 +1,7 @@
-<div *ngIf="this.template_type() === 'non_restricted'" 
-    class="email-template-card" 
-    (click)="chooseTemplate(this.template_type())" 
-    > 
+<div *ngIf="this.template_type() === 'non_restricted'"
+    class="email-template-card"
+    (click)="chooseTemplate(this.template_type())"
+    >
     <!-- the ngClass below controls when we select a certain option, if a card is selected then the border becomes different. -->
     <mat-card
         class="template-card"
@@ -11,34 +11,34 @@
             <div class="email_example">
                 <div class="article-item">
                     <div class="article-title">
-                        article-title-1
+                      {{ 'email.template.nonrestricted.example.title1' | translate }}
                     </div>
 
                     <div class="article-summary">
-                        article-summary-1
+                      {{ 'email.template.nonrestricted.example.summary1' | translate }}
                     </div>
                 </div>
 
                 <div class="article-item">
                     <div class="article-title">
-                        article-title-2
+                      {{ 'email.template.nonrestricted.example.title2' | translate }}
                     </div>
 
                     <div class="article-summary">
-                        article-summary-2
+                      {{ 'email.template.nonrestricted.example.summary2' | translate }}
                     </div>
                 </div>
             </div>
         </mat-card-content>
         <div class="overlay-container">
-            <div class="overlay-text">A non restricted template that lists articles and their AI generated summaries</div>
+            <div class="overlay-text">{{ 'email.template.nonrestricted.overlay' | translate }}</div>
         </div>
     </mat-card>
 </div>
 
 
-<div *ngIf="this.template_type() === 'restricted'" 
-    class="email-template-card" 
+<div *ngIf="this.template_type() === 'restricted'"
+    class="email-template-card"
     (click)="chooseTemplate(this.template_type())">
     <mat-card
         class="template-card template-card-restricted"
@@ -48,10 +48,10 @@
             <span class="lock-logo material-symbols-outlined">
                 visibility_lock
             </span>
-            <div class="confidential-message">CONFIDENTIAL</div>
+            <div class="confidential-message">{{ 'email.template.restricted.confidential' | translate }}</div>
         </mat-card-content>
         <div class="overlay-container">
-            <div class="overlay-text">A restricted domain specific template only for those who have access.</div>
+            <div class="overlay-text">{{ 'email.template.restricted.overlay' | translate }}</div>
         </div>
     </mat-card>
 </div>
