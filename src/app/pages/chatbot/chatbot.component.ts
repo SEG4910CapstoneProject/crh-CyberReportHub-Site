@@ -82,7 +82,6 @@ export class ChatbotComponent implements OnInit {
           const guestSaved = this.storage.getItem(this.storageKey);
           this.messages.set(
             guestSaved ? JSON.parse(guestSaved) :
-            [{ sender: 'bot', text: 'Hi there! How can I help you today?' }]
             [{ sender: 'bot', text: 'chat.welcome' }]
           );
 
@@ -120,11 +119,15 @@ export class ChatbotComponent implements OnInit {
     this.userMessage.set('');
     this.messages.update(msgs => [...msgs, { sender: 'bot', text: '...' }]);
 
-    this.http.post('http://localhost:8080/api/v1/chat', { message: trimmed }, { responseType: 'text' }
+    this.http.post(
+      'http://localhost:8080/api/v1/chat',
+      { message: trimmed },
+      { responseType: 'text' }
     ).subscribe({
-        next: reply => this.replaceLastBotMessage(reply),
-        error: () => this.replaceLastBotMessage('chat.error'),
-      });
+      next: reply => this.replaceLastBotMessage(reply),
+      error: () => this.replaceLastBotMessage('chat.error'),
+    });
+
   }
 
   clearChat(): void {
