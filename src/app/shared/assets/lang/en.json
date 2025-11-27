@@ -14,6 +14,7 @@
   "common.close": "Close",
   "common.edit": "Edit",
   "common.delete": "Delete",
+  "common.view": "View",
 
   "login.login": "Login",
   "login.logout": "Logout",
@@ -58,6 +59,7 @@
   "navBar.link.reportStats": "Report statistics",
   "navBar.langChange": "FR",
   "navBar.langChangeAria": "Français",
+  "navBar.link.fav": "Favourites",
 
   "datePicker.iconAria": "Choose date",
 
@@ -162,8 +164,34 @@
   "article.type.canada": "Canada",
   "article.type.world": "World",
 
-  "article.no": "You have no selected articles"
+  "article.no": "You have no selected articles",
 
+  "new.article.title": "Article Title",
+  "new.article.link": "Article Link",
+  "new.article.description": "Article Description",
+  "new.article.ent": "Enter article title",
+  "new.article.url": "Enter full article URL",
+  "new.article.pro": "Provide a short description of this article or incident",
+
+  "report.preview.title": "Report Preview",
+  "report.preview.statistics": "Statistics",
+  "report.preview.articles": "Articles",
+  "report.preview.analystComment": "Analyst Comment",
+
+  "email.template.nonrestricted.example.title1": "article-title-1",
+  "email.template.nonrestricted.example.summary1": "article-summary-1",
+  "email.template.nonrestricted.example.title2": "article-title-2",
+  "email.template.nonrestricted.example.summary2": "article-summary-2",
+
+  "email.template.nonrestricted.overlay": "A non restricted template that lists articles and their AI generated summaries",
+
+  "email.template.restricted.confidential": "CONFIDENTIAL",
+  "email.template.restricted.overlay": "A restricted domain specific template only for those who have access.",
+
+  "chat.title": "Cyber Report Chatbot",
+  "chat.send": "Send",
+  "chat.clear": "Clear",
+  "chat.type": "Type your message..."
 
 
 }

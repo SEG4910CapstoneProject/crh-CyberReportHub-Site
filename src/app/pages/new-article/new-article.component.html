@@ -1,35 +1,35 @@
 <form (ngSubmit)="onSubmit()" #articleForm="ngForm" class="add-article-form">
   <div class="form-group">
-    <label for="title">Article Title</label>
+    <label for="title">{{ 'new.article.title' | translate }}</label>
     <input
       type="text"
       id="title"
       name="title"
       [(ngModel)]="article.title"
-      placeholder="Enter article title"
+      [placeholder]="'new.article.ent' | translate"
       required
     />
   </div>
 
   <div class="form-group">
-    <label for="link">Article Link</label>
+    <label for="link">{{ 'new.article.link' | translate }}</label>
     <input
       type="text"
       id="link"
       name="link"
       [(ngModel)]="article.link"
-      placeholder="Enter full article URL"
+      [placeholder]="'new.article.url' | translate"
       required
     />
   </div>
 
   <div class="form-group">
-    <label for="description">Article Description</label>
+    <label for="description">{{ 'new.article.description' | translate }}</label>
     <textarea
       id="description"
       name="description"
       [(ngModel)]="article.description"
-      placeholder="Provide a short description of this article or incident"
+      [placeholder]="'new.article.pro' | translate"
       rows="4"
       required
     ></textarea>
