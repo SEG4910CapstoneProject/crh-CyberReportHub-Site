@@ -192,7 +192,10 @@
   "chat.title": "Chatbot Cyber Report",
   "chat.send": "Envoyer",
   "chat.clear": "Effacer",
-  "chat.type": "Écrivez votre message..."
+  "chat.type": "Écrivez votre message...",
+  "chat.welcome": "Bonjour! Comment puis-je vous aider aujourd'hui?",
+  "chat.error": "Désolé, une erreur s'est produite.",
+  "chat.cleared": "Discussion effacée. Comment puis-je vous aider?"
 
 
 

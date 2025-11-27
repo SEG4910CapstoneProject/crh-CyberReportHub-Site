@@ -1,7 +1,7 @@
 <div class="home-container" [class.dark-mode]="isDarkMode()">
   <div class="box chatbot">
     <div class="box-header">
-      <h2>Cyber Report Chatbot</h2>
+      <h2>{{ 'chat.title' | translate }}</h2>
     </div>
 
     <!-- Chat window -->
@@ -10,7 +10,7 @@
         *ngFor="let msg of messages()"
         [ngClass]="msg.sender === 'user' ? 'user' : 'bot'"
       >
-        <div class="message-bubble">{{ msg.text }}</div>
+      <div class="message-bubble">{{ msg.text | translate }}</div>
       </div>
     </div>
 
@@ -21,10 +21,10 @@
         [ngModel]="userMessage()"
         (ngModelChange)="userMessage.set($event)"
         (keydown.enter)="sendMessage()"
-        placeholder="Type your message..."
+        [placeholder]="'chat.type' | translate"
       />
-      <button (click)="sendMessage()">Send</button>
-      <button class="clear-btn" (click)="clearChat()">Clear</button>
+      <button (click)="sendMessage()">{{ 'chat.send' | translate }}</button>
+      <button class="clear-btn" (click)="clearChat()">{{ 'chat.clear' | translate }}</button>
     </div>
   </div>
 </div>
