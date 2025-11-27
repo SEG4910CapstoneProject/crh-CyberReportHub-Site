@@ -33,30 +33,28 @@ describe('ChatbotComponent', () => {
     const messages = component.messages();
     expect(messages.length).toBe(1);
     expect(messages[0].sender).toBe('bot');
-    expect(messages[0].text).toContain('Hi there');
+    expect(messages[0].text).toBe('chat.welcome');
   });
 
   it('should not send message if userMessage is empty', () => {
     component.userMessage.set('   ');
     component.sendMessage();
     const msgs = component.messages();
-    expect(msgs.length).toBe(1); // Only the initial greeting
+    expect(msgs.length).toBe(1);
   });
 
   it('should send a user message and add loading bot message', fakeAsync(() => {
     const subject = new Subject<string>();
-
     mockHttpClient.post.mockReturnValue(subject.asObservable());
 
     component.userMessage.set('Hello');
     component.sendMessage();
 
-    // Check user message + loading state
     let msgs = component.messages();
+
     expect(msgs.some(m => m.sender === 'user' && m.text === 'Hello')).toBe(true);
     expect(msgs.some(m => m.sender === 'bot' && m.text === '...')).toBe(true);
 
-    // Simulate API response
     subject.next('Hello user!');
     subject.complete();
     tick();
@@ -87,7 +85,7 @@ describe('ChatbotComponent', () => {
 
     const finalMessages = component.messages();
     const lastMsg = finalMessages[finalMessages.length - 1];
-    expect(lastMsg.text).toBe('Sorry, something went wrong.');
+    expect(lastMsg.text).toBe('chat.error');  
   });
 
   it('should replace last bot message correctly if last is "..."', () => {
@@ -97,13 +95,16 @@ describe('ChatbotComponent', () => {
     ]);
 
     component['replaceLastBotMessage']('Got it');
+
     const msgs = component.messages();
     expect(msgs[msgs.length - 1].text).toBe('Got it');
   });
 
   it('should append a new bot message if last is not "..."', () => {
     component.messages.set([{ sender: 'user', text: 'Hi' }]);
+
     component['replaceLastBotMessage']('Bot reply');
+
     const msgs = component.messages();
     expect(msgs[msgs.length - 1].text).toBe('Bot reply');
   });

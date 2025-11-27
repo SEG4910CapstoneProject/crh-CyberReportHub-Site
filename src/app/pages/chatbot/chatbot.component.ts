@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { DarkModeService } from '../../shared/services/dark-mode.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface ChatMessage {
   sender: 'user' | 'bot';
@@ -15,7 +16,7 @@ interface ChatMessage {
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
 })
 export class ChatbotComponent implements OnInit {
   private http = inject(HttpClient);
@@ -32,7 +33,6 @@ export class ChatbotComponent implements OnInit {
   private wasLoggedIn = false; // Tracks when to clear chats
   private initialized = false;
 
-
   ngOnInit(): void {
     const user = this.authService.getCurrentUser();
 
@@ -47,7 +47,7 @@ export class ChatbotComponent implements OnInit {
     if (saved) {
       this.messages.set(JSON.parse(saved));
     } else {
-      this.messages.set([{ sender: 'bot', text: 'Hi there! How can I help you today?' }]);
+      this.messages.set([{ sender: 'bot', text: 'chat.welcome' }]);
     }
 
     // Auto-save messages when they change
@@ -83,6 +83,7 @@ export class ChatbotComponent implements OnInit {
           this.messages.set(
             guestSaved ? JSON.parse(guestSaved) :
             [{ sender: 'bot', text: 'Hi there! How can I help you today?' }]
+            [{ sender: 'bot', text: 'chat.welcome' }]
           );
 
           return;
@@ -100,7 +101,7 @@ export class ChatbotComponent implements OnInit {
             // Only set messages if switching users or first load
             this.messages.set(
               userSaved ? JSON.parse(userSaved) :
-              [{ sender: 'bot', text: 'Hi there! How can I help you today?' }]
+              [{ sender: 'bot', text: 'chat.welcome' }]
             );
           }
         }
@@ -123,13 +124,13 @@ export class ChatbotComponent implements OnInit {
       .post('http://localhost:8080/api/v1/chat', { message: trimmed }, { responseType: 'text' })
       .subscribe({
         next: reply => this.replaceLastBotMessage(reply),
-        error: () => this.replaceLastBotMessage('Sorry, something went wrong.'),
+        error: () => this.replaceLastBotMessage('chat.error'),
       });
   }
 
   clearChat(): void {
     this.storage.removeItem(this.storageKey);
-    this.messages.set([{ sender: 'bot', text: 'Chat cleared. How can I help you?' }]);
+    this.messages.set([{ sender: 'bot', text: 'chat.cleared' }]);
   }
 
   private replaceLastBotMessage(text: string): void {

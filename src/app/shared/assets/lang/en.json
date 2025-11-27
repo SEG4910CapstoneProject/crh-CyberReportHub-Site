@@ -191,7 +191,10 @@
   "chat.title": "Cyber Report Chatbot",
   "chat.send": "Send",
   "chat.clear": "Clear",
-  "chat.type": "Type your message..."
+  "chat.type": "Type your message...",
+  "chat.welcome": "Hi there! How can I help you today?",
+  "chat.error": "Sorry, something went wrong.",
+  "chat.cleared": "Chat cleared. How can I help you?"
 
 
 }
