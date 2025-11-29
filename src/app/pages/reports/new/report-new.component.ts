@@ -7,6 +7,7 @@ import { ReportsService } from '../../../shared/services/reports.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { ErrorDialogComponent } from '../../../shared/dialogs/error-dialog/error-dialog.component';
 import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'crh-report-new',
@@ -23,10 +24,12 @@ export class ReportNewComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private darkModeService = inject(DarkModeService);
   private reportsService = inject(ReportsService);
+  private authService = inject(AuthService);
+
   // A restricted template is a special template that takes into account analyst's comment, IOCs and other information.
   // It is only accessible to a subset of analysts (restricted analysts)
   // A non restricted template is open to all analysts to use to create reports, it contains articles and their AI generated summaries.
-  protected email_templates = ["non_restricted","restricted"] 
+  protected email_templates = ["non_restricted","restricted"]
   protected isDarkMode$ = this.darkModeService.isDarkMode$;
   // choosen_email_template tracks the template chosen by the user, it is also used to track which email_template_option has the selected style applied to it
   public choosen_email_template = "";
@@ -129,4 +132,12 @@ export class ReportNewComponent implements OnInit, OnDestroy {
   cancel(): void {
     this.router.navigate(['/reports']);
   }
+
+  canAccessReports(): boolean {
+    const user = this.authService.getCurrentUser();
+    if (!user) return false; // guest
+
+    return ['admin', 'analyst', 'restricted_analyst'].includes(user.role);
+  }
+
 }

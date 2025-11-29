@@ -3,7 +3,11 @@
     <h1>{{
       'fav.urfav' | translate
     }}</h1>
-    <button class="add-tag-btn" (click)="openCreateTagDialog()">+ {{
+
+
+    <button class="add-tag-btn"
+            *ngIf="isLoggedIn()"
+            (click)="openCreateTagDialog()">+ {{
       'fav.addtag' | translate
     }}</button>
   </div>
