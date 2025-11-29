@@ -47,21 +47,26 @@ export class HomeComponent implements OnInit {
 
     // Fetch the latest published report
     this.reportsService.getLatestReport().subscribe({
-      next: (data: JsonReportResponse) => {
-        this.latestPublishedReport = data;
-
-
-        if (this.latestPublishedReport?.generatedDate) {
-          this.latestPublishedReport.generatedDate =
-            this.formatDate(this.latestPublishedReport.generatedDate);
+      next: (data: JsonReportResponse | null) => {
+        if (!data) {
+          // 204 no content = no reports exist
+          this.latestPublishedReport = null;
+          return;
         }
-        if (this.latestPublishedReport?.lastModified) {
-          this.latestPublishedReport.lastModified =
-            this.formatDate(this.latestPublishedReport.lastModified);
-        }
+
+        // When data exists
+        this.latestPublishedReport = {
+          ...data,
+          generatedDate: data.generatedDate
+            ? this.formatDate(data.generatedDate)
+            : data.generatedDate,
+          lastModified: data.lastModified
+            ? this.formatDate(data.lastModified)
+            : data.lastModified
+        };
       },
-      error: error => {
-        console.error('Error fetching latest report:', error);
+      error: err => {
+        console.error('Unexpected error:', err);
       },
     });
 
