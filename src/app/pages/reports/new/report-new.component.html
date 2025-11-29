@@ -1,3 +1,4 @@
+<div *ngIf="canAccessReports(); else unauthorized">
 <div class="report-new" [class.dark]="isDarkMode()">
   <h1>{{ 'reportNew.header' | translate }}</h1>
 
@@ -17,10 +18,10 @@
     <div class="form-section">
       <h4>{{ 'reportNew.template' | translate }}:</h4>
       <div class="form-email-container">
-        <crh-crh-email-template-card 
-          *ngFor="let template of email_templates" 
-          template_type={{template}} 
-          (choosen_template)="set_email_template($event)" 
+        <crh-crh-email-template-card
+          *ngFor="let template of email_templates"
+          template_type={{template}}
+          (choosen_template)="set_email_template($event)"
           selected_email_template="{{choosen_email_template}}">
         </crh-crh-email-template-card>
       </div>
@@ -36,3 +37,8 @@
     </div>
   </form>
 </div>
+</div>
+
+<ng-template #unauthorized>
+  <p>You do not have permission to access this page.</p>
+</ng-template>

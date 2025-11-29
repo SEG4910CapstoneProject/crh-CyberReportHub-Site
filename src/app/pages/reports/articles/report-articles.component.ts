@@ -437,4 +437,12 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   back(): void {
     this.router.navigate(['/reports/create']);
   }
+
+  canAccessReports(): boolean {
+    const user = this.authService.getCurrentUser();
+    if (!user) return false; // guest
+
+    return ['admin', 'analyst', 'restricted_analyst'].includes(user.role);
+  }
+
 }

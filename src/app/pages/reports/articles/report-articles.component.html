@@ -1,3 +1,4 @@
+<div *ngIf="canAccessReports(); else unauthorized">
 <h1 class="main-title">{{ 'reportNew.header' | translate }}</h1>
 
 <div class="grid-parent">
@@ -174,4 +175,8 @@
     </div>
   </div>
 </div>
+</div>
 
+<ng-template #unauthorized>
+  <p>You do not have permission to access this page.</p>
+</ng-template>
