@@ -44,6 +44,7 @@
   "home.noart": "No articles of note yet...",
   "home.noav": "No articles available yet...",
   "home.load": "Loading...",
+  "home.noreport": "No reports available yet.",
 
   "reportheader.breadcrumbs.report": "Reports",
   "reportheader.breadcrumbs.daily": "Daily Reports",
