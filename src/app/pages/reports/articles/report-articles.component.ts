@@ -44,7 +44,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   protected articleSearchTerm = '';
   protected suggestedArticles: any[] = []; // Store articles
   protected allSuggestedArticles: any[] = []; // Store ALL articles (original list)
-  protected selectedArticleIds: any[] = [];
+  protected selectedArticleIds: string[] = [];
   private subscriptions: Subscription[] = [];
   private articleService = inject(ArticleService);
   public isLoading = true; //spinner
@@ -305,7 +305,7 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     console.log('Fetching suggested articles...');
 
-    const days = 30; // Fetch articles from last 30 days
+    const days = 60; // Fetch articles from last 30 days
     this.articleService.getAllArticlesTypesIncluded(days).subscribe({
       next: response => {
         // Flatten all categories into one list
@@ -428,10 +428,15 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    console.log("in the submit")
-
-    // this.selectedArticleIds = this.articles.value.map(article => article.id);
+    console.log(`Adding articles to the report id ${this.reportId}`)
+    this.selectedArticleIds = Array.from(this.articles.keys());
     // console.log('Selected Articles:', this.selectedArticleIds);
+
+    this.articleService.addArticlesToReport(this.reportId,this.selectedArticleIds)
+    .subscribe({
+      next:(res) => console.log("Articles were added successfully",res),
+      error:(err) =>console.error(`Error occured while adding articles to the report ${this.reportId}:`,err)
+    })
   }
 
   back(): void {

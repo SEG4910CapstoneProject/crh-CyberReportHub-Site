@@ -59,7 +59,7 @@ export class ArticlesComponent implements OnInit {
     });
 
     // Load all articles
-    this.articleService.getAllArticleTypesWithArticles(30).subscribe({
+    this.articleService.getAllArticleTypesWithArticles(60).subscribe({
       next: response => {
         this.articlesByCategory = response;
         this.isLoading = false;
