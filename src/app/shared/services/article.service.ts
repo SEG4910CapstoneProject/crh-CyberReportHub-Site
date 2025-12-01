@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { ArticleForCreateReport } from '../Types/types';
 
@@ -32,6 +32,7 @@ export class ArticleService {
     throw new Error('Method not implemented.');
   }
   private apiUrl = 'http://localhost:8080/api/v1/articles';
+  private apiUrlArticles = 'http://localhost:8080/api/v1/reports';
 
   constructor(private http: HttpClient) {}
 
@@ -153,6 +154,16 @@ export class ArticleService {
     );
   }
 
+  addArticlesToReport(reportId:number,articleIds:string[]):Observable<any> {
+    if (reportId == null || reportId < 0 || articleIds.length == 0)
+    {
+      console.log("Malformed parameters - retunrning empty observable");
+      return EMPTY;
+    }
+    return this.http.patch(
+      `${this.apiUrlArticles}/${reportId}/addArticle`,articleIds
+    );
+  }
 
 
 

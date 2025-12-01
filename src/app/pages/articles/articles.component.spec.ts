@@ -112,7 +112,7 @@ describe('ArticlesComponent', () => {
   });
 
   it('should load articles and initialize articlesToShow', () => {
-    expect(articleService.getAllArticleTypesWithArticles).toHaveBeenCalledWith(30);
+    expect(articleService.getAllArticleTypesWithArticles).toHaveBeenCalledWith(60);
     expect(component.articlesToShow['Category1']).toBe(3);
   });
 
