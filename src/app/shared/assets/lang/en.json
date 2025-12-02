@@ -89,6 +89,7 @@
   "reportSearch.noreports": "No reports available",
   "reportSearch.startdate": "Start Date",
   "reportSearch.enddate": "End date",
+  "reportSearch.searchHint":"Please be advised that the search filters dates apply from the start date at 12h00 am to the end date at 12h00 am inclusive",
 
   "reportNew.header": "Create New Report",
   "reportNew.type": "Report Type",
