@@ -3,7 +3,6 @@
 .crh-nav-bar-container {
   display: flex;
   flex-direction: column;
-
   background-color: var(--crh-background-color);
   box-shadow: 0px 4px 8px 0px var(--crh-nav-bar-shadow-color);
 }
@@ -11,8 +10,8 @@
 .crh-nav-bar-main-content {
   display: flex;
   flex-direction: row;
-
   padding: 0 size(18);
+
   .crh-nav-bar-item {
     display: flex;
     flex-direction: row;
@@ -36,7 +35,6 @@
 }
 
 .crh-nav-bar-logo {
-  // Manually specified for Logo purposes
   display: flex;
   align-items: center;
   color: var(--crh-primary-color);
@@ -60,20 +58,24 @@
   justify-content: center;
   padding: 0 size(8);
   box-sizing: border-box;
+  border-bottom: 3px solid transparent;
 
   a {
     text-decoration: none;
     color: var(--crh-base-text-color);
+    display: flex;
+    align-items: center;
+    height: 100%;
   }
 
   &.crh-nav-link-selected {
-    border-bottom: 3px solid var(--crh-primary-highlight-color);
+    border-bottom-color: var(--crh-primary-highlight-color);
   }
 
   a:hover,
   &.crh-nav-link-selected > a {
-    @include text('paragraph-emphasized');
     color: var(--crh-primary-highlight-color);
+    font-weight: inherit;
   }
 }
 
@@ -110,7 +112,7 @@
 }
 
 .settings-icon img {
-  width: 32px; /* Adjust size */
+  width: 32px;
   height: 32px;
   cursor: pointer;
   transition: opacity 0.3s ease-in-out;
