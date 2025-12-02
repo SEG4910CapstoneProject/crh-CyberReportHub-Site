@@ -8,7 +8,7 @@ import {
   MostViewedArticle,
   Article,
 } from '../../shared/services/article.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -45,25 +45,66 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // To be implemented when login functionality bug is fixed
-  /*
-  it('should update login status on init', () => {
+
+  it('should update login status when authService emits false', () => {
+    mockAuthService.isLoggedIn$ = of(false);
+
+
+    mockReportsService.getLatestReport.mockReturnValue(of(null));
+    mockArticleService.getTopMostViewedArticles.mockReturnValue(of([]));
+    mockArticleService.getArticlesOfNote.mockReturnValue(of([]));
+
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+
     fixture.detectChanges();
-    expect(component['isLoggedIn']()).toBe(true);
-   });
-*/
 
-  // To be implemented when latest published report bug is fixed
-  /*  it('should fetch latest published report', () => {
-    const mockReport: JsonReportResponse = { reportId: 1 } as any;
-    mockReportsService.getLatestReport.mockReturnValue(of(mockReport));
-
-    fixture.detectChanges();
-
-    expect(mockReportsService.getLatestReport).toHaveBeenCalled();
-    expect(component.latestPublishedReport?.reportId).toBe(1);
+    expect(component['isLoggedIn']()).toBe(false);
   });
-*/
+
+
+
+  it('should set latestPublishedReport to null when no report is returned', () => {
+    mockReportsService.getLatestReport = jest.fn().mockReturnValue(of(null));
+    mockArticleService.getTopMostViewedArticles = jest.fn().mockReturnValue(of([]));
+    mockArticleService.getArticlesOfNote = jest.fn().mockReturnValue(of([]));
+
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
+
+    expect(component.latestPublishedReport).toBeNull();
+  });
+
+
+  it('should format dates when latest report contains valid ISO dates', () => {
+    const mockReport = {
+      reportId: 1,
+      generatedDate: '2024-01-01T10:00:00Z',
+      lastModified: '2024-01-02T12:00:00Z'
+    };
+
+    mockReportsService.getLatestReport = jest.fn().mockReturnValue(of(mockReport));
+    mockArticleService.getTopMostViewedArticles = jest.fn().mockReturnValue(of([]));
+    mockArticleService.getArticlesOfNote = jest.fn().mockReturnValue(of([]));
+
+
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
+
+    expect(component.latestPublishedReport?.generatedDate).toContain('2024');
+    expect(component.latestPublishedReport?.lastModified).toContain('2024');
+  });
+
+
+
+  it('should return original string for invalid date', () => {
+    const result = component.formatDate('not-a-date');
+    expect(result).toBe('not-a-date');
+  });
 
   it('should fetch most viewed articles', () => {
     const mockArticles: MostViewedArticle[] = [
@@ -78,6 +119,36 @@ describe('HomeComponent', () => {
     expect(component.mostViewedArticles.length).toBe(2);
     expect(component.mostViewedArticles.every(a => a.viewCount > 0)).toBe(true);
   });
+
+
+  it('should filter out articles with zero viewCount', () => {
+    const mockArticles: MostViewedArticle[] = [
+      { url: 'a', title: 'A', viewCount: 0, articleId: '1' },
+      { url: 'b', title: 'B', viewCount: 5, articleId: '2' },
+    ];
+
+    mockArticleService.getTopMostViewedArticles.mockReturnValue(of(mockArticles));
+
+    component.fetchMostViewedArticles();
+
+    expect(component.mostViewedArticles.length).toBe(1);
+    expect(component.mostViewedArticles[0].title).toBe('B');
+  });
+
+  it('should log error when fetching most viewed articles fails', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    mockArticleService.getTopMostViewedArticles.mockReturnValue(
+      throwError(() => new Error('fail'))
+    );
+
+    component.fetchMostViewedArticles();
+
+    expect(errorSpy).toHaveBeenCalled();
+
+    errorSpy.mockRestore();
+  });
+
 
   it('should fetch articles of note', () => {
     const mockNotes: Article[] = [
@@ -113,12 +184,42 @@ describe('HomeComponent', () => {
     expect(component.articlesOfNote[0].title).toBe('Note 1');
   });
 
-  // Tests incrementing view count
+
+  it('should log error when fetching Articles of Note fails', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    mockArticleService.getArticlesOfNote.mockReturnValue(
+      throwError(() => new Error('test'))
+    );
+
+    component.fetchArticlesOfNote();
+
+    expect(errorSpy).toHaveBeenCalled();
+
+    errorSpy.mockRestore();
+  });
+
+
   it('should increment view count by articleId', () => {
     mockArticleService.incrementViewCount.mockReturnValue(of({}));
 
     component.incrementViewCount('123');
 
     expect(mockArticleService.incrementViewCount).toHaveBeenCalledWith('123');
+  });
+
+
+  it('should log error when incrementing view count fails', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    mockArticleService.incrementViewCount.mockReturnValue(
+      throwError(() => new Error('inc error'))
+    );
+
+    component.incrementViewCount('xyz');
+
+    expect(errorSpy).toHaveBeenCalled();
+
+    errorSpy.mockRestore();
   });
 });

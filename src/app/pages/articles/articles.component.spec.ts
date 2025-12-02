@@ -68,9 +68,10 @@ class MockArticleService {
 
 class MockAuthService {
   isLoggedIn$ = of(true);
-  isLoggedIn(): boolean { return true; }
-  hasRole(): boolean { return true; }
-  hasAnyRole(): boolean { return true; }
+  isLoggedIn() { return true; }
+  hasRole() { return true; }
+  hasAnyRole() { return true; }
+  hasPermission() { return true; }
 }
 
 class MockDarkModeService {
@@ -81,9 +82,10 @@ describe('ArticlesComponent', () => {
   let component: ArticlesComponent;
   let fixture: ComponentFixture<ArticlesComponent>;
   let articleService: MockArticleService;
+  let dialogSpy: any;
 
   beforeEach(async () => {
-    const dialogSpy = {
+    dialogSpy = {
       open: jest.fn().mockReturnValue({
         afterClosed: () => of(true),
       }),
@@ -104,11 +106,19 @@ describe('ArticlesComponent', () => {
     fixture = TestBed.createComponent(ArticlesComponent);
     component = fixture.componentInstance;
     articleService = TestBed.inject(ArticleService) as any;
+
+    localStorage.clear();
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should load collapsedSections from localStorage', () => {
+    localStorage.setItem('collapsedSections_articles', JSON.stringify({ Category1: true }));
+    component.ngOnInit();
+    expect(component.collapsedSections['Category1']).toBe(true);
   });
 
   it('should load articles and initialize articlesToShow', () => {
@@ -137,6 +147,43 @@ describe('ArticlesComponent', () => {
     expect(component.isFavourite(article)).toBe(false);
   });
 
+  it('should not toggle favourites if not logged in', () => {
+    component['isLoggedIn'].set(false);
+    const article = mockArticles['Category1'][0];
+    component.toggleFavourite(article);
+    expect(articleService.addFavourite).not.toHaveBeenCalled();
+  });
+
+  it('should handle toggleArticleOfNote (checked)', () => {
+    const article = mockArticles['Category1'][0];
+    const event = { target: { checked: true } };
+    component.toggleArticleOfNote(article, event);
+    expect(article.isArticleOfNote).toBe(true);
+  });
+
+  it('should handle toggleArticleOfNote (unchecked)', () => {
+    component.articlesOfNote = [
+      { ...mockArticlesOfNote[0], url: 'link1' }
+    ];
+
+    const article = mockArticles['Category1'][0];
+    const event = { target: { checked: false } };
+
+    component.toggleArticleOfNote(article, event);
+
+    expect(component.articlesOfNote.length).toBe(0);
+  });
+
+
+  it('should handle toggleArticleOfNote error branch', () => {
+    articleService.chooseArticleOfNote.mockReturnValueOnce(
+      throwError(() => new Error('fail'))
+    );
+    const article = mockArticles['Category1'][0];
+    const event = { target: { checked: true } };
+    expect(() => component.toggleArticleOfNote(article, event)).not.toThrow();
+  });
+
   it('should increment view count', () => {
     component.incrementViewCount('1');
     expect(articleService.incrementViewCount).toHaveBeenCalledWith('1');
@@ -149,6 +196,33 @@ describe('ArticlesComponent', () => {
     component.ngOnInit();
     expect(component.isLoading).toBe(false);
   });
+
+  it('should handle error in fetchFavourites', () => {
+    articleService.getMyFavourites.mockReturnValueOnce(
+      throwError(() => new Error('Error'))
+    );
+    expect(() => component.fetchFavourites()).not.toThrow();
+  });
+
+  it('should handle error in fetchArticlesOfNote', () => {
+    articleService.getArticlesOfNote.mockReturnValueOnce(
+      throwError(() => new Error('Error'))
+    );
+    expect(() => component.fetchArticlesOfNote()).not.toThrow();
+  });
+
+  it('should close dialog on addArticleDialog (afterClosed false branch)', () => {
+    dialogSpy.open.mockReturnValueOnce({
+      afterClosed: () => of(false),
+    });
+    component.openAddArticleDialog();
+    expect(dialogSpy.open).toHaveBeenCalled();
+  });
+
+  it('should toggle category and save localStorage', () => {
+    component.toggleCategory('Category1');
+    expect(component.collapsedSections['Category1']).toBe(true);
+    const stored = JSON.parse(localStorage.getItem('collapsedSections_articles')!);
+    expect(stored['Category1']).toBe(true);
+  });
 });
-
-
