@@ -89,6 +89,7 @@
   "reportSearch.noreports": "Aucun rapport disponible",
   "reportSearch.startdate": "Date de début",
   "reportSearch.enddate": "Date de fin",
+  "reportSearch.searchHint":"Veuillez noter que les dates des filtres de recherche s'appliquent de la date de début à minuit à la date de fin à minuit inclus",
 
   "reportNew.header": "Créer un Nouveau Rapport",
   "reportNew.type": "Type de Rapport",
