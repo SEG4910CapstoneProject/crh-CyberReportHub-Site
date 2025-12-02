@@ -4,12 +4,14 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { ArticleService, Article } from './article.service';
+import { EMPTY } from 'rxjs';
 
 describe('ArticleService', () => {
   let service: ArticleService;
   let httpMock: HttpTestingController;
 
   const apiUrl = 'http://localhost:8080/api/v1/articles';
+  const reportsUrl = 'http://localhost:8080/api/v1/reports';
   const favUrl = 'http://localhost:8080/api/v1/favourites';
 
   beforeEach(() => {
@@ -17,6 +19,7 @@ describe('ArticleService', () => {
       imports: [HttpClientTestingModule],
       providers: [ArticleService],
     });
+
     service = TestBed.inject(ArticleService);
     httpMock = TestBed.inject(HttpTestingController);
     localStorage.clear();
@@ -59,7 +62,7 @@ describe('ArticleService', () => {
       req.flush(mockArticles);
     });
 
-    it('getAllArticleTypesWithArticles should call correct URL with query param', () => {
+    it('getAllArticleTypesWithArticles should call correct URL', () => {
       const mockResp = { News: [{ title: 'A' } as Article] };
       service.getAllArticleTypesWithArticles(7).subscribe((res) => {
         expect(res).toEqual(mockResp);
@@ -67,6 +70,19 @@ describe('ArticleService', () => {
 
       const req = httpMock.expectOne(
         `${apiUrl}/article-types-with-articles?days=7`
+      );
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResp);
+    });
+
+    it('getAllArticlesTypesIncluded should call correct URL', () => {
+      const mockResp = [{ title: 'Z', type: 'Intel' }];
+      service.getAllArticlesTypesIncluded(30).subscribe((res) => {
+        expect(res).toEqual(mockResp);
+      });
+
+      const req = httpMock.expectOne(
+        `${apiUrl}/get-all-articles-with-types?days=30`
       );
       expect(req.request.method).toBe('GET');
       req.flush(mockResp);
@@ -115,13 +131,14 @@ describe('ArticleService', () => {
       req.flush(mock);
     });
 
-    it('getArticleByLink should call /api/articles with link param', () => {
+    it('getArticleByLink should call endpoint with link param', () => {
       const mock = { ok: true };
-      service.getArticleByLink('some-link').subscribe((res) => {
+
+      service.getArticleByLink('xyz').subscribe((res) => {
         expect(res).toEqual(mock);
       });
 
-      const req = httpMock.expectOne('/api/articles?link=some-link');
+      const req = httpMock.expectOne('/api/articles?link=xyz');
       expect(req.request.method).toBe('GET');
       req.flush(mock);
     });
@@ -134,6 +151,7 @@ describe('ArticleService', () => {
 
     it('getMyFavourites should include Authorization header', () => {
       const mock = [{ articleId: '1', title: 'Fav' }];
+
       service.getMyFavourites().subscribe((res) => {
         expect(res).toEqual(mock);
       });
@@ -144,7 +162,7 @@ describe('ArticleService', () => {
       req.flush(mock);
     });
 
-    it('addFavourite should POST to /favourites/:id', () => {
+    it('addFavourite should POST with Authorization', () => {
       service.addFavourite('42').subscribe((res) => {
         expect(res).toEqual({ added: true });
       });
@@ -156,7 +174,7 @@ describe('ArticleService', () => {
       req.flush({ added: true });
     });
 
-    it('removeFavourite should DELETE /favourites/:id', () => {
+    it('removeFavourite should DELETE with Authorization', () => {
       service.removeFavourite('42').subscribe((res) => {
         expect(res).toEqual({ removed: true });
       });
@@ -179,6 +197,37 @@ describe('ArticleService', () => {
       localStorage.removeItem('authToken');
       const headers = (service as any).getAuthHeaders();
       expect(headers.keys().length).toBe(0);
+    });
+  });
+
+  describe('addArticlesToReport', () => {
+    it('should return EMPTY when reportId is null', () => {
+      const result = service.addArticlesToReport(null as any, ['1']);
+      expect(result).toBe(EMPTY);
+    });
+
+    it('should return EMPTY when reportId < 0', () => {
+      const result = service.addArticlesToReport(-5, ['1']);
+      expect(result).toBe(EMPTY);
+    });
+
+    it('should return EMPTY when articleIds is empty', () => {
+      const result = service.addArticlesToReport(10, []);
+      expect(result).toBe(EMPTY);
+    });
+
+    it('should PATCH valid data when params are correct', () => {
+      const mockResponse = { ok: true };
+
+      service.addArticlesToReport(7, ['a1', 'a2']).subscribe((res) => {
+        expect(res).toEqual(mockResponse);
+      });
+
+      const req = httpMock.expectOne(`${reportsUrl}/7/addArticle`);
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual(['a1', 'a2']);
+
+      req.flush(mockResponse);
     });
   });
 });

@@ -8,6 +8,7 @@ import { ErrorHintConfig } from '../models/input.model';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormControl, NgControl } from '@angular/forms';
 import { CrhErrorStateMatcher } from '../class/crh-error-state-matcher';
+import { Subject } from 'rxjs';
 
 @Component({
   hostDirectives: [MATERIAL_INPUT_DIRECTIVE_HOST_FULL],
@@ -150,19 +151,13 @@ describe('MaterialInputDirective', () => {
 
   describe('ngAfterViewInit', () => {
     it('should handle missing NgControl gracefully', () => {
-
       expect(() => directive.ngAfterViewInit()).not.toThrow();
     });
 
     it('should attach listener when NgControl is available', () => {
       const mockNgControl = { control: new FormControl() } as unknown as NgControl;
-
-
       const getSpy = jest.spyOn(directive['injector'], 'get').mockReturnValue(mockNgControl);
       directive.ngAfterViewInit();
-
-
-      jest.runAllTimers?.();
       getSpy.mockRestore();
     });
   });
@@ -174,4 +169,67 @@ describe('MaterialInputDirective', () => {
     expect(directive.fieldContent()).toBe(val);
     expect(outputSpy).toHaveBeenCalledWith(val);
   });
+
+  it('should return defaultErrorStateMatcher when no ngControl and no custom matcher', () => {
+    componentRef.setInput('errorStateMatcher', undefined);
+    fixture.detectChanges();
+    const matcher = directive.getErrorMatcher();
+    expect(matcher).toBeInstanceOf(ErrorStateMatcher);
+  });
+
+  describe('ngAfterViewInit full state sync', () => {
+    let control: FormControl;
+    let mockNgControl: any;
+    let events$: Subject<any>;
+
+    beforeEach(() => {
+      control = new FormControl();
+
+      events$ = new Subject();
+
+      const controlWithEvents: any = control;
+      controlWithEvents.events = events$;
+
+      mockNgControl = {
+        control: controlWithEvents
+      } as NgControl;
+
+      jest.spyOn(directive['injector'], 'get').mockReturnValue(mockNgControl);
+
+      jest.useFakeTimers();        
+      directive.ngAfterViewInit();
+      jest.runAllTimers();
+    });
+
+    it('should sync touched → markAsTouched', () => {
+      jest.spyOn(directive.childControl, 'markAsTouched');
+      control.markAsTouched();
+      events$.next(null);
+      expect(directive.childControl.markAsTouched).toHaveBeenCalled();
+    });
+
+    it('should sync untouched → markAsUntouched', () => {
+      directive.childControl.markAsTouched();
+      jest.spyOn(directive.childControl, 'markAsUntouched');
+      control.markAsUntouched();
+      events$.next(null);
+      expect(directive.childControl.markAsUntouched).toHaveBeenCalled();
+    });
+
+    it('should sync dirty → markAsDirty', () => {
+      jest.spyOn(directive.childControl, 'markAsDirty');
+      control.markAsDirty();
+      events$.next(null);
+      expect(directive.childControl.markAsDirty).toHaveBeenCalled();
+    });
+
+    it('should sync pristine → markAsPristine', () => {
+      directive.childControl.markAsDirty();
+      jest.spyOn(directive.childControl, 'markAsPristine');
+      control.markAsPristine();
+      events$.next(null);
+      expect(directive.childControl.markAsPristine).toHaveBeenCalled();
+    });
+  });
+
 });

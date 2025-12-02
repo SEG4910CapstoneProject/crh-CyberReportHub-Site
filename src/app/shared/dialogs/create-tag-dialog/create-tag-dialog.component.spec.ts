@@ -11,8 +11,8 @@ describe('CreateTagDialogComponent (Jest)', () => {
 
   const mockData = {
     favouriteArticles: [
-      { articleId: '1', title: 'Article One' },
-      { articleId: '2', title: 'Article Two' },
+      { articleId: '1', title: 'Article One', publishDate: '2024-01-01' },
+      { articleId: '2', title: 'Article Two', publishDate: '2024-01-02' },
     ],
   };
 
@@ -36,12 +36,12 @@ describe('CreateTagDialogComponent (Jest)', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with empty tag name and no articles selected when creating a new tag', () => {
+  it('should initialize with empty tag data for new tag', () => {
     expect(component.tagName).toBe('');
     expect(component.selectedArticleIds.length).toBe(0);
   });
 
-  it('should initialize with provided tag data when editing', () => {
+  it('should initialize with tag data when editing', () => {
     const editData = {
       ...mockData,
       tag: { tagName: 'ExistingTag', articleIds: ['1'] },
@@ -52,17 +52,82 @@ describe('CreateTagDialogComponent (Jest)', () => {
     expect(comp.selectedArticleIds).toEqual(['1']);
   });
 
-  it('should toggle article selection (add and remove)', () => {
-    const articleId = '1';
-    component.toggleArticleSelection(articleId);
-    expect(component.selectedArticleIds).toContain(articleId);
+  it('should filter articles when search term matches', () => {
+    component.articleSearchTerm = 'one';
+    component.filterArticles();
+    expect(component.filteredArticles.length).toBe(1);
+    expect(component.filteredArticles[0].title).toBe('Article One');
+  });
 
-    component.toggleArticleSelection(articleId);
-    expect(component.selectedArticleIds).not.toContain(articleId);
+  it('should return all articles when search term is empty', () => {
+    component.articleSearchTerm = '';
+    component.filterArticles();
+    expect(component.filteredArticles.length).toBe(2);
+  });
+
+  it('should reset current page when filtering', () => {
+    component.currentPage = 3;
+    component.articleSearchTerm = 'Two';
+    component.filterArticles();
+    expect(component.currentPage).toBe(1);
+  });
+
+  it('should compute correct totalPages', () => {
+    component.filteredArticles = new Array(23).fill({}); // 23 items
+    component.updateTotalPages();
+    expect(component.totalPages).toBe(3);
+  });
+
+  it('should not exceed totalPages when nextPage is called at end', () => {
+    component.totalPages = 2;
+    component.currentPage = 2;
+    component.nextPage();
+    expect(component.currentPage).toBe(2);
+  });
+
+  it('should go to next page when possible', () => {
+    component.totalPages = 3;
+    component.currentPage = 1;
+    component.nextPage();
+    expect(component.currentPage).toBe(2);
+  });
+
+  it('should not go below page 1 when prevPage is called at start', () => {
+    component.currentPage = 1;
+    component.prevPage();
+    expect(component.currentPage).toBe(1);
+  });
+
+  it('should go to previous page when possible', () => {
+    component.currentPage = 3;
+    component.prevPage();
+    expect(component.currentPage).toBe(2);
+  });
+
+  it('should paginate articles correctly', () => {
+    component.filteredArticles = [
+      ...mockData.favouriteArticles,
+      ...mockData.favouriteArticles,
+      ...mockData.favouriteArticles,
+    ]; // 6 items
+
+    component.pageSize = 2;
+    component.currentPage = 2;
+
+    const page = component.paginatedArticles;
+    expect(page.length).toBe(2);
+  });
+
+  it('should toggle article selection', () => {
+    component.toggleArticleSelection('1');
+    expect(component.selectedArticleIds).toContain('1');
+
+    component.toggleArticleSelection('1');
+    expect(component.selectedArticleIds).not.toContain('1');
   });
 
   it('should return true when article is selected', () => {
-    component.selectedArticleIds = ['1', '2'];
+    component.selectedArticleIds = ['1'];
     expect(component.isSelected('1')).toBe(true);
   });
 
@@ -71,7 +136,7 @@ describe('CreateTagDialogComponent (Jest)', () => {
     expect(component.isSelected('1')).toBe(false);
   });
 
-  it('should close the dialog with tag data when save() is called', () => {
+  it('should save and close dialog with tag data', () => {
     component.tagName = 'NewTag';
     component.selectedArticleIds = ['1', '2'];
 
@@ -83,8 +148,9 @@ describe('CreateTagDialogComponent (Jest)', () => {
     });
   });
 
-  it('should close the dialog without data when cancel() is called', () => {
+  it('should close dialog without data on cancel', () => {
     component.cancel();
     expect(mockDialogRef.close).toHaveBeenCalledWith();
   });
 });
+

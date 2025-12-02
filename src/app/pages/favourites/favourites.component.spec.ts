@@ -248,4 +248,164 @@ describe('FavouritesComponent', () => {
     component.toggleSection('favs');
     expect(component.collapsedSections['favs']).toBe(false);
   });
+
+  it('should call loadData() when user logs in', fakeAsync(() => {
+    const loadSpy = jest.spyOn<any, any>(component as any, 'loadData');
+    (TestBed.inject(AuthService) as any).isLoggedIn$ = of(true);
+
+    component.ngOnInit();
+    tick();
+
+    expect(loadSpy).toHaveBeenCalled();
+  }));
+
+  it('should handle error when fetching submitted articles', fakeAsync(() => {
+    jest.spyOn(articleService, 'getMySubmittedArticles')
+        .mockReturnValueOnce(throwError(() => new Error('err')));
+
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    component.fetchSubmittedArticles();
+    tick();
+
+    expect(errSpy).toHaveBeenCalled();
+    errSpy.mockRestore();
+  }));
+
+  it('should handle empty tags in fetchTags()', fakeAsync(() => {
+    jest.spyOn(tagService, 'getUserTags').mockReturnValueOnce(of([]));
+
+    component.fetchTags();
+    tick();
+
+    expect(component.taggedArticles).toEqual({});
+  }));
+
+  it('should handle error in fetchTags()', fakeAsync(() => {
+    jest.spyOn(tagService, 'getUserTags')
+        .mockReturnValueOnce(throwError(() => new Error('fail')));
+
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    component.fetchTags();
+    tick();
+
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  }));
+
+  it('should handle error in loadArticlesByTag()', fakeAsync(() => {
+    jest.spyOn(tagService, 'getArticlesByTag')
+        .mockReturnValueOnce(throwError(() => new Error('fail')));
+
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    component.loadArticlesByTag(1);
+    tick();
+
+    expect(errSpy).toHaveBeenCalled();
+    errSpy.mockRestore();
+  }));
+
+  it('should remove favourite even if no taggedArticles exist', fakeAsync(() => {
+    component.favouriteArticles = [...mockArticles];
+    component.taggedArticles = {};
+    (component as any).isLoggedIn.set(true);
+
+    const removeSpy = jest.spyOn(articleService, 'removeFavourite');
+
+    component.toggleFavourite(mockArticles[0]);
+    tick();
+
+    expect(removeSpy).toHaveBeenCalled();
+  }));
+
+  it('should handle create tag dialog returning undefined', fakeAsync(() => {
+    jest.spyOn(dialog, 'open').mockReturnValue({
+      afterClosed: () => of(undefined),
+    } as any);
+
+    const createSpy = jest.spyOn(tagService, 'createTag');
+
+    component.openCreateTagDialog();
+    tick();
+
+    expect(createSpy).not.toHaveBeenCalled();
+  }));
+
+  it('should handle edit tag dialog where name unchanged', fakeAsync(() => {
+    jest.spyOn(dialog, 'open').mockReturnValue({
+      afterClosed: () => of({ tagName: 'Tag1', selectedArticleIds: ['1'] }),
+    } as any);
+
+    const renameSpy = jest.spyOn(tagService, 'renameTag');
+
+    component.favouriteArticles = [...mockArticles];
+    component.openEditTagDialog(mockTags[0]);
+    tick();
+
+    expect(renameSpy).not.toHaveBeenCalled();
+  }));
+
+  it('should handle edit tag dialog where only new articles are added', fakeAsync(() => {
+
+    jest.spyOn(dialog, 'open').mockReturnValue({
+      afterClosed: () => of({ tagName: 'Tag1', selectedArticleIds: ['1', '2'] }),
+    } as any);
+
+    const addSpy = jest.spyOn(tagService, 'addArticleToTag');
+
+    component.favouriteArticles = [...mockArticles];
+    component.openEditTagDialog(mockTags[0]);
+    tick();
+
+    expect(addSpy).toHaveBeenCalled();
+  }));
+
+  it('should handle edit tag dialog where only articles are removed', fakeAsync(() => {
+    jest.spyOn(dialog, 'open').mockReturnValue({
+      afterClosed: () => of({ tagName: 'Tag1', selectedArticleIds: [] }),
+    } as any);
+
+    const removeSpy = jest.spyOn(tagService, 'removeArticleFromTag');
+
+    component.favouriteArticles = [...mockArticles];
+    component.openEditTagDialog(mockTags[0]);
+    tick();
+
+    expect(removeSpy).toHaveBeenCalled();
+  }));
+
+  it('should handle deleteTag error', fakeAsync(() => {
+    jest.spyOn(window, 'confirm').mockReturnValue(true);
+
+    jest.spyOn(tagService, 'deleteTag')
+      .mockReturnValueOnce(throwError(() => new Error('err')));
+
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    component.userTags = [...mockTags];
+    component.taggedArticles = { 1: mockArticles };
+
+    try {
+      component.deleteTag(mockTags[0]);
+      tick();
+    } catch {
+      // noop
+    }
+
+
+
+    expect(errSpy).not.toHaveBeenCalled();
+
+    errSpy.mockRestore();
+  }));
+
+
+  it('should check if article is favourite', () => {
+    component.favouriteArticles = [...mockArticles];
+
+    expect(component.isFavourite(mockArticles[0])).toBe(true);
+    expect(component.isFavourite({ ...mockArticles[0], articleId: '999' })).toBe(false);
+  });
+
 });

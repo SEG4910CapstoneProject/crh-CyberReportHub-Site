@@ -26,7 +26,7 @@ const mockArticles: Record<string, Article[]> = {
       publishDate: '2024-01-01',
       type: 'news',
       viewCount: 0,
-      isArticleOfNote: false,
+      isArticleOfNote: false
     },
     {
       articleId: '2',
@@ -37,9 +37,9 @@ const mockArticles: Record<string, Article[]> = {
       publishDate: '2024-01-01',
       type: 'news',
       viewCount: 0,
-      isArticleOfNote: false,
-    },
-  ],
+      isArticleOfNote: false
+    }
+  ]
 };
 
 const mockArticlesOfNote: Article[] = [
@@ -52,8 +52,8 @@ const mockArticlesOfNote: Article[] = [
     publishDate: '2024-01-01',
     type: 'news',
     viewCount: 0,
-    isArticleOfNote: true,
-  },
+    isArticleOfNote: true
+  }
 ];
 
 class MockArticleService {
@@ -71,6 +71,7 @@ class MockAuthService {
   isLoggedIn(): boolean { return true; }
   hasRole(): boolean { return true; }
   hasAnyRole(): boolean { return true; }
+  hasPermission(): boolean { return true; }
 }
 
 class MockDarkModeService {
@@ -81,12 +82,13 @@ describe('ArticlesComponent', () => {
   let component: ArticlesComponent;
   let fixture: ComponentFixture<ArticlesComponent>;
   let articleService: MockArticleService;
+  let dialogSpy: any;
 
   beforeEach(async () => {
-    const dialogSpy = {
+    dialogSpy = {
       open: jest.fn().mockReturnValue({
-        afterClosed: () => of(true),
-      }),
+        afterClosed: (): any => of(true)
+      })
     };
 
     await TestBed.configureTestingModule({
@@ -97,38 +99,46 @@ describe('ArticlesComponent', () => {
         { provide: ArticleService, useClass: MockArticleService },
         { provide: AuthService, useClass: MockAuthService },
         { provide: DarkModeService, useClass: MockDarkModeService },
-        { provide: MatDialog, useValue: dialogSpy },
-      ],
+        { provide: MatDialog, useValue: dialogSpy }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ArticlesComponent);
     component = fixture.componentInstance;
     articleService = TestBed.inject(ArticleService) as any;
+
+    localStorage.clear();
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', (): void => {
     expect(component).toBeTruthy();
   });
 
-  it('should load articles and initialize articlesToShow', () => {
+  it('should load collapsedSections from localStorage', (): void => {
+    localStorage.setItem('collapsedSections_articles', JSON.stringify({ Category1: true }));
+    component.ngOnInit();
+    expect(component.collapsedSections['Category1']).toBe(true);
+  });
+
+  it('should load articles and initialize articlesToShow', (): void => {
     expect(articleService.getAllArticleTypesWithArticles).toHaveBeenCalledWith(60);
     expect(component.articlesToShow['Category1']).toBe(3);
   });
 
-  it('should fetch Articles of Note', () => {
+  it('should fetch Articles of Note', (): void => {
     expect(articleService.getArticlesOfNote).toHaveBeenCalled();
     expect(component.articlesOfNote.length).toBe(1);
   });
 
-  it('should toggle articles between 3 and all', () => {
+  it('should toggle articles between 3 and all', (): void => {
     component.toggleArticles('Category1');
     expect(component.articlesToShow['Category1']).toBe(2);
     component.toggleArticles('Category1');
     expect(component.articlesToShow['Category1']).toBe(3);
   });
 
-  it('should add and remove favourites', () => {
+  it('should add and remove favourites', (): void => {
     const article = mockArticles['Category1'][0];
     expect(component.isFavourite(article)).toBe(false);
     component.toggleFavourite(article);
@@ -137,18 +147,81 @@ describe('ArticlesComponent', () => {
     expect(component.isFavourite(article)).toBe(false);
   });
 
-  it('should increment view count', () => {
+  it('should not toggle favourites if not logged in', (): void => {
+    component['isLoggedIn'].set(false);
+    const article = mockArticles['Category1'][0];
+    component.toggleFavourite(article);
+    expect(articleService.addFavourite).not.toHaveBeenCalled();
+  });
+
+  it('should handle toggleArticleOfNote (checked)', (): void => {
+    const article = mockArticles['Category1'][0];
+    const event = { target: { checked: true } };
+    component.toggleArticleOfNote(article, event);
+    expect(article.isArticleOfNote).toBe(true);
+  });
+
+  it('should handle toggleArticleOfNote (unchecked)', (): void => {
+    component.articlesOfNote = [
+      { ...mockArticlesOfNote[0], url: 'link1' }
+    ];
+
+    const article = mockArticles['Category1'][0];
+    const event = { target: { checked: false } };
+
+    component.toggleArticleOfNote(article, event);
+
+    expect(component.articlesOfNote.length).toBe(0);
+  });
+
+  it('should handle toggleArticleOfNote error branch', (): void => {
+    articleService.chooseArticleOfNote.mockReturnValueOnce(
+      throwError(() => new Error('fail'))
+    );
+    const article = mockArticles['Category1'][0];
+    const event = { target: { checked: true } };
+    expect(() => component.toggleArticleOfNote(article, event)).not.toThrow();
+  });
+
+  it('should increment view count', (): void => {
     component.incrementViewCount('1');
     expect(articleService.incrementViewCount).toHaveBeenCalledWith('1');
   });
 
-  it('should handle error when fetching articles', () => {
+  it('should handle error when fetching articles', (): void => {
     articleService.getAllArticleTypesWithArticles.mockReturnValueOnce(
       throwError(() => new Error('Error'))
     );
     component.ngOnInit();
     expect(component.isLoading).toBe(false);
   });
+
+  it('should handle error in fetchFavourites', (): void => {
+    articleService.getMyFavourites.mockReturnValueOnce(
+      throwError(() => new Error('Error'))
+    );
+    expect(() => component.fetchFavourites()).not.toThrow();
+  });
+
+  it('should handle error in fetchArticlesOfNote', (): void => {
+    articleService.getArticlesOfNote.mockReturnValueOnce(
+      throwError(() => new Error('Error'))
+    );
+    expect(() => component.fetchArticlesOfNote()).not.toThrow();
+  });
+
+  it('should close dialog on addArticleDialog (afterClosed false branch)', (): void => {
+    dialogSpy.open.mockReturnValueOnce({
+      afterClosed: (): any => of(false)
+    });
+    component.openAddArticleDialog();
+    expect(dialogSpy.open).toHaveBeenCalled();
+  });
+
+  it('should toggle category and save localStorage', (): void => {
+    component.toggleCategory('Category1');
+    expect(component.collapsedSections['Category1']).toBe(true);
+    const stored = JSON.parse(localStorage.getItem('collapsedSections_articles')!);
+    expect(stored['Category1']).toBe(true);
+  });
 });
-
-
