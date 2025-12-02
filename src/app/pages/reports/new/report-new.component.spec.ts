@@ -172,7 +172,7 @@ describe('ReportNewComponent', () => {
   it('should alert on report creation error', () => {
     component.choosen_email_template = 'restricted';
     (component as any).form.patchValue({ reportType: 'SOC' });
-    const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
+    const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => undefined);
     mockReportsService.createBasicReport.mockReturnValue(
       throwError(() => new Error('fail'))
     );
@@ -216,3 +216,4 @@ describe('ReportNewComponent', () => {
     expect((component as any).isDarkMode()).toBe(true);
   });
 });
+

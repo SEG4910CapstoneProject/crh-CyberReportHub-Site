@@ -263,7 +263,7 @@ describe('FavouritesComponent', () => {
     jest.spyOn(articleService, 'getMySubmittedArticles')
         .mockReturnValueOnce(throwError(() => new Error('err')));
 
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
     component.fetchSubmittedArticles();
     tick();
@@ -285,7 +285,7 @@ describe('FavouritesComponent', () => {
     jest.spyOn(tagService, 'getUserTags')
         .mockReturnValueOnce(throwError(() => new Error('fail')));
 
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
     component.fetchTags();
     tick();
 
@@ -297,7 +297,7 @@ describe('FavouritesComponent', () => {
     jest.spyOn(tagService, 'getArticlesByTag')
         .mockReturnValueOnce(throwError(() => new Error('fail')));
 
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
     component.loadArticlesByTag(1);
     tick();
@@ -381,7 +381,7 @@ describe('FavouritesComponent', () => {
     jest.spyOn(tagService, 'deleteTag')
       .mockReturnValueOnce(throwError(() => new Error('err')));
 
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
     component.userTags = [...mockTags];
     component.taggedArticles = { 1: mockArticles };
@@ -389,9 +389,10 @@ describe('FavouritesComponent', () => {
     try {
       component.deleteTag(mockTags[0]);
       tick();
-    } catch (e) {
-
+    } catch {
+      // noop
     }
+
 
 
     expect(errSpy).not.toHaveBeenCalled();

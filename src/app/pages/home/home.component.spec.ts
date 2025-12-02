@@ -136,7 +136,7 @@ describe('HomeComponent', () => {
   });
 
   it('should log error when fetching most viewed articles fails', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
     mockArticleService.getTopMostViewedArticles.mockReturnValue(
       throwError(() => new Error('fail'))
@@ -186,7 +186,7 @@ describe('HomeComponent', () => {
 
 
   it('should log error when fetching Articles of Note fails', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
     mockArticleService.getArticlesOfNote.mockReturnValue(
       throwError(() => new Error('test'))
@@ -210,7 +210,7 @@ describe('HomeComponent', () => {
 
 
   it('should log error when incrementing view count fails', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
     mockArticleService.incrementViewCount.mockReturnValue(
       throwError(() => new Error('inc error'))

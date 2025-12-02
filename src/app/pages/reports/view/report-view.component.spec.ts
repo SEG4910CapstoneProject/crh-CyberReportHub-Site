@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DateUtilsService } from '../../../shared/services/date-utils.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { CrhTranslationService } from '../../../shared/services/crh-translation.service';
-import { ReportArticleAreaComponent } from '../layout/report-article-area/report-article-area.component';
+
 
 window.structuredClone = (item): any => JSON.parse(JSON.stringify(item));
 
