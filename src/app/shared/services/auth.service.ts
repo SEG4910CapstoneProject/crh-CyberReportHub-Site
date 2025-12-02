@@ -120,6 +120,10 @@ export class AuthService {
     return !!userRole && roles.includes(userRole);
   }
 
+  getRole():string | null {
+    return this.currentUserSubject?.value?.role || null;
+  }
+
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }

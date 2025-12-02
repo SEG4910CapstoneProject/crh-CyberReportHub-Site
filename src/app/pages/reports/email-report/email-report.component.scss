@@ -1,0 +1,12 @@
+@use 'style-utils' as *;
+
+.section {
+    // border: 2px solid red;
+    padding: size(6);
+    margin: size(6)
+}
+
+.confirmButton {
+    width: 20%;
+}
+

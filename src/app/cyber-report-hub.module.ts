@@ -80,6 +80,7 @@ import { ReportArticlesComponent } from './pages/reports/articles/report-article
 import { CrhEmailTemplateCardComponent } from './pages/reports/new/new_components/crh-email-template-card/crh-email-template-card.component';
 import { ErrorDialogComponent } from './shared/dialogs/error-dialog/error-dialog.component';
 import { DialogModule } from '@angular/cdk/dialog';
+import { EmailReportComponent } from './pages/reports/email-report/email-report.component';
 
 const TRANSLATION_FILES_LOCATION = '/lang/';
 const TRANSLATION_FILES_FILE_EXT = '.json';
@@ -138,6 +139,7 @@ export function initBrandingFactory(branding: BrandingService): () => void {
     ProgressSpinnerComponent,
     CrhEmailTemplateCardComponent,
     ErrorDialogComponent,
+    EmailReportComponent,
   ],
   imports: [
     RouterModule,

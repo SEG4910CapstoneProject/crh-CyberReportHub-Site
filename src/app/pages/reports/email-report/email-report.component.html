@@ -1,0 +1,18 @@
+<div>
+    <div *ngIf = "userRole === Roles.admin" class="section">
+        <!-- admin section -->
+        <h3> 
+            {{'report.sendEmail.question.admin' | translate}}
+        </h3>
+        <mat-radio-group (change)="onRadioChange($event)">
+            <mat-radio-button value="y">Yes</mat-radio-button>
+            <mat-radio-button value="n">No</mat-radio-button>
+        </mat-radio-group>
+
+        <div class="confirmButton">
+            <crh-button type="raised" (click)="onConfirmSendEmail()">
+                {{'common.confirm' | translate}}
+            </crh-button>
+        </div>
+    </div>
+</div>

@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { LuxonDateModule } from '@angular/material-luxon-adapter';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogModule } from '@angular/cdk/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 
 const modules = [
   MatFormFieldModule,
@@ -22,6 +23,7 @@ const modules = [
   LuxonDateModule,
   MatProgressSpinnerModule,
   DialogModule,
+  MatRadioModule,
 ];
 
 @NgModule({

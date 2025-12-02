@@ -16,6 +16,7 @@ import { FavouritesComponent } from './pages/favourites/favourites.component';
 import { ReportNewComponent } from './pages/reports/new/report-new.component';
 import { ReportArticlesComponent } from './pages/reports/articles/report-articles.component';
 import { ReportPreviewComponent } from './pages/reports/articles/report-preview/report-preview.component';
+import { EmailReportComponent } from './pages/reports/email-report/email-report.component';
 
 export const routes: Routes = [
   /**
@@ -100,6 +101,10 @@ export const routes: Routes = [
           selectedNav: 'reportStats' satisfies NavBarSelectedLinkOptions,
         },
       },
+      {
+        path:'emailReport',
+        component: EmailReportComponent
+      }
     ],
   },
 

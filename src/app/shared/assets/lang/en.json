@@ -178,6 +178,7 @@
   "report.preview.statistics": "Statistics",
   "report.preview.articles": "Articles",
   "report.preview.analystComment": "Analyst Comment",
+  "report.sendEmail.question.admin":"Would you like to email the report to everyone (restricted and non_restricted analysts)?",
 
   "email.template.nonrestricted.example.title1": "article-title-1",
   "email.template.nonrestricted.example.summary1": "article-summary-1",
