@@ -15,3 +15,10 @@ export interface ArticleForCreateReport {
     publishDate: string,
     type:string
 }
+
+export enum ROLES {
+    admin = "admin",
+    analyst = "analyst",
+    restricted_analyst = "restrictedAnalyst",
+    user = "user"
+}

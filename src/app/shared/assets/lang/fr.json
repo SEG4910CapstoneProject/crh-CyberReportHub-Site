@@ -121,6 +121,7 @@
   "report.edit.addArticle": "Ajouter un article",
   "report.edit.addArticle.placeholder": "http://example.com",
   "report.chosen-articles":"Vos articles choisis",
+  "report.sendEmail.question.admin":"Voudriez vous envoyer ce rapport à tout le monde (analystes restreints et non restreints)?",
 
   "dialog.editArticle.header": "Modifier l'article",
   "dialog.editArticle.field.link": "Lien",

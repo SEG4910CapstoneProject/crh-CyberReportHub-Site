@@ -434,7 +434,16 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
 
     this.articleService.addArticlesToReport(this.reportId,this.selectedArticleIds)
     .subscribe({
-      next:(res) => console.log("Articles were added successfully",res),
+      next:(res) => {
+        console.log("Articles were added successfully",res)
+        this.router.navigate(['/reports/emailReport'],{
+          state: { 
+            role: this.authService.getRole()?.toLowerCase(), 
+            reportId: this.reportId,
+            template: this.template_type
+          }
+        });
+      },
       error:(err) =>console.error(`Error occured while adding articles to the report ${this.reportId}:`,err)
     })
   }
