@@ -1,0 +1,13 @@
+<crh-dialog>
+    <crh-dialog-heading>
+        <h2>{{error_message()}}</h2>
+
+    </crh-dialog-heading>
+
+    <crh-confirm-cancel-buttons
+        crh-dialog-footer
+        [confirmButtonText]="'dialog.error_message_ok'| translate"
+        (_onCancelPressed)="onCancel()"
+        (_onConfirmPressed)="handleOnConfirm()">
+    </crh-confirm-cancel-buttons>
+</crh-dialog>

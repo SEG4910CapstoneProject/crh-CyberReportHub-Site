@@ -88,7 +88,8 @@
           *ngFor="let result of results"
           [result]="result"
           [isLoggedInSignal]="isLoggedIn"
-          (_onDelete)="onDeleteReport($event)">
+          (_onDelete)="onDeleteReport($event)"
+          [canDeleteSignal]="canDelete">
         </crh-report-result>
       </div>
     </ng-container>

@@ -138,6 +138,7 @@
   "dialog.error_message_incomplete_fields":"You must complete all the required fields.",
   "dialog.error_message_ok":"ok",
   "dialog.error_message_duplicate_fields":"You can't add the same article twice",
+  "dialog.confirm_report_deletion":"Irreversible Action: Are you sure you want to delete the report ",
 
   "articles.add": "Add Article",
   "articles.title": "Articles",

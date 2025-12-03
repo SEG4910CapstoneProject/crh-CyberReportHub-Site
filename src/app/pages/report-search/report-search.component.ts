@@ -10,9 +10,11 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  merge,
   Observable,
   of,
   shareReplay,
+  Subject,
   switchMap,
   tap,
 } from 'rxjs';
@@ -20,6 +22,9 @@ import { SearchReportResponse } from '../../shared/sdk/rest-api/model/searchRepo
 import { SearchReportDetailsResponse } from '../../shared/sdk/rest-api/model/searchReportDetailsResponse';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DateTime } from 'luxon';
+import { CrhTranslationService } from '../../shared/services/crh-translation.service';
+import { Dialog } from '@angular/cdk/dialog';
+import { DeleteReportConfirmDialogComponent } from '../../shared/dialogs/delete-report-confirm-dialog/delete-report-confirm-dialog.component';
 
 @Component({
   selector: 'crh-report-search',
@@ -37,11 +42,16 @@ export class ReportSearchComponent implements OnInit {
   private endDate: FormControl = new FormControl<DateTime | null>(null);
 
   protected isLoggedIn = false;
+  protected canDelete = false;
   protected paginatorStatus: PaginatorStatus = {
     itemsPerPage: 10,
     page: 0,
   };
   protected isLoadingSignal = signal<boolean>(true);
+  private readonly ERROR_MESSAGE:string = 'dialog.confirm_report_deletion';
+  private translateService = inject(CrhTranslationService);
+  private dialog = inject(Dialog);
+
 
   // This will hold the fetched reports
   filteredReports: SearchReportDetailsResponse[] = [];
@@ -61,17 +71,27 @@ export class ReportSearchComponent implements OnInit {
       console.log('Is Logged In:', status); // Debugging login status
       this.isLoggedIn = status;
     });
+
+    if (this.authService.getRole()?.toLowerCase() == "admin" || this.authService.getRole()?.toLowerCase() == "analyst")
+    {
+      this.canDelete = true;
+    }
+
   }
 
   searchPressedEvent$ = new BehaviorSubject<boolean>(true);
+  private refreshEvent$ = new Subject<void>();
+
 
   public onSearchClick = (): void => {
     console.log('onSearch click clicked');
     this.searchPressedEvent$.next(!this.searchPressedEvent$);
   };
 
-  private reportSearchResults$: Observable<SearchReportResponse> =
-    this.searchPressedEvent$.pipe(
+  private reportSearchResults$ = merge(
+    this.searchPressedEvent$, // user pressed search
+    this.refreshEvent$         // user triggered refresh
+  ).pipe(
       map(() => this.searchFormGroup.value),
       map(dateValues => ({
         // STEP 2: data assembly
@@ -86,6 +106,7 @@ export class ReportSearchComponent implements OnInit {
         endDate: endDate?.toISODate() ?? null,
         reportNo,
         type,
+        refreshToken: Date.now()
       })),
       tap(v => console.log('🔍 Emitted before distinct:', v)),
       distinctUntilChanged(
@@ -96,7 +117,8 @@ export class ReportSearchComponent implements OnInit {
           prev.startDate === cur.startDate &&
           prev.endDate === cur.endDate &&
           prev.reportNo === cur.reportNo &&
-          prev.type == cur.type
+          prev.type == cur.type &&
+          prev.refreshToken === cur.refreshToken
       ),
       filter(() => this.searchFormGroup.valid),
       tap(() => this.isLoadingSignal.set(true)), // STEP 5: setting the loading signal. tap is a side effect operator, it does not change the value of the stream
@@ -113,7 +135,7 @@ export class ReportSearchComponent implements OnInit {
       // STEP 7:  It shares the latest emitted result with all subscribers, that way not everyone would go through the same process of making an api request
       shareReplay()
     ) as Observable<SearchReportResponse>;
-
+  
   private reports$ = this.reportSearchResults$.pipe(
     tap(result => console.log('result is: ', result)),
     map(result => result.reports)
@@ -134,23 +156,33 @@ export class ReportSearchComponent implements OnInit {
     return reportTotal;
   });
 
+  private confirmDeletion(reportId:number):void
+  {
+    this.reportsService.deleteReport(reportId).subscribe({
+      next:(res) => {
+        console.log("Report was successfully deleted",res)
+        this.refreshEvent$.next(); // force refresh
+      },
+      error:(err) =>console.error(`Error occured while deleting the report ${reportId}:`,err)
+
+    })
+  }
+
   // Handle deleting reports
   onDeleteReport(reportId: number): void {
-    const confirmed = confirm(
-      `Are you sure you want to delete report #${reportId}?`
-    );
-    if (!confirmed) return;
+    this.translateService.getTranslationOnce(this.ERROR_MESSAGE).subscribe((data)=>{
+      const error_message = data +reportId+ " ?";
+      setTimeout(()=> {
+        this.dialog.open(DeleteReportConfirmDialogComponent, {
+          data:{
+            message:error_message,
+            onConfirm: () => this.confirmDeletion(reportId)
+          }
+        })
+      })
 
-    // this.reportsService.deleteReport(report.reportId).subscribe(
-    //   () => {
-    //     console.log('Report deleted successfully');
-    //     // After successful deletion, remove it from the filteredReports array
-    //     this.filteredReports = this.filteredReports.filter(r => r.reportId !== report.reportId);
-    //   },
-    //   error => {
-    //     console.error('Error deleting report:', error);
-    //   }
-    // );
+    })
+
   }
 
   // Navigate to the "create report" page or other relevant route

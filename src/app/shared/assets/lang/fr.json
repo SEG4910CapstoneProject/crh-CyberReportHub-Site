@@ -140,6 +140,7 @@
   "dialog.error_message_incomplete_fields":"Vous devez compléter tous les champs requis.",
   "dialog.error_message_ok":"D'accord",
   "dialog.error_message_duplicate_fields":"Vous ne pouvez pas ajouter le même article deux fois",
+  "dialog.confirm_report_deletion":"Action Irreversible: Etes vous sûr de vouloir supprimer ce rapport ",
 
   "articles.add": "Ajouter un article",
   "articles.title": "Articles",
