@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { SearchReportResponse } from '../sdk/rest-api/model/searchReportResponse';
 import { JsonReportResponse } from '../sdk/rest-api/model/jsonReportResponse';
 
@@ -21,6 +21,8 @@ export class ReportsService {
   configuration: any;
 
   constructor(private http: HttpClient) {}
+  private apiUrlReports = 'http://localhost:8080/api/v1/reports';
+
 
   // Fetch reports list for search (returns SearchReportResponse)
   searchReports(
@@ -109,4 +111,23 @@ export class ReportsService {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+  // send the report by email
+  sendReportEmail(id:number,recipientList:string[]):Observable<any> {
+    if (recipientList.length == 0)
+    {
+      return EMPTY;
+    }
+
+    let params = new HttpParams();
+    recipientList.forEach(email => {
+      params = params.append('recipientList',email);
+    })
+    return this.http.post(`${this.apiUrlReports}/${id}/sendReportEmail`,{},{params}
+    )
+  }
+
+
+
+
 }
