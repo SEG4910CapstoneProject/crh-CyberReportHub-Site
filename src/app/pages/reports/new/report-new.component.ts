@@ -49,6 +49,11 @@ export class ReportNewComponent implements OnInit, OnDestroy {
     this.darkModeService.isDarkMode$.subscribe(mode =>
       this.isDarkMode.set(mode)
     );
+
+    if (this.authService.getRole()?.toLowerCase() != "admin" && this.authService.getRole()?.toLowerCase() != "analyst")
+    {
+      this.email_templates = ["non_restricted"]
+    }
   }
 
   ngOnDestroy(): void {
