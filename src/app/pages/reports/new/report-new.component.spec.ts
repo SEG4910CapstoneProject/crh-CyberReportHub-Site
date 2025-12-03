@@ -25,7 +25,7 @@ describe('ReportNewComponent', () => {
     mockReportsService = { createBasicReport: jest.fn() };
     mockDialog = { open: jest.fn() };
     mockTranslateService = { getTranslationOnce: jest.fn() };
-    mockAuthService = { getCurrentUser: jest.fn() };
+    mockAuthService = { getCurrentUser: jest.fn(),getRole:jest.fn()};
     mockRouter = { navigate: jest.fn() };
 
     await TestBed.configureTestingModule({

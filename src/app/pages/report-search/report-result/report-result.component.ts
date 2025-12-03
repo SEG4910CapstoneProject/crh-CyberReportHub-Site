@@ -30,6 +30,7 @@ export class ReportResultComponent {
   public result = input<SearchReportDetailsResponse>();
   public _onDelete = output<number>();
   public isLoggedInSignal = input<boolean>(false);
+  public canDeleteSignal = input<boolean>(false);
 
   private emailSent = computed(() => {
     const result = this.result();

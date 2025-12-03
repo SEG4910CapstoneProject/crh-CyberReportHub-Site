@@ -37,6 +37,7 @@ export class ReportSearchComponent implements OnInit {
   private endDate: FormControl = new FormControl<DateTime | null>(null);
 
   protected isLoggedIn = false;
+  protected canDelete = false;
   protected paginatorStatus: PaginatorStatus = {
     itemsPerPage: 10,
     page: 0,
@@ -61,6 +62,12 @@ export class ReportSearchComponent implements OnInit {
       console.log('Is Logged In:', status); // Debugging login status
       this.isLoggedIn = status;
     });
+
+    if (this.authService.getRole()?.toLowerCase() == "admin" || this.authService.getRole()?.toLowerCase() == "analyst")
+    {
+      this.canDelete = true;
+    }
+
   }
 
   searchPressedEvent$ = new BehaviorSubject<boolean>(true);

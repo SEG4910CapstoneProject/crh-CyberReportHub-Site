@@ -49,7 +49,7 @@
         mat-raised-button
         class="action-btn delete-btn"
         (click)="onDeleteCard()"
-        *ngIf="isLoggedInSignal()">
+        *ngIf="canDeleteSignal()">
         {{ 'common.delete' | translate }}
       </button>
     </mat-card-actions>
