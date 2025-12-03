@@ -104,7 +104,7 @@ describe('ReportsService', () => {
         expect(res).toBeUndefined();
       });
 
-      const req = httpMock.expectOne('/api/v1/reports/delete/101');
+      const req = httpMock.expectOne('http://localhost:8080/api/v1/reports/delete/101');
       expect(req.request.method).toBe('DELETE');
       req.flush({});
     });
