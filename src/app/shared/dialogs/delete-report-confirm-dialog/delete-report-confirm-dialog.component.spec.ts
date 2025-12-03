@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 describe('DeleteReportConfirmDialogComponent', () => {
   let component: DeleteReportConfirmDialogComponent;
   let fixture: ComponentFixture<DeleteReportConfirmDialogComponent>;
-  let dialogRefMock: DialogRef<DeleteReportConfirmDialogComponent>;
   
 
   beforeEach(async () => {
@@ -22,7 +21,6 @@ describe('DeleteReportConfirmDialogComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(DeleteReportConfirmDialogComponent);
-    dialogRefMock = TestBed.inject(DialogRef) as DialogRef<DeleteReportConfirmDialogComponent>;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
