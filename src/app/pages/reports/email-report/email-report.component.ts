@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ROLES } from '../../../shared/Types/types';
 import { Router } from '@angular/router';
+import { ReportsService } from '../../../shared/services/reports.service';
 
 @Component({
   selector: 'crh-email-report',
@@ -14,6 +15,7 @@ export class EmailReportComponent implements OnInit {
     private response = '';
     private router = inject(Router);
     private reportId = -1;
+    private reportsService = inject(ReportsService);
 
     ngOnInit(): void {
       const state = history.state;
@@ -39,6 +41,16 @@ export class EmailReportComponent implements OnInit {
       {
         // send here the email of the report id to everybody
         // console.log("the report id is: ",this.reportId)
+        if (this.userRole == ROLES.admin)
+        {
+          this.reportsService.sendReportEmail(this.reportId,["all"]).subscribe({
+            next:(res) => {
+              console.log("Email was sent",res)
+              this.router.navigate(['/reports'])
+            },
+            error:(err) =>console.error(`Error occured while sending by mail the following report ${this.reportId}:`,err)
+          })
+        }
       }
 
       else if (this.response == 'n')
