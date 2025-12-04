@@ -134,20 +134,6 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Restore previously selected articles (if any)
-    // if (state?.articles?.length) {  TODO AMANI (AMANI DOESNT UNDERSTAND THE POINT OF THIS CODE)
-    //   state.articles.forEach((article: any) => {
-    //     const articleForm = this.fb.group({
-    //       id: [article.articleId, Validators.required],
-    //       title: [article.title, Validators.required],
-    //       type: [article.type || '', Validators.required],
-    //       category: [article.category || ''],
-    //       link: [article.link || ''],
-    //     });
-    //     this.articles.push(articleForm);
-    //   });
-    // }
-
     // Restore stats (if any)
     if (state?.stats?.length) {
       this.addedStats = state.stats;
@@ -258,48 +244,10 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     this.isArticleFormVisible = !this.isArticleFormVisible;
   }
 
-  //Method for user to manually add a link to the report
-  //Future implementation: ML language will be able to classify the category just from the link
-  // addNewArticle(): void {
-  //   const link = this.newArticleForm.value?.trim();
-  //   const { title, type, category } = this.newArticle;
-
-  //   if (link && link !== '') {
-  //     const newArticle = {
-  //       articleId: this.generateArticleId(),
-  //       title,
-  //       type,
-  //       category,
-  //       link,
-  //     };
-
-  //     // this.addArticleFromSelection(newArticle); TODO AMANI, would we need this? I don't see why...
-
-  //     // Clear form values
-  //     this.newArticleForm.reset();
-  //     this.newArticle = { title: '', type: '', category: '', link: '' };
-  //     this.isArticleFormVisible = false;
-  //   } else {
-  //     console.log('Invalid link or empty input');
-  //   }
-  // }
-
   // Generate a unique article ID
   generateArticleId(): string {
     return 'article-' + Math.random().toString(36).substr(2, 9); // Random ID
   }
-
-  // Method to view the report preview
-  // TODO AMANI, REWORK
-  // viewReport(): void {
-  //   this.router.navigate(['/report-preview'], {
-  //     state: {
-  //       articles: this.articles.value,
-  //       stats: this.addedStats,
-  //       analystComment: this.form.get('analystComment')?.value,
-  //     },
-  //   });
-  // }
 
   private fetchSuggestedArticles(): void {
     this.isLoading = true;
@@ -378,22 +326,9 @@ export class ReportArticlesComponent implements OnInit, OnDestroy {
     );
   }
 
-  // get articles(): FormArray<FormGroup> {
-  //   return this.form.get('articles') as FormArray<FormGroup>;
-  // }
-
   // Add new article to the report
   addArticleFromSelection(article: ArticleForCreateReport): void {
     console.log("the article here is: ",article)
-    // const articleForm = this.fb.group({
-    //   id: [article.articleId, Validators.required],
-    //   title: [article.title, Validators.required],
-    //   type: [article.type || '', Validators.required],
-    //   category: [article.category || ''],
-    //   link: [article.link || ''],
-    // });
-
-    // this.articles.push(articleForm);
     if (this.articles.has(article.articleId))
     {
       // make the pop us saying you cant add

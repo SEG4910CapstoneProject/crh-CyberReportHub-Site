@@ -23,7 +23,6 @@ export class ReportPreviewComponent {
 
   // Group articles by category
   get articlesByCategory(): Record<string, Article[]> {
-    //TODO: replace any by a proper type: (Article has category,id,link,title,type and all are strings), and any is actually Article[]
     const categories = this.articles.reduce(
       (acc, article) => {
         if (!acc[article.category]) {

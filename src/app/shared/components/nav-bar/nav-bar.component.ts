@@ -61,7 +61,7 @@ export class NavBarComponent implements OnInit {
       breakpoint: 960,
     },
   ];
-  protected isLoggedIn = signal<boolean>(false); // TODO, logging is false here, why protected and why signal??
+  protected isLoggedIn = signal<boolean>(false);
 
   protected responsiveModeSignal = signal<string>(this.DESKTOP_MODE_KEY);
   private menuTriggeredOpen = signal<boolean>(false);
@@ -73,7 +73,7 @@ export class NavBarComponent implements OnInit {
     });
   }
   protected onAuthButtonClick(): void {
-    this.onClickOutsideExtended(); //TODO, whats the point of this??
+    this.onClickOutsideExtended();
 
     if (this.isLoggedIn()) {
       // User is logged in, so this should trigger logout.
